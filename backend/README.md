@@ -23,7 +23,7 @@ The starter users are inserted idempotently from `src/prisma/seed.ts` on the fir
 
 ## Prisma
 
-- Contract: `src/prisma/contract.ts`
+- Contract: `src/prisma/contract.prisma`
 - Prisma and Composer config: `prisma.config.ts`
 - Composer app: `module.ts` and `service.ts`
 

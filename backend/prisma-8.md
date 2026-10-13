@@ -11,26 +11,15 @@ This project is set up for PostgreSQL. Prisma ORM also supports other databases.
 
 ## Your data contract
 
-Your data contract is the heart of your application. It lives at [`src/prisma/contract.ts`](src/prisma/contract.ts) and describes your models:
+Your data contract is the heart of your application. It lives at [`src/prisma/contract.prisma`](src/prisma/contract.prisma) and describes your models:
 
-```typescript
-import { defineContract } from '@prisma/orm-postgres/contract-builder';
-
-export const contract = defineContract(
-  {},
-  ({ field, model }) => ({
-    models: {
-      User: model('User', {
-        fields: {
-          id: field.id.uuidv7String(),
-          email: field.text().unique(),
-          username: field.text().optional(),
-          name: field.text().optional(),
-        },
-      }),
-    },
-  }),
-);
+```prisma
+model User {
+  id       Int     @id @default(autoincrement())
+  email    String  @unique
+  username String?
+  name     String?
+}
 ```
 
 Every model you define in your contract can be queried from your app. Your editor will autocomplete the query methods and show you what type each model field is:
@@ -66,7 +55,7 @@ import { defineConfig as ormConfig } from '@prisma/orm-postgres/config';
 
 export default definePrismaConfig({
   orm: ormConfig({
-    contract: './src/prisma/contract.ts',
+    contract: './src/prisma/contract.prisma',
     db: {
       connection: process.env['DATABASE_URL']!,
     },
@@ -96,7 +85,7 @@ pnpm prisma migration status    # Show migration status
 
 | File | Purpose |
 |---|---|
-| [`src/prisma/contract.ts`](src/prisma/contract.ts) | Your data contract — define your models here |
+| [`src/prisma/contract.prisma`](src/prisma/contract.prisma) | Your data contract — define your models here |
 | [`prisma.config.ts`](prisma.config.ts) | CLI configuration |
 | [`src/prisma/db.ts`](src/prisma/db.ts) | Database client — `import { db } from './src/prisma/db'` |
 | `src/prisma/contract.json` | Compiled contract (generated) |
@@ -104,7 +93,7 @@ pnpm prisma migration status    # Show migration status
 
 ### Workflow
 
-1. Edit [`src/prisma/contract.ts`](src/prisma/contract.ts) to add or change models.
+1. Edit [`src/prisma/contract.prisma`](src/prisma/contract.prisma) to add or change models.
 2. Run `pnpm prisma contract emit` to regenerate the contract.
 3. Query your models — your IDE will autocomplete everything.
 
