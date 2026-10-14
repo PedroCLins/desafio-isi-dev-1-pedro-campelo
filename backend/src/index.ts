@@ -2,7 +2,7 @@ import { createServer } from "node:http";
 
 import { listUsers } from "./prisma/users";
 
-const port = Number(process.env.PORT ?? 3000);
+const port = Number(process.env.PORT ?? 5000);
 
 createServer(async (_request, response) => {
   try {
