@@ -26,7 +26,7 @@ export class PlayerRepository {
     }
 
     async delete(id: number): Promise<PlayerOutput | null> {
-        const player = await db.orm.public.Jogadores.where({ id }).delete();
+        const player = await db.orm.public.Jogadores.where({ id }).update({ excluido_em: new Date().toISOString() });
         return player;
     }
 }
