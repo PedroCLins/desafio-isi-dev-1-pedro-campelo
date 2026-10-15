@@ -4,121 +4,182 @@
   "target": "postgres",
   "profileHash": "3916f444a8a17ad749191acf9e08dad97d1a327b88c2f1d45d12f240296aa8b2",
   "roots": {
-    "Post": {
-      "model": "Post",
+    "Clubes": {
+      "model": "Clubes",
       "namespace": "public"
     },
-    "User": {
-      "model": "User",
+    "Contratos": {
+      "model": "Contratos",
+      "namespace": "public"
+    },
+    "DuelosPartida": {
+      "model": "DuelosPartida",
+      "namespace": "public"
+    },
+    "Escalacoes": {
+      "model": "Escalacoes",
+      "namespace": "public"
+    },
+    "Jogadores": {
+      "model": "Jogadores",
+      "namespace": "public"
+    },
+    "Partidas": {
+      "model": "Partidas",
+      "namespace": "public"
+    },
+    "Transacoes": {
+      "model": "Transacoes",
       "namespace": "public"
     }
   },
   "domain": {
     "namespaces": {
       "public": {
-        "models": {
-          "Post": {
-            "fields": {
-              "authorId": {
-                "nullable": false,
-                "type": {
-                  "codecId": "pg/int4@1",
-                  "kind": "scalar"
-                }
+        "enum": {
+          "Atributo": {
+            "codecId": "pg/text@1",
+            "members": [
+              {
+                "name": "finalizacao",
+                "value": "finalizacao"
               },
-              "content": {
-                "nullable": true,
-                "type": {
-                  "codecId": "pg/text@1",
-                  "kind": "scalar"
-                }
+              {
+                "name": "passe",
+                "value": "passe"
               },
-              "createdAt": {
-                "nullable": false,
-                "type": {
-                  "codecId": "pg/timestamptz-string@1",
-                  "kind": "scalar"
-                }
+              {
+                "name": "drible",
+                "value": "drible"
               },
-              "id": {
-                "nullable": false,
-                "type": {
-                  "codecId": "pg/int4@1",
-                  "kind": "scalar"
-                }
-              },
-              "title": {
-                "nullable": false,
-                "type": {
-                  "codecId": "pg/text@1",
-                  "kind": "scalar"
-                }
-              },
-              "updatedAt": {
-                "nullable": false,
-                "type": {
-                  "codecId": "pg/timestamptz-string@1",
-                  "kind": "scalar"
-                }
+              {
+                "name": "defesa",
+                "value": "defesa"
               }
-            },
-            "relations": {
-              "author": {
-                "cardinality": "N:1",
-                "nullable": false,
-                "on": {
-                  "localFields": [
-                    "authorId"
-                  ],
-                  "targetFields": [
-                    "id"
-                  ]
-                },
-                "to": {
-                  "model": "User",
-                  "namespace": "public"
-                }
-              }
-            },
-            "storage": {
-              "fields": {
-                "authorId": {
-                  "column": "authorId"
-                },
-                "content": {
-                  "column": "content"
-                },
-                "createdAt": {
-                  "column": "createdAt"
-                },
-                "id": {
-                  "column": "id"
-                },
-                "title": {
-                  "column": "title"
-                },
-                "updatedAt": {
-                  "column": "updatedAt"
-                }
-              },
-              "namespaceId": "public",
-              "table": "Post"
-            }
+            ]
           },
-          "User": {
+          "Condicao": {
+            "codecId": "pg/text@1",
+            "members": [
+              {
+                "name": "APTO",
+                "value": "APTO"
+              },
+              {
+                "name": "MAL_CONDICIONADO",
+                "value": "MAL_CONDICIONADO"
+              },
+              {
+                "name": "DOENTE",
+                "value": "DOENTE"
+              }
+            ]
+          },
+          "Formacao": {
+            "codecId": "pg/text@1",
+            "members": [
+              {
+                "name": "FORMACAO_3_1",
+                "value": "3-1"
+              },
+              {
+                "name": "FORMACAO_2_2",
+                "value": "2-2"
+              },
+              {
+                "name": "FORMACAO_2_1_1",
+                "value": "2-1-1"
+              },
+              {
+                "name": "FORMACAO_1_2_1",
+                "value": "1-2-1"
+              }
+            ]
+          },
+          "Posicao": {
+            "codecId": "pg/text@1",
+            "members": [
+              {
+                "name": "GOL",
+                "value": "GOL"
+              },
+              {
+                "name": "ZAG",
+                "value": "ZAG"
+              },
+              {
+                "name": "LAT",
+                "value": "LAT"
+              },
+              {
+                "name": "MEI",
+                "value": "MEI"
+              },
+              {
+                "name": "ATA",
+                "value": "ATA"
+              }
+            ]
+          },
+          "SituacaoContrato": {
+            "codecId": "pg/text@1",
+            "members": [
+              {
+                "name": "ATIVO",
+                "value": "ATIVO"
+              },
+              {
+                "name": "ENCERRADO",
+                "value": "ENCERRADO"
+              },
+              {
+                "name": "RESCINDIDO",
+                "value": "RESCINDIDO"
+              }
+            ]
+          },
+          "TipoTransacao": {
+            "codecId": "pg/text@1",
+            "members": [
+              {
+                "name": "COMPRA",
+                "value": "COMPRA"
+              },
+              {
+                "name": "VENDA",
+                "value": "VENDA"
+              }
+            ]
+          }
+        },
+        "models": {
+          "Clubes": {
             "fields": {
-              "createdAt": {
+              "caixa": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/numeric@1",
+                  "kind": "scalar"
+                }
+              },
+              "criado_em": {
                 "nullable": false,
                 "type": {
                   "codecId": "pg/timestamptz-string@1",
                   "kind": "scalar"
                 }
               },
-              "email": {
+              "formacao": {
                 "nullable": false,
                 "type": {
                   "codecId": "pg/text@1",
                   "kind": "scalar"
+                },
+                "valueSet": {
+                  "entityKind": "enum",
+                  "entityName": "Formacao",
+                  "namespaceId": "public",
+                  "plane": "domain"
                 }
               },
               "id": {
@@ -128,22 +189,15 @@
                   "kind": "scalar"
                 }
               },
-              "name": {
-                "nullable": true,
+              "nome": {
+                "nullable": false,
                 "type": {
                   "codecId": "pg/text@1",
                   "kind": "scalar"
                 }
               },
-              "updatedAt": {
+              "sigla": {
                 "nullable": false,
-                "type": {
-                  "codecId": "pg/timestamptz-string@1",
-                  "kind": "scalar"
-                }
-              },
-              "username": {
-                "nullable": true,
                 "type": {
                   "codecId": "pg/text@1",
                   "kind": "scalar"
@@ -151,45 +205,1037 @@
               }
             },
             "relations": {
-              "posts": {
+              "players": {
                 "cardinality": "1:N",
                 "on": {
                   "localFields": [
                     "id"
                   ],
                   "targetFields": [
-                    "authorId"
+                    "clube_id"
                   ]
                 },
                 "to": {
-                  "model": "Post",
+                  "model": "Jogadores",
                   "namespace": "public"
                 }
               }
             },
             "storage": {
               "fields": {
-                "createdAt": {
-                  "column": "createdAt"
+                "caixa": {
+                  "column": "caixa"
                 },
-                "email": {
-                  "column": "email"
+                "criado_em": {
+                  "column": "criado_em"
+                },
+                "formacao": {
+                  "column": "formacao"
                 },
                 "id": {
                   "column": "id"
                 },
-                "name": {
-                  "column": "name"
+                "nome": {
+                  "column": "nome"
                 },
-                "updatedAt": {
-                  "column": "updatedAt"
-                },
-                "username": {
-                  "column": "username"
+                "sigla": {
+                  "column": "sigla"
                 }
               },
               "namespaceId": "public",
-              "table": "User"
+              "table": "Clubes"
+            }
+          },
+          "Contratos": {
+            "fields": {
+              "clube_id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              },
+              "encerrado_em": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/timestamptz-string@1",
+                  "kind": "scalar"
+                }
+              },
+              "fidelidade_ate": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-string@1",
+                  "kind": "scalar"
+                }
+              },
+              "id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              },
+              "iniciado_em": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-string@1",
+                  "kind": "scalar"
+                }
+              },
+              "jogador_id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              },
+              "situacao": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                },
+                "valueSet": {
+                  "entityKind": "enum",
+                  "entityName": "SituacaoContrato",
+                  "namespaceId": "public",
+                  "plane": "domain"
+                }
+              }
+            },
+            "relations": {
+              "clube": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "clube_id"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Clubes",
+                  "namespace": "public"
+                }
+              },
+              "jogador": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "jogador_id"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Jogadores",
+                  "namespace": "public"
+                }
+              }
+            },
+            "storage": {
+              "fields": {
+                "clube_id": {
+                  "column": "clube_id"
+                },
+                "encerrado_em": {
+                  "column": "encerrado_em"
+                },
+                "fidelidade_ate": {
+                  "column": "fidelidade_ate"
+                },
+                "id": {
+                  "column": "id"
+                },
+                "iniciado_em": {
+                  "column": "iniciado_em"
+                },
+                "jogador_id": {
+                  "column": "jogador_id"
+                },
+                "situacao": {
+                  "column": "situacao"
+                }
+              },
+              "namespaceId": "public",
+              "table": "Contratos"
+            }
+          },
+          "DuelosPartida": {
+            "fields": {
+              "atacante_id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              },
+              "atributo_ataque": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                },
+                "valueSet": {
+                  "entityKind": "enum",
+                  "entityName": "Atributo",
+                  "namespaceId": "public",
+                  "plane": "domain"
+                }
+              },
+              "atributo_defesa": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                },
+                "valueSet": {
+                  "entityKind": "enum",
+                  "entityName": "Atributo",
+                  "namespaceId": "public",
+                  "plane": "domain"
+                }
+              },
+              "clube_atacante_id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              },
+              "condicao_atacante": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                },
+                "valueSet": {
+                  "entityKind": "enum",
+                  "entityName": "Condicao",
+                  "namespaceId": "public",
+                  "plane": "domain"
+                }
+              },
+              "condicao_defensor": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                },
+                "valueSet": {
+                  "entityKind": "enum",
+                  "entityName": "Condicao",
+                  "namespaceId": "public",
+                  "plane": "domain"
+                }
+              },
+              "defensor_id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              },
+              "gol": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/bool@1",
+                  "kind": "scalar"
+                }
+              },
+              "id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              },
+              "nome_atacante": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "nome_defensor": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "ordem": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              },
+              "partida_id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              },
+              "posicao_atacante": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                },
+                "valueSet": {
+                  "entityKind": "enum",
+                  "entityName": "Posicao",
+                  "namespaceId": "public",
+                  "plane": "domain"
+                }
+              },
+              "posicao_defensor": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                },
+                "valueSet": {
+                  "entityKind": "enum",
+                  "entityName": "Posicao",
+                  "namespaceId": "public",
+                  "plane": "domain"
+                }
+              },
+              "valor_ataque": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              },
+              "valor_defesa": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {
+              "atacante": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "atacante_id"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Jogadores",
+                  "namespace": "public"
+                }
+              },
+              "clube_atacante": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "clube_atacante_id"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Clubes",
+                  "namespace": "public"
+                }
+              },
+              "defensor": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "defensor_id"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Jogadores",
+                  "namespace": "public"
+                }
+              },
+              "partida": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "partida_id"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Partidas",
+                  "namespace": "public"
+                }
+              }
+            },
+            "storage": {
+              "fields": {
+                "atacante_id": {
+                  "column": "atacante_id"
+                },
+                "atributo_ataque": {
+                  "column": "atributo_ataque"
+                },
+                "atributo_defesa": {
+                  "column": "atributo_defesa"
+                },
+                "clube_atacante_id": {
+                  "column": "clube_atacante_id"
+                },
+                "condicao_atacante": {
+                  "column": "condicao_atacante"
+                },
+                "condicao_defensor": {
+                  "column": "condicao_defensor"
+                },
+                "defensor_id": {
+                  "column": "defensor_id"
+                },
+                "gol": {
+                  "column": "gol"
+                },
+                "id": {
+                  "column": "id"
+                },
+                "nome_atacante": {
+                  "column": "nome_atacante"
+                },
+                "nome_defensor": {
+                  "column": "nome_defensor"
+                },
+                "ordem": {
+                  "column": "ordem"
+                },
+                "partida_id": {
+                  "column": "partida_id"
+                },
+                "posicao_atacante": {
+                  "column": "posicao_atacante"
+                },
+                "posicao_defensor": {
+                  "column": "posicao_defensor"
+                },
+                "valor_ataque": {
+                  "column": "valor_ataque"
+                },
+                "valor_defesa": {
+                  "column": "valor_defesa"
+                }
+              },
+              "namespaceId": "public",
+              "table": "DuelosPartida"
+            }
+          },
+          "Escalacoes": {
+            "fields": {
+              "clube_id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              },
+              "criado_em": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-string@1",
+                  "kind": "scalar"
+                }
+              },
+              "jogador_id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {
+              "clube": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "clube_id"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Clubes",
+                  "namespace": "public"
+                }
+              },
+              "jogador": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "jogador_id"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Jogadores",
+                  "namespace": "public"
+                }
+              }
+            },
+            "storage": {
+              "fields": {
+                "clube_id": {
+                  "column": "clube_id"
+                },
+                "criado_em": {
+                  "column": "criado_em"
+                },
+                "jogador_id": {
+                  "column": "jogador_id"
+                }
+              },
+              "namespaceId": "public",
+              "table": "Escalacoes"
+            }
+          },
+          "Jogadores": {
+            "fields": {
+              "agilidade": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              },
+              "atualizado_em": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "clube_id": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              },
+              "condition": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                },
+                "valueSet": {
+                  "entityKind": "enum",
+                  "entityName": "Condicao",
+                  "namespaceId": "public",
+                  "plane": "domain"
+                }
+              },
+              "criado_em": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-string@1",
+                  "kind": "scalar"
+                }
+              },
+              "defesa": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              },
+              "drible": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              },
+              "excluido_em": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/timestamptz-string@1",
+                  "kind": "scalar"
+                }
+              },
+              "finalizacao": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              },
+              "fisico": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              },
+              "id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              },
+              "idade": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              },
+              "nome": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "passe": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              },
+              "posicao": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                },
+                "valueSet": {
+                  "entityKind": "enum",
+                  "entityName": "Posicao",
+                  "namespaceId": "public",
+                  "plane": "domain"
+                }
+              },
+              "potencial": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              },
+              "valor_base": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/numeric@1",
+                  "kind": "scalar"
+                }
+              },
+              "velocidade": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {
+              "clube": {
+                "cardinality": "N:1",
+                "nullable": true,
+                "on": {
+                  "localFields": [
+                    "clube_id"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Clubes",
+                  "namespace": "public"
+                }
+              }
+            },
+            "storage": {
+              "fields": {
+                "agilidade": {
+                  "column": "agilidade"
+                },
+                "atualizado_em": {
+                  "column": "atualizado_em"
+                },
+                "clube_id": {
+                  "column": "clube_id"
+                },
+                "condition": {
+                  "column": "condition"
+                },
+                "criado_em": {
+                  "column": "criado_em"
+                },
+                "defesa": {
+                  "column": "defesa"
+                },
+                "drible": {
+                  "column": "drible"
+                },
+                "excluido_em": {
+                  "column": "excluido_em"
+                },
+                "finalizacao": {
+                  "column": "finalizacao"
+                },
+                "fisico": {
+                  "column": "fisico"
+                },
+                "id": {
+                  "column": "id"
+                },
+                "idade": {
+                  "column": "idade"
+                },
+                "nome": {
+                  "column": "nome"
+                },
+                "passe": {
+                  "column": "passe"
+                },
+                "posicao": {
+                  "column": "posicao"
+                },
+                "potencial": {
+                  "column": "potencial"
+                },
+                "valor_base": {
+                  "column": "valor_base"
+                },
+                "velocidade": {
+                  "column": "velocidade"
+                }
+              },
+              "namespaceId": "public",
+              "table": "Jogadores"
+            }
+          },
+          "Partidas": {
+            "fields": {
+              "criado_em": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-string@1",
+                  "kind": "scalar"
+                }
+              },
+              "formacao_mandante": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                },
+                "valueSet": {
+                  "entityKind": "enum",
+                  "entityName": "Formacao",
+                  "namespaceId": "public",
+                  "plane": "domain"
+                }
+              },
+              "formacao_visitante": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                },
+                "valueSet": {
+                  "entityKind": "enum",
+                  "entityName": "Formacao",
+                  "namespaceId": "public",
+                  "plane": "domain"
+                }
+              },
+              "gols_mandante": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              },
+              "gols_visitante": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              },
+              "id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              },
+              "mandante_id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              },
+              "visitante_id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {
+              "mandante": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "mandante_id"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Clubes",
+                  "namespace": "public"
+                }
+              },
+              "visitante": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "visitante_id"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Clubes",
+                  "namespace": "public"
+                }
+              }
+            },
+            "storage": {
+              "fields": {
+                "criado_em": {
+                  "column": "criado_em"
+                },
+                "formacao_mandante": {
+                  "column": "formacao_mandante"
+                },
+                "formacao_visitante": {
+                  "column": "formacao_visitante"
+                },
+                "gols_mandante": {
+                  "column": "gols_mandante"
+                },
+                "gols_visitante": {
+                  "column": "gols_visitante"
+                },
+                "id": {
+                  "column": "id"
+                },
+                "mandante_id": {
+                  "column": "mandante_id"
+                },
+                "visitante_id": {
+                  "column": "visitante_id"
+                }
+              },
+              "namespaceId": "public",
+              "table": "Partidas"
+            }
+          },
+          "Transacoes": {
+            "fields": {
+              "clube_id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              },
+              "criado_em": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-string@1",
+                  "kind": "scalar"
+                }
+              },
+              "id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              },
+              "jogador_id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              },
+              "lucro": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/numeric@1",
+                  "kind": "scalar"
+                }
+              },
+              "multa": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/numeric@1",
+                  "kind": "scalar"
+                }
+              },
+              "nome_jogador": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "taxa": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/numeric@1",
+                  "kind": "scalar"
+                }
+              },
+              "tipo": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                },
+                "valueSet": {
+                  "entityKind": "enum",
+                  "entityName": "TipoTransacao",
+                  "namespaceId": "public",
+                  "plane": "domain"
+                }
+              },
+              "valor": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/numeric@1",
+                  "kind": "scalar"
+                }
+              },
+              "variacao_caixa": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/numeric@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {
+              "clube": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "clube_id"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Clubes",
+                  "namespace": "public"
+                }
+              },
+              "jogador": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "jogador_id"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Jogadores",
+                  "namespace": "public"
+                }
+              }
+            },
+            "storage": {
+              "fields": {
+                "clube_id": {
+                  "column": "clube_id"
+                },
+                "criado_em": {
+                  "column": "criado_em"
+                },
+                "id": {
+                  "column": "id"
+                },
+                "jogador_id": {
+                  "column": "jogador_id"
+                },
+                "lucro": {
+                  "column": "lucro"
+                },
+                "multa": {
+                  "column": "multa"
+                },
+                "nome_jogador": {
+                  "column": "nome_jogador"
+                },
+                "taxa": {
+                  "column": "taxa"
+                },
+                "tipo": {
+                  "column": "tipo"
+                },
+                "valor": {
+                  "column": "valor"
+                },
+                "variacao_caixa": {
+                  "column": "variacao_caixa"
+                }
+              },
+              "namespaceId": "public",
+              "table": "Transacoes"
             }
           }
         }
@@ -201,19 +1247,25 @@
       "public": {
         "entries": {
           "table": {
-            "Post": {
+            "Clubes": {
+              "checks": [
+                {
+                  "expression": "\"formacao\" IN ('3-1', '2-2', '2-1-1', '1-2-1')",
+                  "name": "Clubes_formacao_check_e2e07320",
+                  "prefix": "Clubes_formacao_check"
+                }
+              ],
               "columns": {
-                "authorId": {
-                  "codecId": "pg/int4@1",
-                  "dataType": "pg/int4",
+                "caixa": {
+                  "codecId": "pg/numeric@1",
+                  "dataType": "pg/numeric",
+                  "default": {
+                    "kind": "literal",
+                    "value": "300.00"
+                  },
                   "nullable": false
                 },
-                "content": {
-                  "codecId": "pg/text@1",
-                  "dataType": "pg/text",
-                  "nullable": true
-                },
-                "createdAt": {
+                "criado_em": {
                   "codecId": "pg/timestamptz-string@1",
                   "dataType": "pg/timestamptz",
                   "default": {
@@ -222,76 +1274,16 @@
                   },
                   "nullable": false
                 },
-                "id": {
-                  "codecId": "pg/int4@1",
-                  "dataType": "pg/int4",
-                  "default": {
-                    "expression": "autoincrement()",
-                    "kind": "function"
-                  },
-                  "nullable": false
-                },
-                "title": {
+                "formacao": {
                   "codecId": "pg/text@1",
                   "dataType": "pg/text",
-                  "nullable": false
-                },
-                "updatedAt": {
-                  "codecId": "pg/timestamptz-string@1",
-                  "dataType": "pg/timestamptz",
-                  "nullable": false
-                }
-              },
-              "foreignKeys": [
-                {
-                  "source": {
-                    "columns": [
-                      "authorId"
-                    ],
+                  "nullable": false,
+                  "valueSet": {
+                    "entityKind": "valueSet",
+                    "entityName": "Formacao",
                     "namespaceId": "public",
-                    "tableName": "Post"
-                  },
-                  "target": {
-                    "columns": [
-                      "id"
-                    ],
-                    "namespaceId": "public",
-                    "tableName": "User"
+                    "plane": "storage"
                   }
-                }
-              ],
-              "indexes": [
-                {
-                  "columns": [
-                    "authorId"
-                  ],
-                  "name": "Post_authorId_idx_e47547ed",
-                  "prefix": "Post_authorId_idx",
-                  "unique": false
-                }
-              ],
-              "primaryKey": {
-                "columns": [
-                  "id"
-                ]
-              },
-              "uniques": []
-            },
-            "User": {
-              "columns": {
-                "createdAt": {
-                  "codecId": "pg/timestamptz-string@1",
-                  "dataType": "pg/timestamptz",
-                  "default": {
-                    "expression": "now()",
-                    "kind": "function"
-                  },
-                  "nullable": false
-                },
-                "email": {
-                  "codecId": "pg/text@1",
-                  "dataType": "pg/text",
-                  "nullable": false
                 },
                 "id": {
                   "codecId": "pg/int4@1",
@@ -302,20 +1294,15 @@
                   },
                   "nullable": false
                 },
-                "name": {
+                "nome": {
                   "codecId": "pg/text@1",
                   "dataType": "pg/text",
-                  "nullable": true
-                },
-                "updatedAt": {
-                  "codecId": "pg/timestamptz-string@1",
-                  "dataType": "pg/timestamptz",
                   "nullable": false
                 },
-                "username": {
+                "sigla": {
                   "codecId": "pg/text@1",
                   "dataType": "pg/text",
-                  "nullable": true
+                  "nullable": false
                 }
               },
               "foreignKeys": [],
@@ -328,9 +1315,955 @@
               "uniques": [
                 {
                   "columns": [
-                    "email"
+                    "sigla"
                   ]
                 }
+              ]
+            },
+            "Contratos": {
+              "checks": [
+                {
+                  "expression": "\"situacao\" IN ('ATIVO', 'ENCERRADO', 'RESCINDIDO')",
+                  "name": "Contratos_situacao_check_a26c49d0",
+                  "prefix": "Contratos_situacao_check"
+                }
+              ],
+              "columns": {
+                "clube_id": {
+                  "codecId": "pg/int4@1",
+                  "dataType": "pg/int4",
+                  "nullable": false
+                },
+                "encerrado_em": {
+                  "codecId": "pg/timestamptz-string@1",
+                  "dataType": "pg/timestamptz",
+                  "nullable": true
+                },
+                "fidelidade_ate": {
+                  "codecId": "pg/timestamptz-string@1",
+                  "dataType": "pg/timestamptz",
+                  "nullable": false
+                },
+                "id": {
+                  "codecId": "pg/int4@1",
+                  "dataType": "pg/int4",
+                  "default": {
+                    "expression": "autoincrement()",
+                    "kind": "function"
+                  },
+                  "nullable": false
+                },
+                "iniciado_em": {
+                  "codecId": "pg/timestamptz-string@1",
+                  "dataType": "pg/timestamptz",
+                  "default": {
+                    "expression": "now()",
+                    "kind": "function"
+                  },
+                  "nullable": false
+                },
+                "jogador_id": {
+                  "codecId": "pg/int4@1",
+                  "dataType": "pg/int4",
+                  "nullable": false
+                },
+                "situacao": {
+                  "codecId": "pg/text@1",
+                  "dataType": "pg/text",
+                  "nullable": false,
+                  "valueSet": {
+                    "entityKind": "valueSet",
+                    "entityName": "SituacaoContrato",
+                    "namespaceId": "public",
+                    "plane": "storage"
+                  }
+                }
+              },
+              "foreignKeys": [
+                {
+                  "source": {
+                    "columns": [
+                      "clube_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "Contratos"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "Clubes"
+                  }
+                },
+                {
+                  "source": {
+                    "columns": [
+                      "jogador_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "Contratos"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "Jogadores"
+                  }
+                }
+              ],
+              "indexes": [
+                {
+                  "columns": [
+                    "clube_id"
+                  ],
+                  "name": "Contratos_clube_id_idx_6707a62a",
+                  "prefix": "Contratos_clube_id_idx",
+                  "unique": false
+                },
+                {
+                  "columns": [
+                    "jogador_id"
+                  ],
+                  "name": "Contratos_jogador_id_idx_b5f9d85d",
+                  "prefix": "Contratos_jogador_id_idx",
+                  "unique": false
+                }
+              ],
+              "primaryKey": {
+                "columns": [
+                  "id"
+                ]
+              },
+              "uniques": []
+            },
+            "DuelosPartida": {
+              "checks": [
+                {
+                  "expression": "\"atributo_ataque\" IN ('finalizacao', 'passe', 'drible', 'defesa')",
+                  "name": "DuelosPartida_atributo_ataque_check_f85aaf42",
+                  "prefix": "DuelosPartida_atributo_ataque_check"
+                },
+                {
+                  "expression": "\"atributo_defesa\" IN ('finalizacao', 'passe', 'drible', 'defesa')",
+                  "name": "DuelosPartida_atributo_defesa_check_e4da42c3",
+                  "prefix": "DuelosPartida_atributo_defesa_check"
+                },
+                {
+                  "expression": "\"condicao_atacante\" IN ('APTO', 'MAL_CONDICIONADO', 'DOENTE')",
+                  "name": "DuelosPartida_condicao_atacante_check_bd983e36",
+                  "prefix": "DuelosPartida_condicao_atacante_check"
+                },
+                {
+                  "expression": "\"condicao_defensor\" IN ('APTO', 'MAL_CONDICIONADO', 'DOENTE')",
+                  "name": "DuelosPartida_condicao_defensor_check_30e7b7cb",
+                  "prefix": "DuelosPartida_condicao_defensor_check"
+                },
+                {
+                  "expression": "\"posicao_atacante\" IN ('GOL', 'ZAG', 'LAT', 'MEI', 'ATA')",
+                  "name": "DuelosPartida_posicao_atacante_check_4f2dada7",
+                  "prefix": "DuelosPartida_posicao_atacante_check"
+                },
+                {
+                  "expression": "\"posicao_defensor\" IN ('GOL', 'ZAG', 'LAT', 'MEI', 'ATA')",
+                  "name": "DuelosPartida_posicao_defensor_check_328268e4",
+                  "prefix": "DuelosPartida_posicao_defensor_check"
+                }
+              ],
+              "columns": {
+                "atacante_id": {
+                  "codecId": "pg/int4@1",
+                  "dataType": "pg/int4",
+                  "nullable": false
+                },
+                "atributo_ataque": {
+                  "codecId": "pg/text@1",
+                  "dataType": "pg/text",
+                  "nullable": false,
+                  "valueSet": {
+                    "entityKind": "valueSet",
+                    "entityName": "Atributo",
+                    "namespaceId": "public",
+                    "plane": "storage"
+                  }
+                },
+                "atributo_defesa": {
+                  "codecId": "pg/text@1",
+                  "dataType": "pg/text",
+                  "nullable": false,
+                  "valueSet": {
+                    "entityKind": "valueSet",
+                    "entityName": "Atributo",
+                    "namespaceId": "public",
+                    "plane": "storage"
+                  }
+                },
+                "clube_atacante_id": {
+                  "codecId": "pg/int4@1",
+                  "dataType": "pg/int4",
+                  "nullable": false
+                },
+                "condicao_atacante": {
+                  "codecId": "pg/text@1",
+                  "dataType": "pg/text",
+                  "nullable": false,
+                  "valueSet": {
+                    "entityKind": "valueSet",
+                    "entityName": "Condicao",
+                    "namespaceId": "public",
+                    "plane": "storage"
+                  }
+                },
+                "condicao_defensor": {
+                  "codecId": "pg/text@1",
+                  "dataType": "pg/text",
+                  "nullable": false,
+                  "valueSet": {
+                    "entityKind": "valueSet",
+                    "entityName": "Condicao",
+                    "namespaceId": "public",
+                    "plane": "storage"
+                  }
+                },
+                "defensor_id": {
+                  "codecId": "pg/int4@1",
+                  "dataType": "pg/int4",
+                  "nullable": false
+                },
+                "gol": {
+                  "codecId": "pg/bool@1",
+                  "dataType": "pg/bool",
+                  "nullable": false
+                },
+                "id": {
+                  "codecId": "pg/int4@1",
+                  "dataType": "pg/int4",
+                  "default": {
+                    "expression": "autoincrement()",
+                    "kind": "function"
+                  },
+                  "nullable": false
+                },
+                "nome_atacante": {
+                  "codecId": "pg/text@1",
+                  "dataType": "pg/text",
+                  "nullable": false
+                },
+                "nome_defensor": {
+                  "codecId": "pg/text@1",
+                  "dataType": "pg/text",
+                  "nullable": false
+                },
+                "ordem": {
+                  "codecId": "pg/int4@1",
+                  "dataType": "pg/int4",
+                  "nullable": false
+                },
+                "partida_id": {
+                  "codecId": "pg/int4@1",
+                  "dataType": "pg/int4",
+                  "nullable": false
+                },
+                "posicao_atacante": {
+                  "codecId": "pg/text@1",
+                  "dataType": "pg/text",
+                  "nullable": false,
+                  "valueSet": {
+                    "entityKind": "valueSet",
+                    "entityName": "Posicao",
+                    "namespaceId": "public",
+                    "plane": "storage"
+                  }
+                },
+                "posicao_defensor": {
+                  "codecId": "pg/text@1",
+                  "dataType": "pg/text",
+                  "nullable": false,
+                  "valueSet": {
+                    "entityKind": "valueSet",
+                    "entityName": "Posicao",
+                    "namespaceId": "public",
+                    "plane": "storage"
+                  }
+                },
+                "valor_ataque": {
+                  "codecId": "pg/int4@1",
+                  "dataType": "pg/int4",
+                  "nullable": false
+                },
+                "valor_defesa": {
+                  "codecId": "pg/int4@1",
+                  "dataType": "pg/int4",
+                  "nullable": false
+                }
+              },
+              "foreignKeys": [
+                {
+                  "source": {
+                    "columns": [
+                      "partida_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "DuelosPartida"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "Partidas"
+                  }
+                },
+                {
+                  "source": {
+                    "columns": [
+                      "clube_atacante_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "DuelosPartida"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "Clubes"
+                  }
+                },
+                {
+                  "source": {
+                    "columns": [
+                      "atacante_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "DuelosPartida"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "Jogadores"
+                  }
+                },
+                {
+                  "source": {
+                    "columns": [
+                      "defensor_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "DuelosPartida"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "Jogadores"
+                  }
+                }
+              ],
+              "indexes": [
+                {
+                  "columns": [
+                    "atacante_id"
+                  ],
+                  "name": "DuelosPartida_atacante_id_idx_e87d907a",
+                  "prefix": "DuelosPartida_atacante_id_idx",
+                  "unique": false
+                },
+                {
+                  "columns": [
+                    "clube_atacante_id"
+                  ],
+                  "name": "DuelosPartida_clube_atacante_id_idx_0ce101b8",
+                  "prefix": "DuelosPartida_clube_atacante_id_idx",
+                  "unique": false
+                },
+                {
+                  "columns": [
+                    "defensor_id"
+                  ],
+                  "name": "DuelosPartida_defensor_id_idx_0073f601",
+                  "prefix": "DuelosPartida_defensor_id_idx",
+                  "unique": false
+                },
+                {
+                  "columns": [
+                    "partida_id"
+                  ],
+                  "name": "DuelosPartida_partida_id_idx_bb37b8c5",
+                  "prefix": "DuelosPartida_partida_id_idx",
+                  "unique": false
+                }
+              ],
+              "primaryKey": {
+                "columns": [
+                  "id"
+                ]
+              },
+              "uniques": []
+            },
+            "Escalacoes": {
+              "columns": {
+                "clube_id": {
+                  "codecId": "pg/int4@1",
+                  "dataType": "pg/int4",
+                  "nullable": false
+                },
+                "criado_em": {
+                  "codecId": "pg/timestamptz-string@1",
+                  "dataType": "pg/timestamptz",
+                  "default": {
+                    "expression": "now()",
+                    "kind": "function"
+                  },
+                  "nullable": false
+                },
+                "jogador_id": {
+                  "codecId": "pg/int4@1",
+                  "dataType": "pg/int4",
+                  "nullable": false
+                }
+              },
+              "foreignKeys": [
+                {
+                  "source": {
+                    "columns": [
+                      "clube_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "Escalacoes"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "Clubes"
+                  }
+                },
+                {
+                  "source": {
+                    "columns": [
+                      "jogador_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "Escalacoes"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "Jogadores"
+                  }
+                }
+              ],
+              "indexes": [
+                {
+                  "columns": [
+                    "clube_id"
+                  ],
+                  "name": "Escalacoes_clube_id_idx_6707a62a",
+                  "prefix": "Escalacoes_clube_id_idx",
+                  "unique": false
+                },
+                {
+                  "columns": [
+                    "jogador_id"
+                  ],
+                  "name": "Escalacoes_jogador_id_idx_b5f9d85d",
+                  "prefix": "Escalacoes_jogador_id_idx",
+                  "unique": false
+                }
+              ],
+              "uniques": []
+            },
+            "Jogadores": {
+              "checks": [
+                {
+                  "expression": "\"condition\" IN ('APTO', 'MAL_CONDICIONADO', 'DOENTE')",
+                  "name": "Jogadores_condition_check_dfc61d35",
+                  "prefix": "Jogadores_condition_check"
+                },
+                {
+                  "expression": "\"posicao\" IN ('GOL', 'ZAG', 'LAT', 'MEI', 'ATA')",
+                  "name": "Jogadores_posicao_check_40c72ec9",
+                  "prefix": "Jogadores_posicao_check"
+                }
+              ],
+              "columns": {
+                "agilidade": {
+                  "codecId": "pg/int4@1",
+                  "dataType": "pg/int4",
+                  "nullable": false
+                },
+                "atualizado_em": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "dataType": "pg/timestamptz",
+                  "nullable": false
+                },
+                "clube_id": {
+                  "codecId": "pg/int4@1",
+                  "dataType": "pg/int4",
+                  "nullable": true
+                },
+                "condition": {
+                  "codecId": "pg/text@1",
+                  "dataType": "pg/text",
+                  "nullable": false,
+                  "valueSet": {
+                    "entityKind": "valueSet",
+                    "entityName": "Condicao",
+                    "namespaceId": "public",
+                    "plane": "storage"
+                  }
+                },
+                "criado_em": {
+                  "codecId": "pg/timestamptz-string@1",
+                  "dataType": "pg/timestamptz",
+                  "default": {
+                    "expression": "now()",
+                    "kind": "function"
+                  },
+                  "nullable": false
+                },
+                "defesa": {
+                  "codecId": "pg/int4@1",
+                  "dataType": "pg/int4",
+                  "nullable": false
+                },
+                "drible": {
+                  "codecId": "pg/int4@1",
+                  "dataType": "pg/int4",
+                  "nullable": false
+                },
+                "excluido_em": {
+                  "codecId": "pg/timestamptz-string@1",
+                  "dataType": "pg/timestamptz",
+                  "nullable": true
+                },
+                "finalizacao": {
+                  "codecId": "pg/int4@1",
+                  "dataType": "pg/int4",
+                  "nullable": false
+                },
+                "fisico": {
+                  "codecId": "pg/int4@1",
+                  "dataType": "pg/int4",
+                  "nullable": false
+                },
+                "id": {
+                  "codecId": "pg/int4@1",
+                  "dataType": "pg/int4",
+                  "default": {
+                    "expression": "autoincrement()",
+                    "kind": "function"
+                  },
+                  "nullable": false
+                },
+                "idade": {
+                  "codecId": "pg/int4@1",
+                  "dataType": "pg/int4",
+                  "nullable": false
+                },
+                "nome": {
+                  "codecId": "pg/text@1",
+                  "dataType": "pg/text",
+                  "nullable": false
+                },
+                "passe": {
+                  "codecId": "pg/int4@1",
+                  "dataType": "pg/int4",
+                  "nullable": false
+                },
+                "posicao": {
+                  "codecId": "pg/text@1",
+                  "dataType": "pg/text",
+                  "nullable": false,
+                  "valueSet": {
+                    "entityKind": "valueSet",
+                    "entityName": "Posicao",
+                    "namespaceId": "public",
+                    "plane": "storage"
+                  }
+                },
+                "potencial": {
+                  "codecId": "pg/int4@1",
+                  "dataType": "pg/int4",
+                  "nullable": false
+                },
+                "valor_base": {
+                  "codecId": "pg/numeric@1",
+                  "dataType": "pg/numeric",
+                  "nullable": false
+                },
+                "velocidade": {
+                  "codecId": "pg/int4@1",
+                  "dataType": "pg/int4",
+                  "nullable": false
+                }
+              },
+              "foreignKeys": [
+                {
+                  "source": {
+                    "columns": [
+                      "clube_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "Jogadores"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "Clubes"
+                  }
+                }
+              ],
+              "indexes": [
+                {
+                  "columns": [
+                    "clube_id"
+                  ],
+                  "name": "Jogadores_clube_id_idx_6707a62a",
+                  "prefix": "Jogadores_clube_id_idx",
+                  "unique": false
+                }
+              ],
+              "primaryKey": {
+                "columns": [
+                  "id"
+                ]
+              },
+              "uniques": []
+            },
+            "Partidas": {
+              "checks": [
+                {
+                  "expression": "\"formacao_mandante\" IN ('3-1', '2-2', '2-1-1', '1-2-1')",
+                  "name": "Partidas_formacao_mandante_check_faad0b4c",
+                  "prefix": "Partidas_formacao_mandante_check"
+                },
+                {
+                  "expression": "\"formacao_visitante\" IN ('3-1', '2-2', '2-1-1', '1-2-1')",
+                  "name": "Partidas_formacao_visitante_check_929854eb",
+                  "prefix": "Partidas_formacao_visitante_check"
+                }
+              ],
+              "columns": {
+                "criado_em": {
+                  "codecId": "pg/timestamptz-string@1",
+                  "dataType": "pg/timestamptz",
+                  "default": {
+                    "expression": "now()",
+                    "kind": "function"
+                  },
+                  "nullable": false
+                },
+                "formacao_mandante": {
+                  "codecId": "pg/text@1",
+                  "dataType": "pg/text",
+                  "nullable": false,
+                  "valueSet": {
+                    "entityKind": "valueSet",
+                    "entityName": "Formacao",
+                    "namespaceId": "public",
+                    "plane": "storage"
+                  }
+                },
+                "formacao_visitante": {
+                  "codecId": "pg/text@1",
+                  "dataType": "pg/text",
+                  "nullable": false,
+                  "valueSet": {
+                    "entityKind": "valueSet",
+                    "entityName": "Formacao",
+                    "namespaceId": "public",
+                    "plane": "storage"
+                  }
+                },
+                "gols_mandante": {
+                  "codecId": "pg/int4@1",
+                  "dataType": "pg/int4",
+                  "nullable": false
+                },
+                "gols_visitante": {
+                  "codecId": "pg/int4@1",
+                  "dataType": "pg/int4",
+                  "nullable": false
+                },
+                "id": {
+                  "codecId": "pg/int4@1",
+                  "dataType": "pg/int4",
+                  "default": {
+                    "expression": "autoincrement()",
+                    "kind": "function"
+                  },
+                  "nullable": false
+                },
+                "mandante_id": {
+                  "codecId": "pg/int4@1",
+                  "dataType": "pg/int4",
+                  "nullable": false
+                },
+                "visitante_id": {
+                  "codecId": "pg/int4@1",
+                  "dataType": "pg/int4",
+                  "nullable": false
+                }
+              },
+              "foreignKeys": [
+                {
+                  "source": {
+                    "columns": [
+                      "mandante_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "Partidas"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "Clubes"
+                  }
+                },
+                {
+                  "source": {
+                    "columns": [
+                      "visitante_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "Partidas"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "Clubes"
+                  }
+                }
+              ],
+              "indexes": [
+                {
+                  "columns": [
+                    "mandante_id"
+                  ],
+                  "name": "Partidas_mandante_id_idx_eee6227e",
+                  "prefix": "Partidas_mandante_id_idx",
+                  "unique": false
+                },
+                {
+                  "columns": [
+                    "visitante_id"
+                  ],
+                  "name": "Partidas_visitante_id_idx_d5152123",
+                  "prefix": "Partidas_visitante_id_idx",
+                  "unique": false
+                }
+              ],
+              "primaryKey": {
+                "columns": [
+                  "id"
+                ]
+              },
+              "uniques": []
+            },
+            "Transacoes": {
+              "checks": [
+                {
+                  "expression": "\"tipo\" IN ('COMPRA', 'VENDA')",
+                  "name": "Transacoes_tipo_check_5729234b",
+                  "prefix": "Transacoes_tipo_check"
+                }
+              ],
+              "columns": {
+                "clube_id": {
+                  "codecId": "pg/int4@1",
+                  "dataType": "pg/int4",
+                  "nullable": false
+                },
+                "criado_em": {
+                  "codecId": "pg/timestamptz-string@1",
+                  "dataType": "pg/timestamptz",
+                  "default": {
+                    "expression": "now()",
+                    "kind": "function"
+                  },
+                  "nullable": false
+                },
+                "id": {
+                  "codecId": "pg/int4@1",
+                  "dataType": "pg/int4",
+                  "default": {
+                    "expression": "autoincrement()",
+                    "kind": "function"
+                  },
+                  "nullable": false
+                },
+                "jogador_id": {
+                  "codecId": "pg/int4@1",
+                  "dataType": "pg/int4",
+                  "nullable": false
+                },
+                "lucro": {
+                  "codecId": "pg/numeric@1",
+                  "dataType": "pg/numeric",
+                  "nullable": false
+                },
+                "multa": {
+                  "codecId": "pg/numeric@1",
+                  "dataType": "pg/numeric",
+                  "nullable": false
+                },
+                "nome_jogador": {
+                  "codecId": "pg/text@1",
+                  "dataType": "pg/text",
+                  "nullable": false
+                },
+                "taxa": {
+                  "codecId": "pg/numeric@1",
+                  "dataType": "pg/numeric",
+                  "nullable": false
+                },
+                "tipo": {
+                  "codecId": "pg/text@1",
+                  "dataType": "pg/text",
+                  "nullable": false,
+                  "valueSet": {
+                    "entityKind": "valueSet",
+                    "entityName": "TipoTransacao",
+                    "namespaceId": "public",
+                    "plane": "storage"
+                  }
+                },
+                "valor": {
+                  "codecId": "pg/numeric@1",
+                  "dataType": "pg/numeric",
+                  "nullable": false
+                },
+                "variacao_caixa": {
+                  "codecId": "pg/numeric@1",
+                  "dataType": "pg/numeric",
+                  "nullable": false
+                }
+              },
+              "foreignKeys": [
+                {
+                  "source": {
+                    "columns": [
+                      "clube_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "Transacoes"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "Clubes"
+                  }
+                },
+                {
+                  "source": {
+                    "columns": [
+                      "jogador_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "Transacoes"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "Jogadores"
+                  }
+                }
+              ],
+              "indexes": [
+                {
+                  "columns": [
+                    "clube_id"
+                  ],
+                  "name": "Transacoes_clube_id_idx_6707a62a",
+                  "prefix": "Transacoes_clube_id_idx",
+                  "unique": false
+                },
+                {
+                  "columns": [
+                    "jogador_id"
+                  ],
+                  "name": "Transacoes_jogador_id_idx_b5f9d85d",
+                  "prefix": "Transacoes_jogador_id_idx",
+                  "unique": false
+                }
+              ],
+              "primaryKey": {
+                "columns": [
+                  "id"
+                ]
+              },
+              "uniques": []
+            }
+          },
+          "valueSet": {
+            "Atributo": {
+              "kind": "valueSet",
+              "values": [
+                "finalizacao",
+                "passe",
+                "drible",
+                "defesa"
+              ]
+            },
+            "Condicao": {
+              "kind": "valueSet",
+              "values": [
+                "APTO",
+                "MAL_CONDICIONADO",
+                "DOENTE"
+              ]
+            },
+            "Formacao": {
+              "kind": "valueSet",
+              "values": [
+                "3-1",
+                "2-2",
+                "2-1-1",
+                "1-2-1"
+              ]
+            },
+            "Posicao": {
+              "kind": "valueSet",
+              "values": [
+                "GOL",
+                "ZAG",
+                "LAT",
+                "MEI",
+                "ATA"
+              ]
+            },
+            "SituacaoContrato": {
+              "kind": "valueSet",
+              "values": [
+                "ATIVO",
+                "ENCERRADO",
+                "RESCINDIDO"
+              ]
+            },
+            "TipoTransacao": {
+              "kind": "valueSet",
+              "values": [
+                "COMPRA",
+                "VENDA"
               ]
             }
           }
@@ -339,39 +2272,24 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "797cfed44e9c40efbc00a689b87c92c44cd4b60e1ae3d6ffbc0304d8f348aaf5"
+    "storageHash": "5e9e0ee36f824ca9df7fcf19cb92addbcdcc6221c0a6e6f8a5b680c7f5c26cce"
   },
   "execution": {
-    "executionHash": "4e88564095b5e0ba7904ffdba3c563ef916d87688c8c483c67055f71a9194f0f",
+    "executionHash": "f56b7aa59f46c5f2147fd8447fb79d6923169a7061696907a92cafff6cfaec55",
     "mutations": {
       "defaults": [
         {
           "onCreate": {
-            "id": "timestampNow",
+            "id": "instantNow",
             "kind": "generator"
           },
           "onUpdate": {
-            "id": "timestampNow",
+            "id": "instantNow",
             "kind": "generator"
           },
           "ref": {
-            "entry": "Post",
-            "field": "updatedAt",
-            "namespace": "public"
-          }
-        },
-        {
-          "onCreate": {
-            "id": "timestampNow",
-            "kind": "generator"
-          },
-          "onUpdate": {
-            "id": "timestampNow",
-            "kind": "generator"
-          },
-          "ref": {
-            "entry": "User",
-            "field": "updatedAt",
+            "entry": "Jogadores",
+            "field": "atualizado_em",
             "namespace": "public"
           }
         }
