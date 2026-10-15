@@ -66,7 +66,7 @@ model Jogadores {
 model Clubes {
   id        Int                 @id @default(autoincrement())
   nome      String
-  sigla     String
+  sigla     String              @unique
   caixa     Decimal             @default(300.00)
   formacao  Formacao
   criado_em TimestamptzString() @default(now())
