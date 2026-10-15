@@ -14,10 +14,10 @@ enum Condicao {
 }
 
 enum Formacao {
-  3-1
-  2-2
-  2-1-1
-  1-2-1
+  FORMACAO_3_1 = "3-1"
+  FORMACAO_2_2 = "2-2"
+  FORMACAO_2_1_1 = "2-1-1"
+  FORMACAO_1_2_1 = "1-2-1"
 }
 
 enum SituacaoContrato {
@@ -31,111 +31,123 @@ enum TipoTransacao {
   VENDA
 }
 
-model Jogadores {
-  id         Int       @id @default(autoincrement())
-  nome       String
-  agilidade    Int
-  idade        Int
-  valor_base Decimal
-  posicao   Posicao
-  condition  Condicao
+enum Atributo {
+  finalizacao
+  passe
+  drible
+  defesa
+}
 
-  passe       Int
+model Jogadores {
+  id            Int                  @id @default(autoincrement())
+  nome          String
+  posicao       Posicao
+  agilidade     Int
+  idade         Int
+  valor_base    Decimal
+  condition     Condicao
+
+  clube_id      Int?
+  clube         Clubes?              @relation(fields: [clube_id], references: [id])
+
   velocidade    Int
   finalizacao   Int
-  drible      Int
-  defesa  Int
-  fisico   Int
-  potencial  Int
+  passe         Int
+  drible        Int
+  defesa        Int
+  fisico        Int
+  potencial     Int
 
-  criado_em   TimestamptzString() @default(now())
-  atualizado_em TimestamptzString() @updatedAt
-  excluido_em    TimestamptzString()?
-
-  clube_id   Int?
-  clube      Clube?    @relation(fields: [clube_id], references: [id])
+  excluido_em   TimestamptzString()?
+  criado_em     TimestamptzString()  @default(now())
+  atualizado_em temporal.updatedAt()
 }
 
 model Clubes {
-  id        Int      @id @default(autoincrement())
+  id        Int                 @id @default(autoincrement())
   nome      String
   sigla     String
-  caixa     Decimal
+  caixa     Decimal             @default(300.00)
   formacao  Formacao
-  criado_em  TimestamptzString() @default(now())
-  players   Jogador[]
+  criado_em TimestamptzString() @default(now())
+  players   Jogadores[]
 }
 
 model Contratos {
-  id              Int                 @id @default(autoincrement())
-  clube_id        Int
-  clube           Clube               @relation(fields: [club_id], references: [id])
-  jogador_id      Int
-  jogador         Jogador             @relation(fields: [player_id], references: [id])
-  situacao        SituacaoContrato
-  fidelidade_ate  TimestamptzString()
-  iniciado_em     TimestamptzString() @default(now())
-  encenrrado_em   TimestamptzString()?
+  id             Int                  @id @default(autoincrement())
+  clube_id       Int
+  clube          Clubes               @relation(fields: [clube_id], references: [id])
+  jogador_id     Int
+  jogador        Jogadores            @relation(fields: [jogador_id], references: [id])
+
+  situacao       SituacaoContrato
+  fidelidade_ate TimestamptzString()
+  iniciado_em    TimestamptzString()  @default(now())
+  encerrado_em   TimestamptzString()?
 }
 
 model Transacoes {
-  id              Int                 @id @default(autoincrement())
-  clube_id        Int
-  clube           Clube               @relation(fields: [club_id], references: [id])
-  jogador_id      Int
-  jogador         Jogador             @relation(fields: [player_id], references: [id])
-  tipo            TipoTransacao
-  valor           Decimal
-  taxa            Decimal
-  multa           Decimal
-  lucro           Decimal
-  variacao_caixa  Decimal
-  criado_em       TimestamptzString() @default(now())
+  id             Int                 @id @default(autoincrement())
+  clube_id       Int
+  clube          Clubes              @relation(fields: [clube_id], references: [id])
+  jogador_id     Int
+  jogador        Jogadores           @relation(fields: [jogador_id], references: [id])
+
+  nome_jogador   String
+  tipo           TipoTransacao
+  valor          Decimal
+  taxa           Decimal
+  multa          Decimal
+  lucro          Decimal
+  variacao_caixa Decimal
+  criado_em      TimestamptzString() @default(now())
 }
 
 model Escalacoes {
-  id          Int                 @id @default(autoincrement())
-  clube_id    Int
-  clube       Clube               @relation(fields: [club_id], references: [id])
-  jogador_id  Int
-  jogador     Jogador             @relation(fields: [player_id], references: [id])
-  criado_em   TimestamptzString() @default(now())
+  clube_id   Int
+  clube      Clubes              @relation(fields: [clube_id], references: [id])
+  jogador_id Int
+  jogador    Jogadores           @relation(fields: [jogador_id], references: [id])
+  criado_em  TimestamptzString() @default(now())
 }
 
 model Partidas {
-  id              Int      @id @default(autoincrement())
-  mandante_id     Int
-  mandante        Clube     @relation("Mandante", fields: [mandante_id], references: [id])
-  visitante_id    Int
-  visitante       Clube     @relation("Visitante", fields: [visitante_id], references: [id])
-  gols_mandante   Int
-  gols_visitante  Int
-  criado_em       TimestamptzString() @default(now())
+  id                 Int                 @id @default(autoincrement())
+  mandante_id        Int
+  mandante           Clubes              @relation("ClubeMandante", fields: [mandante_id], references: [id])
+  visitante_id       Int
+  visitante          Clubes              @relation("ClubeVisitante", fields: [visitante_id], references: [id])
+
+  gols_mandante      Int
+  gols_visitante     Int
+  formacao_mandante  Formacao
+  formacao_visitante Formacao
+  criado_em          TimestamptzString() @default(now())
 }
 
 model DuelosPartida {
   id                Int       @id @default(autoincrement())
   partida_id        Int
-  partida           Partida   @relation(fields: [partida_id], references: [id])
+  partida           Partidas  @relation(fields: [partida_id], references: [id])
   ordem             Int
   clube_atacante_id Int
-  clube_atacante    Clube     @relation("AtacanteDuel", fields: [clube_atacante_id], references: [id])
-  
+  clube_atacante    Clubes    @relation("AtacanteDuel", fields: [clube_atacante_id], references: [id])
+
   atacante_id       Int
+  atacante          Jogadores @relation("MandanteDuel", fields: [atacante_id], references: [id])
   nome_atacante     String
   posicao_atacante  Posicao
   condicao_atacante Condicao
   atributo_ataque   Atributo
   valor_ataque      Int
-  atacante          Jogador   @relation("MandanteDuel", fields: [atacante_id], references: [id])
-  
+
   defensor_id       Int
+  defensor          Jogadores @relation("VisitanteDuel", fields: [defensor_id], references: [id])
   nome_defensor     String
   posicao_defensor  Posicao
   condicao_defensor Condicao
   atributo_defesa   Atributo
   valor_defesa      Int
-  defensor          Jogador   @relation("VisitanteDuel", fields: [defensor_id], references: [id])
-  
+
   gol               Boolean
 }
