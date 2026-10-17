@@ -36,3 +36,6 @@ export const createPlayerDTO = basePlayerDTO.extend({
                 .min(1, { message: "O potencial do jogador deve ter no mínimo 1." })
                 .max(99, { message: "O potencial do jogador deve ter no máximo 99." }),
 })
+
+export type CreatePlayerType = z.infer<typeof createPlayerDTO>;
+export type UpdatePlayerType = z.infer<typeof basePlayerDTO>;

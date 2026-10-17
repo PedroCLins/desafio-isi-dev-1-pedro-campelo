@@ -18,7 +18,7 @@ import type {
 } from '@prisma/orm-postgres/contract/types';
 
 export type StorageHash =
-  StorageHashBase<'5e9e0ee36f824ca9df7fcf19cb92addbcdcc6221c0a6e6f8a5b680c7f5c26cce'>;
+  StorageHashBase<'66db0e1bd3e3ba955dc2bfc3b4641e43f7e47a95b16f79147bba6fa26051fd76'>;
 export type ExecutionHash =
   ExecutionHashBase<'f56b7aa59f46c5f2147fd8447fb79d6923169a7061696907a92cafff6cfaec55'>;
 export type ProfileHash =
@@ -279,7 +279,7 @@ export type FieldOutputTypes = {
       readonly agilidade: CodecTypes['pg/int4@1']['output'];
       readonly atualizado_em: CodecTypes['pg/timestamptz-temporal@1']['output'];
       readonly clube_id: CodecTypes['pg/int4@1']['output'] | null;
-      readonly condition: 'APTO' | 'MAL_CONDICIONADO' | 'DOENTE';
+      readonly condicao: 'APTO' | 'MAL_CONDICIONADO' | 'DOENTE';
       readonly criado_em: CodecTypes['pg/timestamptz-string@1']['output'];
       readonly defesa: CodecTypes['pg/int4@1']['output'];
       readonly drible: CodecTypes['pg/int4@1']['output'];
@@ -367,7 +367,7 @@ export type FieldInputTypes = {
       readonly agilidade: CodecTypes['pg/int4@1']['input'];
       readonly atualizado_em: CodecTypes['pg/timestamptz-temporal@1']['input'];
       readonly clube_id: CodecTypes['pg/int4@1']['input'] | null;
-      readonly condition: 'APTO' | 'MAL_CONDICIONADO' | 'DOENTE';
+      readonly condicao: 'APTO' | 'MAL_CONDICIONADO' | 'DOENTE';
       readonly criado_em: CodecTypes['pg/timestamptz-string@1']['input'];
       readonly defesa: CodecTypes['pg/int4@1']['input'];
       readonly drible: CodecTypes['pg/int4@1']['input'];
@@ -455,7 +455,7 @@ export type StorageColumnTypes = {
       readonly agilidade: CodecTypes['pg/int4@1']['output'];
       readonly atualizado_em: CodecTypes['pg/timestamptz-temporal@1']['output'];
       readonly clube_id: CodecTypes['pg/int4@1']['output'] | null;
-      readonly condition: 'APTO' | 'MAL_CONDICIONADO' | 'DOENTE';
+      readonly condicao: 'APTO' | 'MAL_CONDICIONADO' | 'DOENTE';
       readonly criado_em: CodecTypes['pg/timestamptz-string@1']['output'];
       readonly defesa: CodecTypes['pg/int4@1']['output'];
       readonly drible: CodecTypes['pg/int4@1']['output'];
@@ -543,7 +543,7 @@ export type StorageColumnInputTypes = {
       readonly agilidade: CodecTypes['pg/int4@1']['input'];
       readonly atualizado_em: CodecTypes['pg/timestamptz-temporal@1']['input'];
       readonly clube_id: CodecTypes['pg/int4@1']['input'] | null;
-      readonly condition: 'APTO' | 'MAL_CONDICIONADO' | 'DOENTE';
+      readonly condicao: 'APTO' | 'MAL_CONDICIONADO' | 'DOENTE';
       readonly criado_em: CodecTypes['pg/timestamptz-string@1']['input'];
       readonly defesa: CodecTypes['pg/int4@1']['input'];
       readonly drible: CodecTypes['pg/int4@1']['input'];
@@ -644,7 +644,7 @@ export namespace Models {
     agilidade: CodecTypes['pg/int4@1']['output'];
     atualizado_em: CodecTypes['pg/timestamptz-temporal@1']['output'];
     clube_id: CodecTypes['pg/int4@1']['output'] | null;
-    condition: 'APTO' | 'MAL_CONDICIONADO' | 'DOENTE';
+    condicao: 'APTO' | 'MAL_CONDICIONADO' | 'DOENTE';
     criado_em: CodecTypes['pg/timestamptz-string@1']['output'];
     defesa: CodecTypes['pg/int4@1']['output'];
     drible: CodecTypes['pg/int4@1']['output'];
@@ -1141,7 +1141,7 @@ type ContractBase = Omit<
                   readonly nullable: true;
                   readonly many: false;
                 };
-                readonly condition: {
+                readonly condicao: {
                   readonly dataType: 'pg/text';
                   readonly codecId: 'pg/text@1';
                   readonly nullable: false;
@@ -1888,7 +1888,7 @@ type ContractBase = Omit<
                 readonly nullable: true;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
               };
-              readonly condition: {
+              readonly condicao: {
                 readonly nullable: false;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
               };
@@ -1976,7 +1976,7 @@ type ContractBase = Omit<
                 readonly agilidade: { readonly column: 'agilidade' };
                 readonly atualizado_em: { readonly column: 'atualizado_em' };
                 readonly clube_id: { readonly column: 'clube_id' };
-                readonly condition: { readonly column: 'condition' };
+                readonly condicao: { readonly column: 'condicao' };
                 readonly criado_em: { readonly column: 'criado_em' };
                 readonly defesa: { readonly column: 'defesa' };
                 readonly drible: { readonly column: 'drible' };

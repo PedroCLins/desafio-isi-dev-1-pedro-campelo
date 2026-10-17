@@ -45,7 +45,7 @@ model Jogadores {
   agilidade     Int
   idade         Int
   valor_base    Decimal
-  condition     Condicao
+  condicao      Condicao
 
   clube_id      Int?
   clube         Clubes?              @relation(fields: [clube_id], references: [id])

@@ -1,12 +1,10 @@
-import type { FieldInputTypes } from "../prisma/contract";
-
-type PhysicalCondition = FieldInputTypes["public"]["Jogadores"]["condition"];
-type PlayerPosition = FieldInputTypes["public"]["Jogadores"]["posicao"];
+import { PlayerRepository } from "../repositories";
+import type { ConditionEnumType, PositionEnumType, CreatePlayerType, UpdatePlayerType } from "../DTOs";
 
 export class PlayerService {
     // RN02
-    private physicalConditionDiscount(condition: PhysicalCondition) {
-        const discountMap: Record<PhysicalCondition, number> = {
+    private physicalConditionDiscount(condition: ConditionEnumType) {
+        const discountMap: Record<ConditionEnumType, number> = {
             "APTO": 0,
             "MAL_CONDICIONADO": 0.15,
             "DOENTE": 0.3,
@@ -36,7 +34,7 @@ export class PlayerService {
     }
 
     // RN05
-    private calculateMarketValue(condition: PhysicalCondition, agility: number, age: number, baseValue: number) {
+    private calculateMarketValue(condition: ConditionEnumType, agility: number, age: number, baseValue: number) {
         let discount = this.physicalConditionDiscount(condition);
         if (condition !== "APTO") {
             discount = this.agilityDiscount(agility, discount);
@@ -56,8 +54,8 @@ export class PlayerService {
         return potential >= highestStat; // Ensure potential is not lower than the highest stat
     }
 
-    private calculateOverall(position: PlayerPosition, pace: number, shooting: number, passing: number, dribbling: number, defending: number, physical: number) {
-        const positionWeights: Record<PlayerPosition, { pace: number; shooting: number; passing: number; dribbling: number; defending: number; physical: number }> = {
+    private calculateOverall(position: PositionEnumType, pace: number, shooting: number, passing: number, dribbling: number, defending: number, physical: number) {
+        const positionWeights: Record<PositionEnumType, { pace: number; shooting: number; passing: number; dribbling: number; defending: number; physical: number }> = {
             "GOL": { pace: 10, shooting: 0, passing: 20, dribbling: 0, defending: 40, physical: 30 },
             "ZAG": { pace: 10, shooting: 0, passing: 15, dribbling: 0, defending: 45, physical: 30 },
             "LAT": { pace: 25, shooting: 0, passing: 20, dribbling: 15, defending: 25, physical: 15 },
@@ -67,11 +65,11 @@ export class PlayerService {
 
         const weights = positionWeights[position];
         const overall = Math.round((
-            pace * weights.pace + 
-            shooting * weights.shooting + 
-            passing * weights.passing + 
-            dribbling * weights.dribbling + 
-            defending * weights.defending + 
+            pace * weights.pace +
+            shooting * weights.shooting +
+            passing * weights.passing +
+            dribbling * weights.dribbling +
+            defending * weights.defending +
             physical * weights.physical
         ) / 100);
 
@@ -97,7 +95,44 @@ export class PlayerService {
             baseValue *= (100 + potential - overall) / 100;
         }
 
-        baseValue = parseFloat(Math.max(1, baseValue).toFixed(2)); // Ensure base value does not go below 1, and round to 2 decimal places
-        return baseValue;
+        const finalBaseValue = Math.max(1, baseValue).toFixed(2); // Ensure base value does not go below 1, and round to 2 decimal places
+        return finalBaseValue;
     }
+
+    async create(data: CreatePlayerType) {
+        if (!this.assertPotentialMinimum(data.potencial, data.velocidade, data.finalizacao, data.passe, data.drible, data.defesa, data.fisico)) {
+            // TODO: Handle error appropriately
+            throw new Error("O potencial do jogador não pode ser menor que o maior atributo.");
+        }
+        const overall = this.calculateOverall(data.posicao, data.velocidade, data.finalizacao, data.passe, data.drible, data.defesa, data.fisico);
+        const baseValue = this.calculateBaseValue(overall, data.idade, data.potencial);
+        
+        const playerRepository = new PlayerRepository();
+        const player = await playerRepository.create({
+            ...data,
+            valor_base: baseValue,
+            condicao: 'APTO',
+        });
+        
+        return player;
+    }
+
+    async update(id: number, data: UpdatePlayerType) {
+        const playerRepository = new PlayerRepository();
+        const player = await playerRepository.update(id, data);
+        return player;
+    }
+
+    async updateCondition(id: number, condition: ConditionEnumType) {
+        const playerRepository = new PlayerRepository();
+        let player = await playerRepository.get({ id });
+        if (player?.condicao === 'DOENTE' && condition === 'APTO') {
+            // TODO: Handle error appropriately
+            return player; // Do not allow changing from DOENTE to APTO
+        }
+        player = await playerRepository.update(id, { condicao: condition });
+        return player;
+    }
+
+    // async get(data: )
 }
