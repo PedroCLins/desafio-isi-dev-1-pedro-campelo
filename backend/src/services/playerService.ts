@@ -1,10 +1,14 @@
 import { PlayerRepository } from "../repositories";
-import type { ConditionEnumType, PositionEnumType, CreatePlayerType, UpdatePlayerType } from "../DTOs";
+import type { CreatePlayerType, UpdatePlayerType } from "../DTOs";
+import type { Models } from "../prisma/contract";
+import type { ListPlayersQuery } from "../types/types";
 
+type ConditionType = Models.public_Jogadores['condicao'];
+type PositionType = Models.public_Jogadores['posicao'];
 export class PlayerService {
     // RN02
-    private physicalConditionDiscount(condition: ConditionEnumType) {
-        const discountMap: Record<ConditionEnumType, number> = {
+    private physicalConditionDiscount(condition: ConditionType) {
+        const discountMap: Record<ConditionType, number> = {
             "APTO": 0,
             "MAL_CONDICIONADO": 0.15,
             "DOENTE": 0.3,
@@ -34,7 +38,7 @@ export class PlayerService {
     }
 
     // RN05
-    private calculateMarketValue(condition: ConditionEnumType, agility: number, age: number, baseValue: number) {
+    private calculateMarketValue(condition: ConditionType, agility: number, age: number, baseValue: number) {
         let discount = this.physicalConditionDiscount(condition);
         if (condition !== "APTO") {
             discount = this.agilityDiscount(agility, discount);
@@ -54,8 +58,8 @@ export class PlayerService {
         return potential >= highestStat; // Ensure potential is not lower than the highest stat
     }
 
-    private calculateOverall(position: PositionEnumType, pace: number, shooting: number, passing: number, dribbling: number, defending: number, physical: number) {
-        const positionWeights: Record<PositionEnumType, { pace: number; shooting: number; passing: number; dribbling: number; defending: number; physical: number }> = {
+    private calculateOverall(position: PositionType, pace: number, shooting: number, passing: number, dribbling: number, defending: number, physical: number) {
+        const positionWeights: Record<PositionType, { pace: number; shooting: number; passing: number; dribbling: number; defending: number; physical: number }> = {
             "GOL": { pace: 10, shooting: 0, passing: 20, dribbling: 0, defending: 40, physical: 30 },
             "ZAG": { pace: 10, shooting: 0, passing: 15, dribbling: 0, defending: 45, physical: 30 },
             "LAT": { pace: 25, shooting: 0, passing: 20, dribbling: 15, defending: 25, physical: 15 },
@@ -117,13 +121,30 @@ export class PlayerService {
         return player;
     }
 
+    // RN07
+    async getAll(query?: ListPlayersQuery) {
+        const playerRepository = new PlayerRepository();
+        
+    }
+
+    // RN08
     async update(id: number, data: UpdatePlayerType) {
         const playerRepository = new PlayerRepository();
-        const player = await playerRepository.update(id, data);
+        let player = await playerRepository.get({ id });
+        if (data.posicao !== player?.posicao && player?.clube_id !== null) {
+            // TODO: Handle error appropriately
+            throw new Error("Não é possível alterar a posição de um jogador que já está vinculado a um clube.");
+        }
+        if (data.idade < player?.idade) {
+            // TODO: Handle error appropriately
+            throw new Error("Não é possível reduzir a idade de um jogador.");
+        }
+        player = await playerRepository.update(id, data);
+        
         return player;
     }
 
-    async updateCondition(id: number, condition: ConditionEnumType) {
+    async updateCondition(id: number, condition: ConditionType) {
         const playerRepository = new PlayerRepository();
         let player = await playerRepository.get({ id });
         if (player?.condicao === 'DOENTE' && condition === 'APTO') {
@@ -134,5 +155,15 @@ export class PlayerService {
         return player;
     }
 
-    // async get(data: )
+    // RN09
+    async delete(id: number) {
+        const playerRepository = new PlayerRepository();
+        let player = await playerRepository.get({ id });
+        if (player?.clube_id !== null) {
+            // TODO: Handle error appropriately
+            throw new Error("Não é possível excluir um jogador que já está vinculado a um clube.");
+        }
+        player = await playerRepository.delete(id);
+        return player;
+    }
 }
