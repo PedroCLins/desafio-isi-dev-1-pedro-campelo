@@ -18,7 +18,7 @@ import type {
 } from '@prisma/orm-postgres/contract/types';
 
 export type StorageHash =
-  StorageHashBase<'66db0e1bd3e3ba955dc2bfc3b4641e43f7e47a95b16f79147bba6fa26051fd76'>;
+  StorageHashBase<'e3adcd79a029f2fba78cfc730e4c740ad28311dc3b66a9e8815b69b9c8dd0384'>;
 export type ExecutionHash =
   ExecutionHashBase<'f56b7aa59f46c5f2147fd8447fb79d6923169a7061696907a92cafff6cfaec55'>;
 export type ProfileHash =
@@ -237,7 +237,7 @@ export type FieldOutputTypes = {
     readonly Clubes: {
       readonly caixa: CodecTypes['pg/numeric@1']['output'];
       readonly criado_em: CodecTypes['pg/timestamptz-string@1']['output'];
-      readonly formacao: '3-1' | '2-2' | '2-1-1' | '1-2-1';
+      readonly formacao: '3-1' | '2-2' | '2-1-1' | '1-2-1' | null;
       readonly id: CodecTypes['pg/int4@1']['output'];
       readonly nome: CodecTypes['pg/text@1']['output'];
       readonly sigla: CodecTypes['pg/text@1']['output'];
@@ -250,6 +250,7 @@ export type FieldOutputTypes = {
       readonly iniciado_em: CodecTypes['pg/timestamptz-string@1']['output'];
       readonly jogador_id: CodecTypes['pg/int4@1']['output'];
       readonly situacao: 'ATIVO' | 'ENCERRADO' | 'RESCINDIDO';
+      readonly valor_compra: CodecTypes['pg/numeric@1']['output'];
     };
     readonly DuelosPartida: {
       readonly atacante_id: CodecTypes['pg/int4@1']['output'];
@@ -325,7 +326,7 @@ export type FieldInputTypes = {
     readonly Clubes: {
       readonly caixa: CodecTypes['pg/numeric@1']['input'];
       readonly criado_em: CodecTypes['pg/timestamptz-string@1']['input'];
-      readonly formacao: '3-1' | '2-2' | '2-1-1' | '1-2-1';
+      readonly formacao: '3-1' | '2-2' | '2-1-1' | '1-2-1' | null;
       readonly id: CodecTypes['pg/int4@1']['input'];
       readonly nome: CodecTypes['pg/text@1']['input'];
       readonly sigla: CodecTypes['pg/text@1']['input'];
@@ -338,6 +339,7 @@ export type FieldInputTypes = {
       readonly iniciado_em: CodecTypes['pg/timestamptz-string@1']['input'];
       readonly jogador_id: CodecTypes['pg/int4@1']['input'];
       readonly situacao: 'ATIVO' | 'ENCERRADO' | 'RESCINDIDO';
+      readonly valor_compra: CodecTypes['pg/numeric@1']['input'];
     };
     readonly DuelosPartida: {
       readonly atacante_id: CodecTypes['pg/int4@1']['input'];
@@ -413,7 +415,7 @@ export type StorageColumnTypes = {
     readonly Clubes: {
       readonly caixa: CodecTypes['pg/numeric@1']['output'];
       readonly criado_em: CodecTypes['pg/timestamptz-string@1']['output'];
-      readonly formacao: '3-1' | '2-2' | '2-1-1' | '1-2-1';
+      readonly formacao: '3-1' | '2-2' | '2-1-1' | '1-2-1' | null;
       readonly id: CodecTypes['pg/int4@1']['output'];
       readonly nome: CodecTypes['pg/text@1']['output'];
       readonly sigla: CodecTypes['pg/text@1']['output'];
@@ -426,6 +428,7 @@ export type StorageColumnTypes = {
       readonly iniciado_em: CodecTypes['pg/timestamptz-string@1']['output'];
       readonly jogador_id: CodecTypes['pg/int4@1']['output'];
       readonly situacao: 'ATIVO' | 'ENCERRADO' | 'RESCINDIDO';
+      readonly valor_compra: CodecTypes['pg/numeric@1']['output'];
     };
     readonly DuelosPartida: {
       readonly atacante_id: CodecTypes['pg/int4@1']['output'];
@@ -501,7 +504,7 @@ export type StorageColumnInputTypes = {
     readonly Clubes: {
       readonly caixa: CodecTypes['pg/numeric@1']['input'];
       readonly criado_em: CodecTypes['pg/timestamptz-string@1']['input'];
-      readonly formacao: '3-1' | '2-2' | '2-1-1' | '1-2-1';
+      readonly formacao: '3-1' | '2-2' | '2-1-1' | '1-2-1' | null;
       readonly id: CodecTypes['pg/int4@1']['input'];
       readonly nome: CodecTypes['pg/text@1']['input'];
       readonly sigla: CodecTypes['pg/text@1']['input'];
@@ -514,6 +517,7 @@ export type StorageColumnInputTypes = {
       readonly iniciado_em: CodecTypes['pg/timestamptz-string@1']['input'];
       readonly jogador_id: CodecTypes['pg/int4@1']['input'];
       readonly situacao: 'ATIVO' | 'ENCERRADO' | 'RESCINDIDO';
+      readonly valor_compra: CodecTypes['pg/numeric@1']['input'];
     };
     readonly DuelosPartida: {
       readonly atacante_id: CodecTypes['pg/int4@1']['input'];
@@ -589,12 +593,12 @@ export namespace Models {
   export type public_Clubes = {
     caixa: CodecTypes['pg/numeric@1']['output'];
     criado_em: CodecTypes['pg/timestamptz-string@1']['output'];
-    formacao: '3-1' | '2-2' | '2-1-1' | '1-2-1';
+    formacao: '3-1' | '2-2' | '2-1-1' | '1-2-1' | null;
     id: CodecTypes['pg/int4@1']['output'];
     nome: CodecTypes['pg/text@1']['output'];
     sigla: CodecTypes['pg/text@1']['output'];
-    players: public_Jogadores[];
-    readonly [RelationKeys]?: 'players';
+    jogadores: public_Jogadores[];
+    readonly [RelationKeys]?: 'jogadores';
   };
   export type public_Contratos = {
     clube_id: CodecTypes['pg/int4@1']['output'];
@@ -604,6 +608,7 @@ export namespace Models {
     iniciado_em: CodecTypes['pg/timestamptz-string@1']['output'];
     jogador_id: CodecTypes['pg/int4@1']['output'];
     situacao: 'ATIVO' | 'ENCERRADO' | 'RESCINDIDO';
+    valor_compra: CodecTypes['pg/numeric@1']['output'];
     clube: public_Clubes;
     jogador: public_Jogadores;
     readonly [RelationKeys]?: 'clube' | 'jogador';
@@ -745,7 +750,7 @@ type ContractBase = Omit<
                 readonly formacao: {
                   readonly dataType: 'pg/text';
                   readonly codecId: 'pg/text@1';
-                  readonly nullable: false;
+                  readonly nullable: true;
                   readonly many: false;
                 };
                 readonly id: {
@@ -772,7 +777,10 @@ type ContractBase = Omit<
                 };
               };
               primaryKey: { readonly columns: readonly ['id'] };
-              uniques: readonly [{ readonly columns: readonly ['sigla'] }];
+              uniques: readonly [
+                { readonly columns: readonly ['nome'] },
+                { readonly columns: readonly ['sigla'] },
+              ];
               indexes: readonly [];
               foreignKeys: readonly [];
             };
@@ -822,6 +830,12 @@ type ContractBase = Omit<
                 readonly situacao: {
                   readonly dataType: 'pg/text';
                   readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                  readonly many: false;
+                };
+                readonly valor_compra: {
+                  readonly dataType: 'pg/numeric';
+                  readonly codecId: 'pg/numeric@1';
                   readonly nullable: false;
                   readonly many: false;
                 };
@@ -1550,7 +1564,7 @@ type ContractBase = Omit<
                 };
               };
               readonly formacao: {
-                readonly nullable: false;
+                readonly nullable: true;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
               };
               readonly id: {
@@ -1567,7 +1581,7 @@ type ContractBase = Omit<
               };
             };
             readonly relations: {
-              readonly players: {
+              readonly jogadores: {
                 readonly to: {
                   readonly namespace: 'public' & NamespaceId;
                   readonly model: 'Jogadores';
@@ -1631,6 +1645,10 @@ type ContractBase = Omit<
                 readonly nullable: false;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
               };
+              readonly valor_compra: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/numeric@1' };
+              };
             };
             readonly relations: {
               readonly clube: {
@@ -1669,6 +1687,7 @@ type ContractBase = Omit<
                 readonly iniciado_em: { readonly column: 'iniciado_em' };
                 readonly jogador_id: { readonly column: 'jogador_id' };
                 readonly situacao: { readonly column: 'situacao' };
+                readonly valor_compra: { readonly column: 'valor_compra' };
               };
             };
           };

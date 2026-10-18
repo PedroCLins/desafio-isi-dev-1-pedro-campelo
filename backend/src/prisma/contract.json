@@ -170,7 +170,7 @@
                 }
               },
               "formacao": {
-                "nullable": false,
+                "nullable": true,
                 "type": {
                   "codecId": "pg/text@1",
                   "kind": "scalar"
@@ -205,7 +205,7 @@
               }
             },
             "relations": {
-              "players": {
+              "jogadores": {
                 "cardinality": "1:N",
                 "on": {
                   "localFields": [
@@ -302,6 +302,13 @@
                   "namespaceId": "public",
                   "plane": "domain"
                 }
+              },
+              "valor_compra": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/numeric@1",
+                  "kind": "scalar"
+                }
               }
             },
             "relations": {
@@ -360,6 +367,9 @@
                 },
                 "situacao": {
                   "column": "situacao"
+                },
+                "valor_compra": {
+                  "column": "valor_compra"
                 }
               },
               "namespaceId": "public",
@@ -1277,7 +1287,7 @@
                 "formacao": {
                   "codecId": "pg/text@1",
                   "dataType": "pg/text",
-                  "nullable": false,
+                  "nullable": true,
                   "valueSet": {
                     "entityKind": "valueSet",
                     "entityName": "Formacao",
@@ -1313,6 +1323,11 @@
                 ]
               },
               "uniques": [
+                {
+                  "columns": [
+                    "nome"
+                  ]
+                },
                 {
                   "columns": [
                     "sigla"
@@ -1377,6 +1392,11 @@
                     "namespaceId": "public",
                     "plane": "storage"
                   }
+                },
+                "valor_compra": {
+                  "codecId": "pg/numeric@1",
+                  "dataType": "pg/numeric",
+                  "nullable": false
                 }
               },
               "foreignKeys": [
@@ -2272,7 +2292,7 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "66db0e1bd3e3ba955dc2bfc3b4641e43f7e47a95b16f79147bba6fa26051fd76"
+    "storageHash": "e3adcd79a029f2fba78cfc730e4c740ad28311dc3b66a9e8815b69b9c8dd0384"
   },
   "execution": {
     "executionHash": "f56b7aa59f46c5f2147fd8447fb79d6923169a7061696907a92cafff6cfaec55",

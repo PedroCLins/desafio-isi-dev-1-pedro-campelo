@@ -65,12 +65,12 @@ model Jogadores {
 
 model Clubes {
   id        Int                 @id @default(autoincrement())
-  nome      String
+  nome      String              @unique
   sigla     String              @unique
   caixa     Decimal             @default(300.00)
-  formacao  Formacao
+  formacao  Formacao?
   criado_em TimestamptzString() @default(now())
-  players   Jogadores[]
+  jogadores Jogadores[]?
 }
 
 model Contratos {
@@ -80,6 +80,7 @@ model Contratos {
   jogador_id     Int
   jogador        Jogadores            @relation(fields: [jogador_id], references: [id])
 
+  valor_compra   Decimal
   situacao       SituacaoContrato
   fidelidade_ate TimestamptzString()
   iniciado_em    TimestamptzString()  @default(now())

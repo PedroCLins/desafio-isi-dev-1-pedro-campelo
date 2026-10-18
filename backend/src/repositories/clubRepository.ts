@@ -1,32 +1,29 @@
+import type { ClubData, ClubDataWithPlayers, CreateClubData } from '../types/types';
 import { db } from '../prisma/db';
-import type { FieldInputTypes, FieldOutputTypes } from '../prisma/contract';
-
-type ClubInput = FieldInputTypes['public']['Clubes'];
-type ClubOutput = FieldOutputTypes['public']['Clubes'];
 
 export class ClubRepository {
-    async create(data: ClubInput): Promise<ClubOutput> {
+    async create(data: CreateClubData): Promise<ClubData> {
         const club = await db.orm.public.Clubes.create(data);
         return club;
     }
 
-    async getById(id: number): Promise<ClubOutput | null> {
-        const club = await db.orm.public.Clubes.first({ id });
+    async getById(id: number): Promise<ClubDataWithPlayers | null> {
+        const club = await db.orm.public.Clubes.include("jogadores").first({ id });
         return club;
     }
 
-    async getAll(): Promise<ClubOutput[]> {
-        const clubs = await db.orm.public.Clubes.all();
+    async getByName(name: string): Promise<ClubData | null> {
+        const club = await db.orm.public.Clubes.first({ nome: name });
+        return club;
+    }
+
+    async getAll(): Promise<ClubDataWithPlayers[]> {
+        const clubs = await db.orm.public.Clubes.include("jogadores").all();
         return clubs;
     }
 
-    async update(id: number, data: Partial<ClubInput>): Promise<ClubOutput | null> {
-        const club = await db.orm.public.Clubes.where({ id }).update(data);
-        return club;
-    }
-
-    async delete(id: number): Promise<ClubOutput | null> {
-        const club = await db.orm.public.Clubes.where({ id }).delete();
-        return club;
+    async getClubCount(): Promise<number> {
+        const count = (await db.orm.public.Clubes.all()).length;
+        return count;
     }
 }

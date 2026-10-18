@@ -9,6 +9,7 @@ import {
 } from "../DTOs";
 import type { PlayerData } from "../types/types";
 import { PlayerRepository } from "../repositories";
+import { formatName } from "../utils/nameHandler";
 
 export class PlayerService {
     // RN02
@@ -43,7 +44,7 @@ export class PlayerService {
     }
 
     // RN05
-    private calculateMarketValue(condition: ConditionEnumType, agility: number, age: number, baseValue: string) {
+    public calculateMarketValue(condition: ConditionEnumType, agility: number, age: number, baseValue: string) {
         let discount = this.physicalConditionDiscount(condition);
         if (condition !== "APTO") {
             discount = this.agilityDiscount(agility, discount);
@@ -123,9 +124,8 @@ export class PlayerService {
     }
 
     private sortPlayers(players: PlayerData[], sortCriteria: string[]): PlayerData[] {
-        const nameOrder = (a: PlayerData, b: PlayerData) => a.nome.toLowerCase().localeCompare(b.nome.toLowerCase());
         const sortFunctions: Record<string, (a: PlayerData, b: PlayerData) => number> = {
-            'name': (a, b) => nameOrder(a, b),
+            'name': (a, b) => a.nome.toLowerCase().localeCompare(b.nome.toLowerCase()),
             'age_asc': (a, b) => a.idade - b.idade,
             'age_desc': (a, b) => b.idade - a.idade,
             'value_asc': (a, b) => this.calculateMarketValue(a.condicao, a.agilidade, a.idade, a.valor_base) - this.calculateMarketValue(b.condicao, b.agilidade, b.idade, b.valor_base),
@@ -135,12 +135,12 @@ export class PlayerService {
 
         return players.sort((a, b) => {
             for (const criterion of sortCriteria) {
-                const result = sortFunctions[criterion](a, b);
+                let result = sortFunctions[criterion](a, b);
                 if (result !== 0) return result;
             }
             
-            if (nameOrder(a, b) !== 0) return nameOrder(a, b);
-            return a.id - b.id;
+            // Returns players sorted by name if all criteria are equal, and if that is also equal, sorts by id
+            return sortFunctions['name'](a, b) || a.id - b.id;;
         });
     }
 
@@ -158,6 +158,7 @@ export class PlayerService {
         const overall = this.calculateOverall(data.posicao, data.velocidade, data.finalizacao, data.passe, data.drible, data.defesa, data.fisico);
         const baseValue = this.calculateBaseValue(overall, data.idade, data.potencial);
 
+        data.nome = formatName(data.nome);
         const playerRepository = new PlayerRepository();
         const player = await playerRepository.create({
             ...data,
@@ -177,6 +178,7 @@ export class PlayerService {
     // RN07
     async getAll(query: ListPlayersQueryType): Promise<{ data: PlayerData[]; meta: { page: number; limit: number; total_items: number; total_pages: number } }> {
         const playerRepository = new PlayerRepository();
+        query.search = formatName(query.search);
         let players = await playerRepository.getAll(query.search);
 
         players = this.filterPlayers(players, query);
