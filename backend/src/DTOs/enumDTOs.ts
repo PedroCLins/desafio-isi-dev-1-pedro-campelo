@@ -1,40 +1,23 @@
 import * as z from "zod";
+import { db } from "../prisma/db";
 
-export const positionEnum = z.enum([
-    "GOL",
-    "ZAG",
-    "LAT",
-    "MEI",
-    "ATA",
-])
+export const positionValues = db.enums.public.Posicao.values;
+export const conditionValues = db.enums.public.Condicao.values;
+export const formationValues = db.enums.public.Formacao.values;
+export const contractStatusValues = db.enums.public.SituacaoContrato.values;
+export const transactionTypeValues = db.enums.public.TipoTransacao.values;
+export const attributeValues = db.enums.public.Atributo.values;
 
-export const conditionEnum = z.enum([
-    "APTO",
-    "MAL_CONDICIONADO",
-    "DOENTE",
-])
+export const positionEnum = z.enum(positionValues);
+export const conditionEnum = z.enum(conditionValues);
+export const formationEnum = z.enum(formationValues);
+export const contractStatusEnum = z.enum(contractStatusValues);
+export const transactionTypeEnum = z.enum(transactionTypeValues);
+export const attributeEnum = z.enum(attributeValues);
 
-export const formationEnum = z.enum([
-    "FORMACAO_3_1",
-    "FORMACAO_2_2",
-    "FORMACAO_2_1_1",
-    "FORMACAO_1_2_1",
-])
-
-export const contractStatusEnum = z.enum([
-    "ATIVO",
-    "ENCERRADO",
-    "RESCINDIDO",
-])
-
-export const transactionTypeEnum = z.enum([
-    "COMPRA",
-    "VENDA",
-])
-
-export const attributeEnum = z.enum([
-    "finalizacao",
-    "passe",
-    "drible",
-    "defesa",
-])
+export type PositionEnumType = z.infer<typeof positionEnum>;
+export type ConditionEnumType = z.infer<typeof conditionEnum>;
+export type FormationEnumType = z.infer<typeof formationEnum>;
+export type ContractStatusEnumType = z.infer<typeof contractStatusEnum>;
+export type TransactionTypeEnumType = z.infer<typeof transactionTypeEnum>;
+export type AttributeEnumType = z.infer<typeof attributeEnum>;
