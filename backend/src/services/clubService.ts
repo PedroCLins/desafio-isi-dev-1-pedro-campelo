@@ -2,12 +2,11 @@ import type { CreateClubType, SortClubOptionsType } from "../DTOs";
 import { ClubRepository, ContractRepository } from "../repositories";
 import type { ClubData, ClubDataWithPlayers, PlayerData } from "../types/types";
 import { formatName } from "../utils/nameHandler";
-import { PlayerService } from "./playerService";
+import BusinessRules from "../utils/businessRules";
 
 export class ClubService {
     private calculateSquadValue(players: PlayerData[]): number {
-        const playerService = new PlayerService();
-        const playersMarketValue = players.map(player => playerService.calculateMarketValue(player.condicao, player.agilidade, player.idade, player.valor_base));
+        const playersMarketValue = players.map(player => BusinessRules.getNumericMarketValue(player.condition, player.agility, player.age, player.base_value));
         const squadValue = playersMarketValue.reduce((total, value) => total + value, 0);
         return squadValue;
     }
@@ -18,14 +17,14 @@ export class ClubService {
     
     private sortClubs(clubs: ClubDataWithPlayers[], sort: SortClubOptionsType): (ClubDataWithPlayers & { valor_patrimonio: number })[] {
         const sortFunctions: Record<string, (a: ClubDataWithPlayers & { valor_patrimonio: number }, b: ClubDataWithPlayers & { valor_patrimonio: number }) => number> = {
-            'name': (a, b) => a.nome.localeCompare(b.nome),
+            'name': (a, b) => a.name.localeCompare(b.name),
             'net_worth_asc': (a, b) => a.valor_patrimonio - b.valor_patrimonio,
             'net_worth_desc': (a, b) => b.valor_patrimonio - a.valor_patrimonio,
         };
         
         const sortedClubs =clubs.map(club => ({
             ...club,
-            valor_patrimonio: this.calculateNetWorth(club.caixa, this.calculateSquadValue(club.jogadores)),
+            valor_patrimonio: this.calculateNetWorth(club.cash, this.calculateSquadValue(club.players)),
         })).sort((a, b) => {
             const result = sortFunctions[sort](a, b);
             if (result !== 0) return result;
@@ -51,14 +50,14 @@ export class ClubService {
     private async getPlayersWithContracts(players: PlayerData[]) {
         const contractRepository = new ContractRepository();
         const playersWithContracts = players.map(async (player) => {
-            if (player.clube_id) {
-                const contract = await contractRepository.getById(player.clube_id, player.id);
-                const remainingDays = contract?.fidelidade_ate ? this.getRemainingDays(contract.fidelidade_ate) : 0;
+            if (player.club_id) {
+                const contract = await contractRepository.getById(player.club_id, player.id);
+                const remainingDays = contract?.loyalty_until ? this.getRemainingDays(contract.loyalty_until) : 0;
                 return { 
                     ...player, 
                     contract: {
-                        purchase_value: contract?.valor_compra,
-                        loyalty_until: contract?.fidelidade_ate,
+                        purchase_value: contract?.purchase_value,
+                        loyalty_until: contract?.loyalty_until,
                         remaining_days: remainingDays,
                         penalty_rate: this.getPenaltyRate(remainingDays),
                     } 
@@ -76,12 +75,12 @@ export class ClubService {
             throw new Error("Número máximo de clubes atingido.");
         }
 
-        data.nome = formatName(data.nome);
-        let club = await clubRepository.getByName(data.nome);
-        if (club && club.nome.toLowerCase() === data.nome.toLowerCase()) {
+        data.name = formatName(data.name);
+        let club = await clubRepository.getByName(data.name);
+        if (club && club.name.toLowerCase() === data.name.toLowerCase()) {
             throw new Error("Clube já cadastrado.");
         }
-        if (club && club.sigla === data.sigla) {
+        if (club && club.acronym === data.acronym) {
             throw new Error("Sigla já cadastrada.");
         }
 
@@ -100,9 +99,9 @@ export class ClubService {
     async getById(id: number) {
         const clubRepository = new ClubRepository();
         const club = await clubRepository.getById(id);
-        const squad_value = this.calculateSquadValue(club?.jogadores || []);
-        const net_worth = this.calculateNetWorth(club?.caixa || "0", squad_value);
-        const playersWithContracts = await this.getPlayersWithContracts(club?.jogadores || []);
+        const squad_value = this.calculateSquadValue(club?.players || []);
+        const net_worth = this.calculateNetWorth(club?.cash || "0", squad_value);
+        const playersWithContracts = await this.getPlayersWithContracts(club?.players || []);
         return {
             ...club,
             squad_value,

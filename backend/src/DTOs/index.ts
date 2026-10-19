@@ -35,3 +35,7 @@ export {
     type CreateClubType,
     type SortClubOptionsType
 } from "./clubDTO";
+export {
+    contractDTO,
+    type CreateContractType
+} from "./contractDTO";

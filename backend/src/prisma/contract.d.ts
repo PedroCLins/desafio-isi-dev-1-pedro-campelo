@@ -18,9 +18,9 @@ import type {
 } from '@prisma/orm-postgres/contract/types';
 
 export type StorageHash =
-  StorageHashBase<'e3adcd79a029f2fba78cfc730e4c740ad28311dc3b66a9e8815b69b9c8dd0384'>;
+  StorageHashBase<'d22edfe2a738192f33db38aef378578e091e826b096fc8c89d8350bca156192b'>;
 export type ExecutionHash =
-  ExecutionHashBase<'f56b7aa59f46c5f2147fd8447fb79d6923169a7061696907a92cafff6cfaec55'>;
+  ExecutionHashBase<'751bf01521ef207d7eca5caa1d88d770ea4cbca83936b150dd1deda299ce9245'>;
 export type ProfileHash =
   ProfileHashBase<'3916f444a8a17ad749191acf9e08dad97d1a327b88c2f1d45d12f240296aa8b2'>;
 
@@ -234,479 +234,479 @@ type DefaultLiteralValue<CodecId extends string, Encoded> = CodecId extends keyo
 
 export type FieldOutputTypes = {
   readonly public: {
-    readonly Clubes: {
-      readonly caixa: CodecTypes['pg/numeric@1']['output'];
-      readonly criado_em: CodecTypes['pg/timestamptz-string@1']['output'];
-      readonly formacao: '3-1' | '2-2' | '2-1-1' | '1-2-1' | null;
+    readonly Clubs: {
+      readonly acronym: CodecTypes['pg/text@1']['output'];
+      readonly cash: CodecTypes['pg/numeric@1']['output'];
+      readonly created_at: CodecTypes['pg/timestamptz-string@1']['output'];
+      readonly formation: '3-1' | '2-2' | '2-1-1' | '1-2-1' | null;
       readonly id: CodecTypes['pg/int4@1']['output'];
-      readonly nome: CodecTypes['pg/text@1']['output'];
-      readonly sigla: CodecTypes['pg/text@1']['output'];
+      readonly name: CodecTypes['pg/text@1']['output'];
     };
-    readonly Contratos: {
-      readonly clube_id: CodecTypes['pg/int4@1']['output'];
-      readonly encerrado_em: CodecTypes['pg/timestamptz-string@1']['output'] | null;
-      readonly fidelidade_ate: CodecTypes['pg/timestamptz-string@1']['output'];
+    readonly Contracts: {
+      readonly club_id: CodecTypes['pg/int4@1']['output'];
+      readonly contract_status: 'ATIVO' | 'ENCERRADO' | 'RESCINDIDO';
+      readonly created_at: CodecTypes['pg/timestamptz-string@1']['output'];
+      readonly ended_at: CodecTypes['pg/timestamptz-string@1']['output'] | null;
       readonly id: CodecTypes['pg/int4@1']['output'];
-      readonly iniciado_em: CodecTypes['pg/timestamptz-string@1']['output'];
-      readonly jogador_id: CodecTypes['pg/int4@1']['output'];
-      readonly situacao: 'ATIVO' | 'ENCERRADO' | 'RESCINDIDO';
-      readonly valor_compra: CodecTypes['pg/numeric@1']['output'];
+      readonly loyalty_until: CodecTypes['pg/timestamptz-string@1']['output'];
+      readonly player_id: CodecTypes['pg/int4@1']['output'];
+      readonly purchase_value: CodecTypes['pg/numeric@1']['output'];
     };
-    readonly DuelosPartida: {
-      readonly atacante_id: CodecTypes['pg/int4@1']['output'];
-      readonly atributo_ataque: 'finalizacao' | 'passe' | 'drible' | 'defesa';
-      readonly atributo_defesa: 'finalizacao' | 'passe' | 'drible' | 'defesa';
-      readonly clube_atacante_id: CodecTypes['pg/int4@1']['output'];
-      readonly condicao_atacante: 'APTO' | 'MAL_CONDICIONADO' | 'DOENTE';
-      readonly condicao_defensor: 'APTO' | 'MAL_CONDICIONADO' | 'DOENTE';
-      readonly defensor_id: CodecTypes['pg/int4@1']['output'];
-      readonly gol: CodecTypes['pg/bool@1']['output'];
+    readonly Lineups: {
+      readonly club_id: CodecTypes['pg/int4@1']['output'];
+      readonly created_at: CodecTypes['pg/timestamptz-string@1']['output'];
+      readonly player_id: CodecTypes['pg/int4@1']['output'];
+    };
+    readonly MatchDuels: {
+      readonly attack_attribute: 'shooting' | 'passing' | 'dribbling' | 'defending';
+      readonly attack_value: CodecTypes['pg/int4@1']['output'];
+      readonly attacker_condition: 'APTO' | 'MAL_CONDICIONADO' | 'DOENTE';
+      readonly attacker_id: CodecTypes['pg/int4@1']['output'];
+      readonly attacker_name: CodecTypes['pg/text@1']['output'];
+      readonly attacker_position: 'GOL' | 'ZAG' | 'LAT' | 'MEI' | 'ATA';
+      readonly attacking_club_id: CodecTypes['pg/int4@1']['output'];
+      readonly defender_condition: 'APTO' | 'MAL_CONDICIONADO' | 'DOENTE';
+      readonly defender_id: CodecTypes['pg/int4@1']['output'];
+      readonly defender_name: CodecTypes['pg/text@1']['output'];
+      readonly defender_position: 'GOL' | 'ZAG' | 'LAT' | 'MEI' | 'ATA';
+      readonly defense_attribute: 'shooting' | 'passing' | 'dribbling' | 'defending';
+      readonly defense_value: CodecTypes['pg/int4@1']['output'];
+      readonly goal: CodecTypes['pg/bool@1']['output'];
       readonly id: CodecTypes['pg/int4@1']['output'];
-      readonly nome_atacante: CodecTypes['pg/text@1']['output'];
-      readonly nome_defensor: CodecTypes['pg/text@1']['output'];
-      readonly ordem: CodecTypes['pg/int4@1']['output'];
-      readonly partida_id: CodecTypes['pg/int4@1']['output'];
-      readonly posicao_atacante: 'GOL' | 'ZAG' | 'LAT' | 'MEI' | 'ATA';
-      readonly posicao_defensor: 'GOL' | 'ZAG' | 'LAT' | 'MEI' | 'ATA';
-      readonly valor_ataque: CodecTypes['pg/int4@1']['output'];
-      readonly valor_defesa: CodecTypes['pg/int4@1']['output'];
+      readonly match_id: CodecTypes['pg/int4@1']['output'];
+      readonly order: CodecTypes['pg/int4@1']['output'];
     };
-    readonly Escalacoes: {
-      readonly clube_id: CodecTypes['pg/int4@1']['output'];
-      readonly criado_em: CodecTypes['pg/timestamptz-string@1']['output'];
-      readonly jogador_id: CodecTypes['pg/int4@1']['output'];
-    };
-    readonly Jogadores: {
-      readonly agilidade: CodecTypes['pg/int4@1']['output'];
-      readonly atualizado_em: CodecTypes['pg/timestamptz-temporal@1']['output'];
-      readonly clube_id: CodecTypes['pg/int4@1']['output'] | null;
-      readonly condicao: 'APTO' | 'MAL_CONDICIONADO' | 'DOENTE';
-      readonly criado_em: CodecTypes['pg/timestamptz-string@1']['output'];
-      readonly defesa: CodecTypes['pg/int4@1']['output'];
-      readonly drible: CodecTypes['pg/int4@1']['output'];
-      readonly excluido_em: CodecTypes['pg/timestamptz-string@1']['output'] | null;
-      readonly finalizacao: CodecTypes['pg/int4@1']['output'];
-      readonly fisico: CodecTypes['pg/int4@1']['output'];
+    readonly Matches: {
+      readonly away_club_formation: '3-1' | '2-2' | '2-1-1' | '1-2-1';
+      readonly away_club_goals: CodecTypes['pg/int4@1']['output'];
+      readonly away_club_id: CodecTypes['pg/int4@1']['output'];
+      readonly home_club_formation: '3-1' | '2-2' | '2-1-1' | '1-2-1';
+      readonly home_club_goals: CodecTypes['pg/int4@1']['output'];
+      readonly home_club_id: CodecTypes['pg/int4@1']['output'];
       readonly id: CodecTypes['pg/int4@1']['output'];
-      readonly idade: CodecTypes['pg/int4@1']['output'];
-      readonly nome: CodecTypes['pg/text@1']['output'];
-      readonly passe: CodecTypes['pg/int4@1']['output'];
-      readonly posicao: 'GOL' | 'ZAG' | 'LAT' | 'MEI' | 'ATA';
-      readonly potencial: CodecTypes['pg/int4@1']['output'];
-      readonly valor_base: CodecTypes['pg/numeric@1']['output'];
-      readonly velocidade: CodecTypes['pg/int4@1']['output'];
+      readonly played_at: CodecTypes['pg/timestamptz-string@1']['output'];
     };
-    readonly Partidas: {
-      readonly criado_em: CodecTypes['pg/timestamptz-string@1']['output'];
-      readonly formacao_mandante: '3-1' | '2-2' | '2-1-1' | '1-2-1';
-      readonly formacao_visitante: '3-1' | '2-2' | '2-1-1' | '1-2-1';
-      readonly gols_mandante: CodecTypes['pg/int4@1']['output'];
-      readonly gols_visitante: CodecTypes['pg/int4@1']['output'];
+    readonly Players: {
+      readonly age: CodecTypes['pg/int4@1']['output'];
+      readonly agility: CodecTypes['pg/int4@1']['output'];
+      readonly base_value: CodecTypes['pg/numeric@1']['output'];
+      readonly club_id: CodecTypes['pg/int4@1']['output'] | null;
+      readonly condition: 'APTO' | 'MAL_CONDICIONADO' | 'DOENTE';
+      readonly created_at: CodecTypes['pg/timestamptz-string@1']['output'];
+      readonly defending: CodecTypes['pg/int4@1']['output'];
+      readonly deleted_at: CodecTypes['pg/timestamptz-string@1']['output'] | null;
+      readonly dribbling: CodecTypes['pg/int4@1']['output'];
       readonly id: CodecTypes['pg/int4@1']['output'];
-      readonly mandante_id: CodecTypes['pg/int4@1']['output'];
-      readonly visitante_id: CodecTypes['pg/int4@1']['output'];
+      readonly name: CodecTypes['pg/text@1']['output'];
+      readonly pace: CodecTypes['pg/int4@1']['output'];
+      readonly passing: CodecTypes['pg/int4@1']['output'];
+      readonly physical: CodecTypes['pg/int4@1']['output'];
+      readonly position: 'GOL' | 'ZAG' | 'LAT' | 'MEI' | 'ATA';
+      readonly potential: CodecTypes['pg/int4@1']['output'];
+      readonly shooting: CodecTypes['pg/int4@1']['output'];
+      readonly updated_at: CodecTypes['pg/timestamptz-temporal@1']['output'];
     };
-    readonly Transacoes: {
-      readonly clube_id: CodecTypes['pg/int4@1']['output'];
-      readonly criado_em: CodecTypes['pg/timestamptz-string@1']['output'];
+    readonly Transactions: {
+      readonly cash_change: CodecTypes['pg/numeric@1']['output'];
+      readonly club_id: CodecTypes['pg/int4@1']['output'];
+      readonly created_at: CodecTypes['pg/timestamptz-string@1']['output'];
+      readonly fee: CodecTypes['pg/numeric@1']['output'];
       readonly id: CodecTypes['pg/int4@1']['output'];
-      readonly jogador_id: CodecTypes['pg/int4@1']['output'];
-      readonly lucro: CodecTypes['pg/numeric@1']['output'];
-      readonly multa: CodecTypes['pg/numeric@1']['output'];
-      readonly nome_jogador: CodecTypes['pg/text@1']['output'];
-      readonly taxa: CodecTypes['pg/numeric@1']['output'];
-      readonly tipo: 'COMPRA' | 'VENDA';
-      readonly valor: CodecTypes['pg/numeric@1']['output'];
-      readonly variacao_caixa: CodecTypes['pg/numeric@1']['output'];
+      readonly penalty: CodecTypes['pg/numeric@1']['output'];
+      readonly player_id: CodecTypes['pg/int4@1']['output'];
+      readonly player_name: CodecTypes['pg/text@1']['output'];
+      readonly profit: CodecTypes['pg/numeric@1']['output'];
+      readonly type: 'COMPRA' | 'VENDA';
+      readonly value: CodecTypes['pg/numeric@1']['output'];
     };
   };
 };
 export type FieldInputTypes = {
   readonly public: {
-    readonly Clubes: {
-      readonly caixa: CodecTypes['pg/numeric@1']['input'];
-      readonly criado_em: CodecTypes['pg/timestamptz-string@1']['input'];
-      readonly formacao: '3-1' | '2-2' | '2-1-1' | '1-2-1' | null;
+    readonly Clubs: {
+      readonly acronym: CodecTypes['pg/text@1']['input'];
+      readonly cash: CodecTypes['pg/numeric@1']['input'];
+      readonly created_at: CodecTypes['pg/timestamptz-string@1']['input'];
+      readonly formation: '3-1' | '2-2' | '2-1-1' | '1-2-1' | null;
       readonly id: CodecTypes['pg/int4@1']['input'];
-      readonly nome: CodecTypes['pg/text@1']['input'];
-      readonly sigla: CodecTypes['pg/text@1']['input'];
+      readonly name: CodecTypes['pg/text@1']['input'];
     };
-    readonly Contratos: {
-      readonly clube_id: CodecTypes['pg/int4@1']['input'];
-      readonly encerrado_em: CodecTypes['pg/timestamptz-string@1']['input'] | null;
-      readonly fidelidade_ate: CodecTypes['pg/timestamptz-string@1']['input'];
+    readonly Contracts: {
+      readonly club_id: CodecTypes['pg/int4@1']['input'];
+      readonly contract_status: 'ATIVO' | 'ENCERRADO' | 'RESCINDIDO';
+      readonly created_at: CodecTypes['pg/timestamptz-string@1']['input'];
+      readonly ended_at: CodecTypes['pg/timestamptz-string@1']['input'] | null;
       readonly id: CodecTypes['pg/int4@1']['input'];
-      readonly iniciado_em: CodecTypes['pg/timestamptz-string@1']['input'];
-      readonly jogador_id: CodecTypes['pg/int4@1']['input'];
-      readonly situacao: 'ATIVO' | 'ENCERRADO' | 'RESCINDIDO';
-      readonly valor_compra: CodecTypes['pg/numeric@1']['input'];
+      readonly loyalty_until: CodecTypes['pg/timestamptz-string@1']['input'];
+      readonly player_id: CodecTypes['pg/int4@1']['input'];
+      readonly purchase_value: CodecTypes['pg/numeric@1']['input'];
     };
-    readonly DuelosPartida: {
-      readonly atacante_id: CodecTypes['pg/int4@1']['input'];
-      readonly atributo_ataque: 'finalizacao' | 'passe' | 'drible' | 'defesa';
-      readonly atributo_defesa: 'finalizacao' | 'passe' | 'drible' | 'defesa';
-      readonly clube_atacante_id: CodecTypes['pg/int4@1']['input'];
-      readonly condicao_atacante: 'APTO' | 'MAL_CONDICIONADO' | 'DOENTE';
-      readonly condicao_defensor: 'APTO' | 'MAL_CONDICIONADO' | 'DOENTE';
-      readonly defensor_id: CodecTypes['pg/int4@1']['input'];
-      readonly gol: CodecTypes['pg/bool@1']['input'];
+    readonly Lineups: {
+      readonly club_id: CodecTypes['pg/int4@1']['input'];
+      readonly created_at: CodecTypes['pg/timestamptz-string@1']['input'];
+      readonly player_id: CodecTypes['pg/int4@1']['input'];
+    };
+    readonly MatchDuels: {
+      readonly attack_attribute: 'shooting' | 'passing' | 'dribbling' | 'defending';
+      readonly attack_value: CodecTypes['pg/int4@1']['input'];
+      readonly attacker_condition: 'APTO' | 'MAL_CONDICIONADO' | 'DOENTE';
+      readonly attacker_id: CodecTypes['pg/int4@1']['input'];
+      readonly attacker_name: CodecTypes['pg/text@1']['input'];
+      readonly attacker_position: 'GOL' | 'ZAG' | 'LAT' | 'MEI' | 'ATA';
+      readonly attacking_club_id: CodecTypes['pg/int4@1']['input'];
+      readonly defender_condition: 'APTO' | 'MAL_CONDICIONADO' | 'DOENTE';
+      readonly defender_id: CodecTypes['pg/int4@1']['input'];
+      readonly defender_name: CodecTypes['pg/text@1']['input'];
+      readonly defender_position: 'GOL' | 'ZAG' | 'LAT' | 'MEI' | 'ATA';
+      readonly defense_attribute: 'shooting' | 'passing' | 'dribbling' | 'defending';
+      readonly defense_value: CodecTypes['pg/int4@1']['input'];
+      readonly goal: CodecTypes['pg/bool@1']['input'];
       readonly id: CodecTypes['pg/int4@1']['input'];
-      readonly nome_atacante: CodecTypes['pg/text@1']['input'];
-      readonly nome_defensor: CodecTypes['pg/text@1']['input'];
-      readonly ordem: CodecTypes['pg/int4@1']['input'];
-      readonly partida_id: CodecTypes['pg/int4@1']['input'];
-      readonly posicao_atacante: 'GOL' | 'ZAG' | 'LAT' | 'MEI' | 'ATA';
-      readonly posicao_defensor: 'GOL' | 'ZAG' | 'LAT' | 'MEI' | 'ATA';
-      readonly valor_ataque: CodecTypes['pg/int4@1']['input'];
-      readonly valor_defesa: CodecTypes['pg/int4@1']['input'];
+      readonly match_id: CodecTypes['pg/int4@1']['input'];
+      readonly order: CodecTypes['pg/int4@1']['input'];
     };
-    readonly Escalacoes: {
-      readonly clube_id: CodecTypes['pg/int4@1']['input'];
-      readonly criado_em: CodecTypes['pg/timestamptz-string@1']['input'];
-      readonly jogador_id: CodecTypes['pg/int4@1']['input'];
-    };
-    readonly Jogadores: {
-      readonly agilidade: CodecTypes['pg/int4@1']['input'];
-      readonly atualizado_em: CodecTypes['pg/timestamptz-temporal@1']['input'];
-      readonly clube_id: CodecTypes['pg/int4@1']['input'] | null;
-      readonly condicao: 'APTO' | 'MAL_CONDICIONADO' | 'DOENTE';
-      readonly criado_em: CodecTypes['pg/timestamptz-string@1']['input'];
-      readonly defesa: CodecTypes['pg/int4@1']['input'];
-      readonly drible: CodecTypes['pg/int4@1']['input'];
-      readonly excluido_em: CodecTypes['pg/timestamptz-string@1']['input'] | null;
-      readonly finalizacao: CodecTypes['pg/int4@1']['input'];
-      readonly fisico: CodecTypes['pg/int4@1']['input'];
+    readonly Matches: {
+      readonly away_club_formation: '3-1' | '2-2' | '2-1-1' | '1-2-1';
+      readonly away_club_goals: CodecTypes['pg/int4@1']['input'];
+      readonly away_club_id: CodecTypes['pg/int4@1']['input'];
+      readonly home_club_formation: '3-1' | '2-2' | '2-1-1' | '1-2-1';
+      readonly home_club_goals: CodecTypes['pg/int4@1']['input'];
+      readonly home_club_id: CodecTypes['pg/int4@1']['input'];
       readonly id: CodecTypes['pg/int4@1']['input'];
-      readonly idade: CodecTypes['pg/int4@1']['input'];
-      readonly nome: CodecTypes['pg/text@1']['input'];
-      readonly passe: CodecTypes['pg/int4@1']['input'];
-      readonly posicao: 'GOL' | 'ZAG' | 'LAT' | 'MEI' | 'ATA';
-      readonly potencial: CodecTypes['pg/int4@1']['input'];
-      readonly valor_base: CodecTypes['pg/numeric@1']['input'];
-      readonly velocidade: CodecTypes['pg/int4@1']['input'];
+      readonly played_at: CodecTypes['pg/timestamptz-string@1']['input'];
     };
-    readonly Partidas: {
-      readonly criado_em: CodecTypes['pg/timestamptz-string@1']['input'];
-      readonly formacao_mandante: '3-1' | '2-2' | '2-1-1' | '1-2-1';
-      readonly formacao_visitante: '3-1' | '2-2' | '2-1-1' | '1-2-1';
-      readonly gols_mandante: CodecTypes['pg/int4@1']['input'];
-      readonly gols_visitante: CodecTypes['pg/int4@1']['input'];
+    readonly Players: {
+      readonly age: CodecTypes['pg/int4@1']['input'];
+      readonly agility: CodecTypes['pg/int4@1']['input'];
+      readonly base_value: CodecTypes['pg/numeric@1']['input'];
+      readonly club_id: CodecTypes['pg/int4@1']['input'] | null;
+      readonly condition: 'APTO' | 'MAL_CONDICIONADO' | 'DOENTE';
+      readonly created_at: CodecTypes['pg/timestamptz-string@1']['input'];
+      readonly defending: CodecTypes['pg/int4@1']['input'];
+      readonly deleted_at: CodecTypes['pg/timestamptz-string@1']['input'] | null;
+      readonly dribbling: CodecTypes['pg/int4@1']['input'];
       readonly id: CodecTypes['pg/int4@1']['input'];
-      readonly mandante_id: CodecTypes['pg/int4@1']['input'];
-      readonly visitante_id: CodecTypes['pg/int4@1']['input'];
+      readonly name: CodecTypes['pg/text@1']['input'];
+      readonly pace: CodecTypes['pg/int4@1']['input'];
+      readonly passing: CodecTypes['pg/int4@1']['input'];
+      readonly physical: CodecTypes['pg/int4@1']['input'];
+      readonly position: 'GOL' | 'ZAG' | 'LAT' | 'MEI' | 'ATA';
+      readonly potential: CodecTypes['pg/int4@1']['input'];
+      readonly shooting: CodecTypes['pg/int4@1']['input'];
+      readonly updated_at: CodecTypes['pg/timestamptz-temporal@1']['input'];
     };
-    readonly Transacoes: {
-      readonly clube_id: CodecTypes['pg/int4@1']['input'];
-      readonly criado_em: CodecTypes['pg/timestamptz-string@1']['input'];
+    readonly Transactions: {
+      readonly cash_change: CodecTypes['pg/numeric@1']['input'];
+      readonly club_id: CodecTypes['pg/int4@1']['input'];
+      readonly created_at: CodecTypes['pg/timestamptz-string@1']['input'];
+      readonly fee: CodecTypes['pg/numeric@1']['input'];
       readonly id: CodecTypes['pg/int4@1']['input'];
-      readonly jogador_id: CodecTypes['pg/int4@1']['input'];
-      readonly lucro: CodecTypes['pg/numeric@1']['input'];
-      readonly multa: CodecTypes['pg/numeric@1']['input'];
-      readonly nome_jogador: CodecTypes['pg/text@1']['input'];
-      readonly taxa: CodecTypes['pg/numeric@1']['input'];
-      readonly tipo: 'COMPRA' | 'VENDA';
-      readonly valor: CodecTypes['pg/numeric@1']['input'];
-      readonly variacao_caixa: CodecTypes['pg/numeric@1']['input'];
+      readonly penalty: CodecTypes['pg/numeric@1']['input'];
+      readonly player_id: CodecTypes['pg/int4@1']['input'];
+      readonly player_name: CodecTypes['pg/text@1']['input'];
+      readonly profit: CodecTypes['pg/numeric@1']['input'];
+      readonly type: 'COMPRA' | 'VENDA';
+      readonly value: CodecTypes['pg/numeric@1']['input'];
     };
   };
 };
 export type StorageColumnTypes = {
   readonly public: {
-    readonly Clubes: {
-      readonly caixa: CodecTypes['pg/numeric@1']['output'];
-      readonly criado_em: CodecTypes['pg/timestamptz-string@1']['output'];
-      readonly formacao: '3-1' | '2-2' | '2-1-1' | '1-2-1' | null;
+    readonly Clubs: {
+      readonly acronym: CodecTypes['pg/text@1']['output'];
+      readonly cash: CodecTypes['pg/numeric@1']['output'];
+      readonly created_at: CodecTypes['pg/timestamptz-string@1']['output'];
+      readonly formation: '3-1' | '2-2' | '2-1-1' | '1-2-1' | null;
       readonly id: CodecTypes['pg/int4@1']['output'];
-      readonly nome: CodecTypes['pg/text@1']['output'];
-      readonly sigla: CodecTypes['pg/text@1']['output'];
+      readonly name: CodecTypes['pg/text@1']['output'];
     };
-    readonly Contratos: {
-      readonly clube_id: CodecTypes['pg/int4@1']['output'];
-      readonly encerrado_em: CodecTypes['pg/timestamptz-string@1']['output'] | null;
-      readonly fidelidade_ate: CodecTypes['pg/timestamptz-string@1']['output'];
+    readonly Contracts: {
+      readonly club_id: CodecTypes['pg/int4@1']['output'];
+      readonly contract_status: 'ATIVO' | 'ENCERRADO' | 'RESCINDIDO';
+      readonly created_at: CodecTypes['pg/timestamptz-string@1']['output'];
+      readonly ended_at: CodecTypes['pg/timestamptz-string@1']['output'] | null;
       readonly id: CodecTypes['pg/int4@1']['output'];
-      readonly iniciado_em: CodecTypes['pg/timestamptz-string@1']['output'];
-      readonly jogador_id: CodecTypes['pg/int4@1']['output'];
-      readonly situacao: 'ATIVO' | 'ENCERRADO' | 'RESCINDIDO';
-      readonly valor_compra: CodecTypes['pg/numeric@1']['output'];
+      readonly loyalty_until: CodecTypes['pg/timestamptz-string@1']['output'];
+      readonly player_id: CodecTypes['pg/int4@1']['output'];
+      readonly purchase_value: CodecTypes['pg/numeric@1']['output'];
     };
-    readonly DuelosPartida: {
-      readonly atacante_id: CodecTypes['pg/int4@1']['output'];
-      readonly atributo_ataque: 'finalizacao' | 'passe' | 'drible' | 'defesa';
-      readonly atributo_defesa: 'finalizacao' | 'passe' | 'drible' | 'defesa';
-      readonly clube_atacante_id: CodecTypes['pg/int4@1']['output'];
-      readonly condicao_atacante: 'APTO' | 'MAL_CONDICIONADO' | 'DOENTE';
-      readonly condicao_defensor: 'APTO' | 'MAL_CONDICIONADO' | 'DOENTE';
-      readonly defensor_id: CodecTypes['pg/int4@1']['output'];
-      readonly gol: CodecTypes['pg/bool@1']['output'];
+    readonly Lineups: {
+      readonly club_id: CodecTypes['pg/int4@1']['output'];
+      readonly created_at: CodecTypes['pg/timestamptz-string@1']['output'];
+      readonly player_id: CodecTypes['pg/int4@1']['output'];
+    };
+    readonly MatchDuels: {
+      readonly attack_attribute: 'shooting' | 'passing' | 'dribbling' | 'defending';
+      readonly attack_value: CodecTypes['pg/int4@1']['output'];
+      readonly attacker_condition: 'APTO' | 'MAL_CONDICIONADO' | 'DOENTE';
+      readonly attacker_id: CodecTypes['pg/int4@1']['output'];
+      readonly attacker_name: CodecTypes['pg/text@1']['output'];
+      readonly attacker_position: 'GOL' | 'ZAG' | 'LAT' | 'MEI' | 'ATA';
+      readonly attacking_club_id: CodecTypes['pg/int4@1']['output'];
+      readonly defender_condition: 'APTO' | 'MAL_CONDICIONADO' | 'DOENTE';
+      readonly defender_id: CodecTypes['pg/int4@1']['output'];
+      readonly defender_name: CodecTypes['pg/text@1']['output'];
+      readonly defender_position: 'GOL' | 'ZAG' | 'LAT' | 'MEI' | 'ATA';
+      readonly defense_attribute: 'shooting' | 'passing' | 'dribbling' | 'defending';
+      readonly defense_value: CodecTypes['pg/int4@1']['output'];
+      readonly goal: CodecTypes['pg/bool@1']['output'];
       readonly id: CodecTypes['pg/int4@1']['output'];
-      readonly nome_atacante: CodecTypes['pg/text@1']['output'];
-      readonly nome_defensor: CodecTypes['pg/text@1']['output'];
-      readonly ordem: CodecTypes['pg/int4@1']['output'];
-      readonly partida_id: CodecTypes['pg/int4@1']['output'];
-      readonly posicao_atacante: 'GOL' | 'ZAG' | 'LAT' | 'MEI' | 'ATA';
-      readonly posicao_defensor: 'GOL' | 'ZAG' | 'LAT' | 'MEI' | 'ATA';
-      readonly valor_ataque: CodecTypes['pg/int4@1']['output'];
-      readonly valor_defesa: CodecTypes['pg/int4@1']['output'];
+      readonly match_id: CodecTypes['pg/int4@1']['output'];
+      readonly order: CodecTypes['pg/int4@1']['output'];
     };
-    readonly Escalacoes: {
-      readonly clube_id: CodecTypes['pg/int4@1']['output'];
-      readonly criado_em: CodecTypes['pg/timestamptz-string@1']['output'];
-      readonly jogador_id: CodecTypes['pg/int4@1']['output'];
-    };
-    readonly Jogadores: {
-      readonly agilidade: CodecTypes['pg/int4@1']['output'];
-      readonly atualizado_em: CodecTypes['pg/timestamptz-temporal@1']['output'];
-      readonly clube_id: CodecTypes['pg/int4@1']['output'] | null;
-      readonly condicao: 'APTO' | 'MAL_CONDICIONADO' | 'DOENTE';
-      readonly criado_em: CodecTypes['pg/timestamptz-string@1']['output'];
-      readonly defesa: CodecTypes['pg/int4@1']['output'];
-      readonly drible: CodecTypes['pg/int4@1']['output'];
-      readonly excluido_em: CodecTypes['pg/timestamptz-string@1']['output'] | null;
-      readonly finalizacao: CodecTypes['pg/int4@1']['output'];
-      readonly fisico: CodecTypes['pg/int4@1']['output'];
+    readonly Matches: {
+      readonly away_club_formation: '3-1' | '2-2' | '2-1-1' | '1-2-1';
+      readonly away_club_goals: CodecTypes['pg/int4@1']['output'];
+      readonly away_club_id: CodecTypes['pg/int4@1']['output'];
+      readonly home_club_formation: '3-1' | '2-2' | '2-1-1' | '1-2-1';
+      readonly home_club_goals: CodecTypes['pg/int4@1']['output'];
+      readonly home_club_id: CodecTypes['pg/int4@1']['output'];
       readonly id: CodecTypes['pg/int4@1']['output'];
-      readonly idade: CodecTypes['pg/int4@1']['output'];
-      readonly nome: CodecTypes['pg/text@1']['output'];
-      readonly passe: CodecTypes['pg/int4@1']['output'];
-      readonly posicao: 'GOL' | 'ZAG' | 'LAT' | 'MEI' | 'ATA';
-      readonly potencial: CodecTypes['pg/int4@1']['output'];
-      readonly valor_base: CodecTypes['pg/numeric@1']['output'];
-      readonly velocidade: CodecTypes['pg/int4@1']['output'];
+      readonly played_at: CodecTypes['pg/timestamptz-string@1']['output'];
     };
-    readonly Partidas: {
-      readonly criado_em: CodecTypes['pg/timestamptz-string@1']['output'];
-      readonly formacao_mandante: '3-1' | '2-2' | '2-1-1' | '1-2-1';
-      readonly formacao_visitante: '3-1' | '2-2' | '2-1-1' | '1-2-1';
-      readonly gols_mandante: CodecTypes['pg/int4@1']['output'];
-      readonly gols_visitante: CodecTypes['pg/int4@1']['output'];
+    readonly Players: {
+      readonly age: CodecTypes['pg/int4@1']['output'];
+      readonly agility: CodecTypes['pg/int4@1']['output'];
+      readonly base_value: CodecTypes['pg/numeric@1']['output'];
+      readonly club_id: CodecTypes['pg/int4@1']['output'] | null;
+      readonly condition: 'APTO' | 'MAL_CONDICIONADO' | 'DOENTE';
+      readonly created_at: CodecTypes['pg/timestamptz-string@1']['output'];
+      readonly defending: CodecTypes['pg/int4@1']['output'];
+      readonly deleted_at: CodecTypes['pg/timestamptz-string@1']['output'] | null;
+      readonly dribbling: CodecTypes['pg/int4@1']['output'];
       readonly id: CodecTypes['pg/int4@1']['output'];
-      readonly mandante_id: CodecTypes['pg/int4@1']['output'];
-      readonly visitante_id: CodecTypes['pg/int4@1']['output'];
+      readonly name: CodecTypes['pg/text@1']['output'];
+      readonly pace: CodecTypes['pg/int4@1']['output'];
+      readonly passing: CodecTypes['pg/int4@1']['output'];
+      readonly physical: CodecTypes['pg/int4@1']['output'];
+      readonly position: 'GOL' | 'ZAG' | 'LAT' | 'MEI' | 'ATA';
+      readonly potential: CodecTypes['pg/int4@1']['output'];
+      readonly shooting: CodecTypes['pg/int4@1']['output'];
+      readonly updated_at: CodecTypes['pg/timestamptz-temporal@1']['output'];
     };
-    readonly Transacoes: {
-      readonly clube_id: CodecTypes['pg/int4@1']['output'];
-      readonly criado_em: CodecTypes['pg/timestamptz-string@1']['output'];
+    readonly Transactions: {
+      readonly cash_change: CodecTypes['pg/numeric@1']['output'];
+      readonly club_id: CodecTypes['pg/int4@1']['output'];
+      readonly created_at: CodecTypes['pg/timestamptz-string@1']['output'];
+      readonly fee: CodecTypes['pg/numeric@1']['output'];
       readonly id: CodecTypes['pg/int4@1']['output'];
-      readonly jogador_id: CodecTypes['pg/int4@1']['output'];
-      readonly lucro: CodecTypes['pg/numeric@1']['output'];
-      readonly multa: CodecTypes['pg/numeric@1']['output'];
-      readonly nome_jogador: CodecTypes['pg/text@1']['output'];
-      readonly taxa: CodecTypes['pg/numeric@1']['output'];
-      readonly tipo: 'COMPRA' | 'VENDA';
-      readonly valor: CodecTypes['pg/numeric@1']['output'];
-      readonly variacao_caixa: CodecTypes['pg/numeric@1']['output'];
+      readonly penalty: CodecTypes['pg/numeric@1']['output'];
+      readonly player_id: CodecTypes['pg/int4@1']['output'];
+      readonly player_name: CodecTypes['pg/text@1']['output'];
+      readonly profit: CodecTypes['pg/numeric@1']['output'];
+      readonly type: 'COMPRA' | 'VENDA';
+      readonly value: CodecTypes['pg/numeric@1']['output'];
     };
   };
 };
 export type StorageColumnInputTypes = {
   readonly public: {
-    readonly Clubes: {
-      readonly caixa: CodecTypes['pg/numeric@1']['input'];
-      readonly criado_em: CodecTypes['pg/timestamptz-string@1']['input'];
-      readonly formacao: '3-1' | '2-2' | '2-1-1' | '1-2-1' | null;
+    readonly Clubs: {
+      readonly acronym: CodecTypes['pg/text@1']['input'];
+      readonly cash: CodecTypes['pg/numeric@1']['input'];
+      readonly created_at: CodecTypes['pg/timestamptz-string@1']['input'];
+      readonly formation: '3-1' | '2-2' | '2-1-1' | '1-2-1' | null;
       readonly id: CodecTypes['pg/int4@1']['input'];
-      readonly nome: CodecTypes['pg/text@1']['input'];
-      readonly sigla: CodecTypes['pg/text@1']['input'];
+      readonly name: CodecTypes['pg/text@1']['input'];
     };
-    readonly Contratos: {
-      readonly clube_id: CodecTypes['pg/int4@1']['input'];
-      readonly encerrado_em: CodecTypes['pg/timestamptz-string@1']['input'] | null;
-      readonly fidelidade_ate: CodecTypes['pg/timestamptz-string@1']['input'];
+    readonly Contracts: {
+      readonly club_id: CodecTypes['pg/int4@1']['input'];
+      readonly contract_status: 'ATIVO' | 'ENCERRADO' | 'RESCINDIDO';
+      readonly created_at: CodecTypes['pg/timestamptz-string@1']['input'];
+      readonly ended_at: CodecTypes['pg/timestamptz-string@1']['input'] | null;
       readonly id: CodecTypes['pg/int4@1']['input'];
-      readonly iniciado_em: CodecTypes['pg/timestamptz-string@1']['input'];
-      readonly jogador_id: CodecTypes['pg/int4@1']['input'];
-      readonly situacao: 'ATIVO' | 'ENCERRADO' | 'RESCINDIDO';
-      readonly valor_compra: CodecTypes['pg/numeric@1']['input'];
+      readonly loyalty_until: CodecTypes['pg/timestamptz-string@1']['input'];
+      readonly player_id: CodecTypes['pg/int4@1']['input'];
+      readonly purchase_value: CodecTypes['pg/numeric@1']['input'];
     };
-    readonly DuelosPartida: {
-      readonly atacante_id: CodecTypes['pg/int4@1']['input'];
-      readonly atributo_ataque: 'finalizacao' | 'passe' | 'drible' | 'defesa';
-      readonly atributo_defesa: 'finalizacao' | 'passe' | 'drible' | 'defesa';
-      readonly clube_atacante_id: CodecTypes['pg/int4@1']['input'];
-      readonly condicao_atacante: 'APTO' | 'MAL_CONDICIONADO' | 'DOENTE';
-      readonly condicao_defensor: 'APTO' | 'MAL_CONDICIONADO' | 'DOENTE';
-      readonly defensor_id: CodecTypes['pg/int4@1']['input'];
-      readonly gol: CodecTypes['pg/bool@1']['input'];
+    readonly Lineups: {
+      readonly club_id: CodecTypes['pg/int4@1']['input'];
+      readonly created_at: CodecTypes['pg/timestamptz-string@1']['input'];
+      readonly player_id: CodecTypes['pg/int4@1']['input'];
+    };
+    readonly MatchDuels: {
+      readonly attack_attribute: 'shooting' | 'passing' | 'dribbling' | 'defending';
+      readonly attack_value: CodecTypes['pg/int4@1']['input'];
+      readonly attacker_condition: 'APTO' | 'MAL_CONDICIONADO' | 'DOENTE';
+      readonly attacker_id: CodecTypes['pg/int4@1']['input'];
+      readonly attacker_name: CodecTypes['pg/text@1']['input'];
+      readonly attacker_position: 'GOL' | 'ZAG' | 'LAT' | 'MEI' | 'ATA';
+      readonly attacking_club_id: CodecTypes['pg/int4@1']['input'];
+      readonly defender_condition: 'APTO' | 'MAL_CONDICIONADO' | 'DOENTE';
+      readonly defender_id: CodecTypes['pg/int4@1']['input'];
+      readonly defender_name: CodecTypes['pg/text@1']['input'];
+      readonly defender_position: 'GOL' | 'ZAG' | 'LAT' | 'MEI' | 'ATA';
+      readonly defense_attribute: 'shooting' | 'passing' | 'dribbling' | 'defending';
+      readonly defense_value: CodecTypes['pg/int4@1']['input'];
+      readonly goal: CodecTypes['pg/bool@1']['input'];
       readonly id: CodecTypes['pg/int4@1']['input'];
-      readonly nome_atacante: CodecTypes['pg/text@1']['input'];
-      readonly nome_defensor: CodecTypes['pg/text@1']['input'];
-      readonly ordem: CodecTypes['pg/int4@1']['input'];
-      readonly partida_id: CodecTypes['pg/int4@1']['input'];
-      readonly posicao_atacante: 'GOL' | 'ZAG' | 'LAT' | 'MEI' | 'ATA';
-      readonly posicao_defensor: 'GOL' | 'ZAG' | 'LAT' | 'MEI' | 'ATA';
-      readonly valor_ataque: CodecTypes['pg/int4@1']['input'];
-      readonly valor_defesa: CodecTypes['pg/int4@1']['input'];
+      readonly match_id: CodecTypes['pg/int4@1']['input'];
+      readonly order: CodecTypes['pg/int4@1']['input'];
     };
-    readonly Escalacoes: {
-      readonly clube_id: CodecTypes['pg/int4@1']['input'];
-      readonly criado_em: CodecTypes['pg/timestamptz-string@1']['input'];
-      readonly jogador_id: CodecTypes['pg/int4@1']['input'];
-    };
-    readonly Jogadores: {
-      readonly agilidade: CodecTypes['pg/int4@1']['input'];
-      readonly atualizado_em: CodecTypes['pg/timestamptz-temporal@1']['input'];
-      readonly clube_id: CodecTypes['pg/int4@1']['input'] | null;
-      readonly condicao: 'APTO' | 'MAL_CONDICIONADO' | 'DOENTE';
-      readonly criado_em: CodecTypes['pg/timestamptz-string@1']['input'];
-      readonly defesa: CodecTypes['pg/int4@1']['input'];
-      readonly drible: CodecTypes['pg/int4@1']['input'];
-      readonly excluido_em: CodecTypes['pg/timestamptz-string@1']['input'] | null;
-      readonly finalizacao: CodecTypes['pg/int4@1']['input'];
-      readonly fisico: CodecTypes['pg/int4@1']['input'];
+    readonly Matches: {
+      readonly away_club_formation: '3-1' | '2-2' | '2-1-1' | '1-2-1';
+      readonly away_club_goals: CodecTypes['pg/int4@1']['input'];
+      readonly away_club_id: CodecTypes['pg/int4@1']['input'];
+      readonly home_club_formation: '3-1' | '2-2' | '2-1-1' | '1-2-1';
+      readonly home_club_goals: CodecTypes['pg/int4@1']['input'];
+      readonly home_club_id: CodecTypes['pg/int4@1']['input'];
       readonly id: CodecTypes['pg/int4@1']['input'];
-      readonly idade: CodecTypes['pg/int4@1']['input'];
-      readonly nome: CodecTypes['pg/text@1']['input'];
-      readonly passe: CodecTypes['pg/int4@1']['input'];
-      readonly posicao: 'GOL' | 'ZAG' | 'LAT' | 'MEI' | 'ATA';
-      readonly potencial: CodecTypes['pg/int4@1']['input'];
-      readonly valor_base: CodecTypes['pg/numeric@1']['input'];
-      readonly velocidade: CodecTypes['pg/int4@1']['input'];
+      readonly played_at: CodecTypes['pg/timestamptz-string@1']['input'];
     };
-    readonly Partidas: {
-      readonly criado_em: CodecTypes['pg/timestamptz-string@1']['input'];
-      readonly formacao_mandante: '3-1' | '2-2' | '2-1-1' | '1-2-1';
-      readonly formacao_visitante: '3-1' | '2-2' | '2-1-1' | '1-2-1';
-      readonly gols_mandante: CodecTypes['pg/int4@1']['input'];
-      readonly gols_visitante: CodecTypes['pg/int4@1']['input'];
+    readonly Players: {
+      readonly age: CodecTypes['pg/int4@1']['input'];
+      readonly agility: CodecTypes['pg/int4@1']['input'];
+      readonly base_value: CodecTypes['pg/numeric@1']['input'];
+      readonly club_id: CodecTypes['pg/int4@1']['input'] | null;
+      readonly condition: 'APTO' | 'MAL_CONDICIONADO' | 'DOENTE';
+      readonly created_at: CodecTypes['pg/timestamptz-string@1']['input'];
+      readonly defending: CodecTypes['pg/int4@1']['input'];
+      readonly deleted_at: CodecTypes['pg/timestamptz-string@1']['input'] | null;
+      readonly dribbling: CodecTypes['pg/int4@1']['input'];
       readonly id: CodecTypes['pg/int4@1']['input'];
-      readonly mandante_id: CodecTypes['pg/int4@1']['input'];
-      readonly visitante_id: CodecTypes['pg/int4@1']['input'];
+      readonly name: CodecTypes['pg/text@1']['input'];
+      readonly pace: CodecTypes['pg/int4@1']['input'];
+      readonly passing: CodecTypes['pg/int4@1']['input'];
+      readonly physical: CodecTypes['pg/int4@1']['input'];
+      readonly position: 'GOL' | 'ZAG' | 'LAT' | 'MEI' | 'ATA';
+      readonly potential: CodecTypes['pg/int4@1']['input'];
+      readonly shooting: CodecTypes['pg/int4@1']['input'];
+      readonly updated_at: CodecTypes['pg/timestamptz-temporal@1']['input'];
     };
-    readonly Transacoes: {
-      readonly clube_id: CodecTypes['pg/int4@1']['input'];
-      readonly criado_em: CodecTypes['pg/timestamptz-string@1']['input'];
+    readonly Transactions: {
+      readonly cash_change: CodecTypes['pg/numeric@1']['input'];
+      readonly club_id: CodecTypes['pg/int4@1']['input'];
+      readonly created_at: CodecTypes['pg/timestamptz-string@1']['input'];
+      readonly fee: CodecTypes['pg/numeric@1']['input'];
       readonly id: CodecTypes['pg/int4@1']['input'];
-      readonly jogador_id: CodecTypes['pg/int4@1']['input'];
-      readonly lucro: CodecTypes['pg/numeric@1']['input'];
-      readonly multa: CodecTypes['pg/numeric@1']['input'];
-      readonly nome_jogador: CodecTypes['pg/text@1']['input'];
-      readonly taxa: CodecTypes['pg/numeric@1']['input'];
-      readonly tipo: 'COMPRA' | 'VENDA';
-      readonly valor: CodecTypes['pg/numeric@1']['input'];
-      readonly variacao_caixa: CodecTypes['pg/numeric@1']['input'];
+      readonly penalty: CodecTypes['pg/numeric@1']['input'];
+      readonly player_id: CodecTypes['pg/int4@1']['input'];
+      readonly player_name: CodecTypes['pg/text@1']['input'];
+      readonly profit: CodecTypes['pg/numeric@1']['input'];
+      readonly type: 'COMPRA' | 'VENDA';
+      readonly value: CodecTypes['pg/numeric@1']['input'];
     };
   };
 };
 
 export namespace Models {
-  export type public_Clubes = {
-    caixa: CodecTypes['pg/numeric@1']['output'];
-    criado_em: CodecTypes['pg/timestamptz-string@1']['output'];
-    formacao: '3-1' | '2-2' | '2-1-1' | '1-2-1' | null;
+  export type public_Clubs = {
+    acronym: CodecTypes['pg/text@1']['output'];
+    cash: CodecTypes['pg/numeric@1']['output'];
+    created_at: CodecTypes['pg/timestamptz-string@1']['output'];
+    formation: '3-1' | '2-2' | '2-1-1' | '1-2-1' | null;
     id: CodecTypes['pg/int4@1']['output'];
-    nome: CodecTypes['pg/text@1']['output'];
-    sigla: CodecTypes['pg/text@1']['output'];
-    jogadores: public_Jogadores[];
-    readonly [RelationKeys]?: 'jogadores';
+    name: CodecTypes['pg/text@1']['output'];
+    players: public_Players[];
+    readonly [RelationKeys]?: 'players';
   };
-  export type public_Contratos = {
-    clube_id: CodecTypes['pg/int4@1']['output'];
-    encerrado_em: CodecTypes['pg/timestamptz-string@1']['output'] | null;
-    fidelidade_ate: CodecTypes['pg/timestamptz-string@1']['output'];
+  export type public_Contracts = {
+    club_id: CodecTypes['pg/int4@1']['output'];
+    contract_status: 'ATIVO' | 'ENCERRADO' | 'RESCINDIDO';
+    created_at: CodecTypes['pg/timestamptz-string@1']['output'];
+    ended_at: CodecTypes['pg/timestamptz-string@1']['output'] | null;
     id: CodecTypes['pg/int4@1']['output'];
-    iniciado_em: CodecTypes['pg/timestamptz-string@1']['output'];
-    jogador_id: CodecTypes['pg/int4@1']['output'];
-    situacao: 'ATIVO' | 'ENCERRADO' | 'RESCINDIDO';
-    valor_compra: CodecTypes['pg/numeric@1']['output'];
-    clube: public_Clubes;
-    jogador: public_Jogadores;
-    readonly [RelationKeys]?: 'clube' | 'jogador';
+    loyalty_until: CodecTypes['pg/timestamptz-string@1']['output'];
+    player_id: CodecTypes['pg/int4@1']['output'];
+    purchase_value: CodecTypes['pg/numeric@1']['output'];
+    club: public_Clubs;
+    player: public_Players;
+    readonly [RelationKeys]?: 'club' | 'player';
   };
-  export type public_DuelosPartida = {
-    atacante_id: CodecTypes['pg/int4@1']['output'];
-    atributo_ataque: 'finalizacao' | 'passe' | 'drible' | 'defesa';
-    atributo_defesa: 'finalizacao' | 'passe' | 'drible' | 'defesa';
-    clube_atacante_id: CodecTypes['pg/int4@1']['output'];
-    condicao_atacante: 'APTO' | 'MAL_CONDICIONADO' | 'DOENTE';
-    condicao_defensor: 'APTO' | 'MAL_CONDICIONADO' | 'DOENTE';
-    defensor_id: CodecTypes['pg/int4@1']['output'];
-    gol: CodecTypes['pg/bool@1']['output'];
+  export type public_Lineups = {
+    club_id: CodecTypes['pg/int4@1']['output'];
+    created_at: CodecTypes['pg/timestamptz-string@1']['output'];
+    player_id: CodecTypes['pg/int4@1']['output'];
+    club: public_Clubs;
+    player: public_Players;
+    readonly [RelationKeys]?: 'club' | 'player';
+  };
+  export type public_MatchDuels = {
+    attack_attribute: 'shooting' | 'passing' | 'dribbling' | 'defending';
+    attack_value: CodecTypes['pg/int4@1']['output'];
+    attacker_condition: 'APTO' | 'MAL_CONDICIONADO' | 'DOENTE';
+    attacker_id: CodecTypes['pg/int4@1']['output'];
+    attacker_name: CodecTypes['pg/text@1']['output'];
+    attacker_position: 'GOL' | 'ZAG' | 'LAT' | 'MEI' | 'ATA';
+    attacking_club_id: CodecTypes['pg/int4@1']['output'];
+    defender_condition: 'APTO' | 'MAL_CONDICIONADO' | 'DOENTE';
+    defender_id: CodecTypes['pg/int4@1']['output'];
+    defender_name: CodecTypes['pg/text@1']['output'];
+    defender_position: 'GOL' | 'ZAG' | 'LAT' | 'MEI' | 'ATA';
+    defense_attribute: 'shooting' | 'passing' | 'dribbling' | 'defending';
+    defense_value: CodecTypes['pg/int4@1']['output'];
+    goal: CodecTypes['pg/bool@1']['output'];
     id: CodecTypes['pg/int4@1']['output'];
-    nome_atacante: CodecTypes['pg/text@1']['output'];
-    nome_defensor: CodecTypes['pg/text@1']['output'];
-    ordem: CodecTypes['pg/int4@1']['output'];
-    partida_id: CodecTypes['pg/int4@1']['output'];
-    posicao_atacante: 'GOL' | 'ZAG' | 'LAT' | 'MEI' | 'ATA';
-    posicao_defensor: 'GOL' | 'ZAG' | 'LAT' | 'MEI' | 'ATA';
-    valor_ataque: CodecTypes['pg/int4@1']['output'];
-    valor_defesa: CodecTypes['pg/int4@1']['output'];
-    atacante: public_Jogadores;
-    clube_atacante: public_Clubes;
-    defensor: public_Jogadores;
-    partida: public_Partidas;
-    readonly [RelationKeys]?: 'atacante' | 'clube_atacante' | 'defensor' | 'partida';
+    match_id: CodecTypes['pg/int4@1']['output'];
+    order: CodecTypes['pg/int4@1']['output'];
+    attacker: public_Players;
+    attacking_club: public_Clubs;
+    defender: public_Players;
+    match: public_Matches;
+    readonly [RelationKeys]?: 'attacker' | 'attacking_club' | 'defender' | 'match';
   };
-  export type public_Escalacoes = {
-    clube_id: CodecTypes['pg/int4@1']['output'];
-    criado_em: CodecTypes['pg/timestamptz-string@1']['output'];
-    jogador_id: CodecTypes['pg/int4@1']['output'];
-    clube: public_Clubes;
-    jogador: public_Jogadores;
-    readonly [RelationKeys]?: 'clube' | 'jogador';
-  };
-  export type public_Jogadores = {
-    agilidade: CodecTypes['pg/int4@1']['output'];
-    atualizado_em: CodecTypes['pg/timestamptz-temporal@1']['output'];
-    clube_id: CodecTypes['pg/int4@1']['output'] | null;
-    condicao: 'APTO' | 'MAL_CONDICIONADO' | 'DOENTE';
-    criado_em: CodecTypes['pg/timestamptz-string@1']['output'];
-    defesa: CodecTypes['pg/int4@1']['output'];
-    drible: CodecTypes['pg/int4@1']['output'];
-    excluido_em: CodecTypes['pg/timestamptz-string@1']['output'] | null;
-    finalizacao: CodecTypes['pg/int4@1']['output'];
-    fisico: CodecTypes['pg/int4@1']['output'];
+  export type public_Matches = {
+    away_club_formation: '3-1' | '2-2' | '2-1-1' | '1-2-1';
+    away_club_goals: CodecTypes['pg/int4@1']['output'];
+    away_club_id: CodecTypes['pg/int4@1']['output'];
+    home_club_formation: '3-1' | '2-2' | '2-1-1' | '1-2-1';
+    home_club_goals: CodecTypes['pg/int4@1']['output'];
+    home_club_id: CodecTypes['pg/int4@1']['output'];
     id: CodecTypes['pg/int4@1']['output'];
-    idade: CodecTypes['pg/int4@1']['output'];
-    nome: CodecTypes['pg/text@1']['output'];
-    passe: CodecTypes['pg/int4@1']['output'];
-    posicao: 'GOL' | 'ZAG' | 'LAT' | 'MEI' | 'ATA';
-    potencial: CodecTypes['pg/int4@1']['output'];
-    valor_base: CodecTypes['pg/numeric@1']['output'];
-    velocidade: CodecTypes['pg/int4@1']['output'];
-    clube: public_Clubes | null;
-    readonly [RelationKeys]?: 'clube';
+    played_at: CodecTypes['pg/timestamptz-string@1']['output'];
+    away_club: public_Clubs;
+    home_club: public_Clubs;
+    readonly [RelationKeys]?: 'away_club' | 'home_club';
   };
-  export type public_Partidas = {
-    criado_em: CodecTypes['pg/timestamptz-string@1']['output'];
-    formacao_mandante: '3-1' | '2-2' | '2-1-1' | '1-2-1';
-    formacao_visitante: '3-1' | '2-2' | '2-1-1' | '1-2-1';
-    gols_mandante: CodecTypes['pg/int4@1']['output'];
-    gols_visitante: CodecTypes['pg/int4@1']['output'];
+  export type public_Players = {
+    age: CodecTypes['pg/int4@1']['output'];
+    agility: CodecTypes['pg/int4@1']['output'];
+    base_value: CodecTypes['pg/numeric@1']['output'];
+    club_id: CodecTypes['pg/int4@1']['output'] | null;
+    condition: 'APTO' | 'MAL_CONDICIONADO' | 'DOENTE';
+    created_at: CodecTypes['pg/timestamptz-string@1']['output'];
+    defending: CodecTypes['pg/int4@1']['output'];
+    deleted_at: CodecTypes['pg/timestamptz-string@1']['output'] | null;
+    dribbling: CodecTypes['pg/int4@1']['output'];
     id: CodecTypes['pg/int4@1']['output'];
-    mandante_id: CodecTypes['pg/int4@1']['output'];
-    visitante_id: CodecTypes['pg/int4@1']['output'];
-    mandante: public_Clubes;
-    visitante: public_Clubes;
-    readonly [RelationKeys]?: 'mandante' | 'visitante';
+    name: CodecTypes['pg/text@1']['output'];
+    pace: CodecTypes['pg/int4@1']['output'];
+    passing: CodecTypes['pg/int4@1']['output'];
+    physical: CodecTypes['pg/int4@1']['output'];
+    position: 'GOL' | 'ZAG' | 'LAT' | 'MEI' | 'ATA';
+    potential: CodecTypes['pg/int4@1']['output'];
+    shooting: CodecTypes['pg/int4@1']['output'];
+    updated_at: CodecTypes['pg/timestamptz-temporal@1']['output'];
+    club: public_Clubs | null;
+    readonly [RelationKeys]?: 'club';
   };
-  export type public_Transacoes = {
-    clube_id: CodecTypes['pg/int4@1']['output'];
-    criado_em: CodecTypes['pg/timestamptz-string@1']['output'];
+  export type public_Transactions = {
+    cash_change: CodecTypes['pg/numeric@1']['output'];
+    club_id: CodecTypes['pg/int4@1']['output'];
+    created_at: CodecTypes['pg/timestamptz-string@1']['output'];
+    fee: CodecTypes['pg/numeric@1']['output'];
     id: CodecTypes['pg/int4@1']['output'];
-    jogador_id: CodecTypes['pg/int4@1']['output'];
-    lucro: CodecTypes['pg/numeric@1']['output'];
-    multa: CodecTypes['pg/numeric@1']['output'];
-    nome_jogador: CodecTypes['pg/text@1']['output'];
-    taxa: CodecTypes['pg/numeric@1']['output'];
-    tipo: 'COMPRA' | 'VENDA';
-    valor: CodecTypes['pg/numeric@1']['output'];
-    variacao_caixa: CodecTypes['pg/numeric@1']['output'];
-    clube: public_Clubes;
-    jogador: public_Jogadores;
-    readonly [RelationKeys]?: 'clube' | 'jogador';
+    penalty: CodecTypes['pg/numeric@1']['output'];
+    player_id: CodecTypes['pg/int4@1']['output'];
+    player_name: CodecTypes['pg/text@1']['output'];
+    profit: CodecTypes['pg/numeric@1']['output'];
+    type: 'COMPRA' | 'VENDA';
+    value: CodecTypes['pg/numeric@1']['output'];
+    club: public_Clubs;
+    player: public_Players;
+    readonly [RelationKeys]?: 'club' | 'player';
   };
 }
 
 export declare const models: {
   public: {
-    Clubes: Models.public_Clubes;
-    Contratos: Models.public_Contratos;
-    DuelosPartida: Models.public_DuelosPartida;
-    Escalacoes: Models.public_Escalacoes;
-    Jogadores: Models.public_Jogadores;
-    Partidas: Models.public_Partidas;
-    Transacoes: Models.public_Transacoes;
+    Clubs: Models.public_Clubs;
+    Contracts: Models.public_Contracts;
+    Lineups: Models.public_Lineups;
+    MatchDuels: Models.public_MatchDuels;
+    Matches: Models.public_Matches;
+    Players: Models.public_Players;
+    Transactions: Models.public_Transactions;
   };
 };
 
@@ -728,9 +728,15 @@ type ContractBase = Omit<
         readonly kind: 'postgres-schema';
         readonly entries: {
           readonly table: {
-            readonly Clubes: {
+            readonly Clubs: {
               columns: {
-                readonly caixa: {
+                readonly acronym: {
+                  readonly dataType: 'pg/text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                  readonly many: false;
+                };
+                readonly cash: {
                   readonly dataType: 'pg/numeric';
                   readonly codecId: 'pg/numeric@1';
                   readonly nullable: false;
@@ -740,14 +746,14 @@ type ContractBase = Omit<
                   };
                   readonly many: false;
                 };
-                readonly criado_em: {
+                readonly created_at: {
                   readonly dataType: 'pg/timestamptz';
                   readonly codecId: 'pg/timestamptz-string@1';
                   readonly nullable: false;
                   readonly default: { readonly kind: 'function'; readonly expression: 'now()' };
                   readonly many: false;
                 };
-                readonly formacao: {
+                readonly formation: {
                   readonly dataType: 'pg/text';
                   readonly codecId: 'pg/text@1';
                   readonly nullable: true;
@@ -763,13 +769,7 @@ type ContractBase = Omit<
                   };
                   readonly many: false;
                 };
-                readonly nome: {
-                  readonly dataType: 'pg/text';
-                  readonly codecId: 'pg/text@1';
-                  readonly nullable: false;
-                  readonly many: false;
-                };
-                readonly sigla: {
+                readonly name: {
                   readonly dataType: 'pg/text';
                   readonly codecId: 'pg/text@1';
                   readonly nullable: false;
@@ -778,30 +778,37 @@ type ContractBase = Omit<
               };
               primaryKey: { readonly columns: readonly ['id'] };
               uniques: readonly [
-                { readonly columns: readonly ['nome'] },
-                { readonly columns: readonly ['sigla'] },
+                { readonly columns: readonly ['name'] },
+                { readonly columns: readonly ['acronym'] },
               ];
               indexes: readonly [];
               foreignKeys: readonly [];
             };
-            readonly Contratos: {
+            readonly Contracts: {
               columns: {
-                readonly clube_id: {
+                readonly club_id: {
                   readonly dataType: 'pg/int4';
                   readonly codecId: 'pg/int4@1';
                   readonly nullable: false;
                   readonly many: false;
                 };
-                readonly encerrado_em: {
-                  readonly dataType: 'pg/timestamptz';
-                  readonly codecId: 'pg/timestamptz-string@1';
-                  readonly nullable: true;
+                readonly contract_status: {
+                  readonly dataType: 'pg/text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
                   readonly many: false;
                 };
-                readonly fidelidade_ate: {
+                readonly created_at: {
                   readonly dataType: 'pg/timestamptz';
                   readonly codecId: 'pg/timestamptz-string@1';
                   readonly nullable: false;
+                  readonly default: { readonly kind: 'function'; readonly expression: 'now()' };
+                  readonly many: false;
+                };
+                readonly ended_at: {
+                  readonly dataType: 'pg/timestamptz';
+                  readonly codecId: 'pg/timestamptz-string@1';
+                  readonly nullable: true;
                   readonly many: false;
                 };
                 readonly id: {
@@ -814,26 +821,19 @@ type ContractBase = Omit<
                   };
                   readonly many: false;
                 };
-                readonly iniciado_em: {
+                readonly loyalty_until: {
                   readonly dataType: 'pg/timestamptz';
                   readonly codecId: 'pg/timestamptz-string@1';
                   readonly nullable: false;
-                  readonly default: { readonly kind: 'function'; readonly expression: 'now()' };
                   readonly many: false;
                 };
-                readonly jogador_id: {
+                readonly player_id: {
                   readonly dataType: 'pg/int4';
                   readonly codecId: 'pg/int4@1';
                   readonly nullable: false;
                   readonly many: false;
                 };
-                readonly situacao: {
-                  readonly dataType: 'pg/text';
-                  readonly codecId: 'pg/text@1';
-                  readonly nullable: false;
-                  readonly many: false;
-                };
-                readonly valor_compra: {
+                readonly purchase_value: {
                   readonly dataType: 'pg/numeric';
                   readonly codecId: 'pg/numeric@1';
                   readonly nullable: false;
@@ -844,15 +844,15 @@ type ContractBase = Omit<
               uniques: readonly [];
               indexes: readonly [
                 {
-                  readonly name: 'Contratos_clube_id_idx_6707a62a';
-                  readonly prefix: 'Contratos_clube_id_idx';
-                  readonly columns: readonly ['clube_id'];
+                  readonly name: 'Contracts_club_id_idx_21e49689';
+                  readonly prefix: 'Contracts_club_id_idx';
+                  readonly columns: readonly ['club_id'];
                   readonly unique: false;
                 },
                 {
-                  readonly name: 'Contratos_jogador_id_idx_b5f9d85d';
-                  readonly prefix: 'Contratos_jogador_id_idx';
-                  readonly columns: readonly ['jogador_id'];
+                  readonly name: 'Contracts_player_id_idx_9eca16c7';
+                  readonly prefix: 'Contracts_player_id_idx';
+                  readonly columns: readonly ['player_id'];
                   readonly unique: false;
                 },
               ];
@@ -860,74 +860,174 @@ type ContractBase = Omit<
                 {
                   readonly source: {
                     readonly namespaceId: 'public' & NamespaceId;
-                    readonly tableName: 'Contratos';
-                    readonly columns: readonly ['clube_id'];
+                    readonly tableName: 'Contracts';
+                    readonly columns: readonly ['club_id'];
                   };
                   readonly target: {
                     readonly namespaceId: 'public' & NamespaceId;
-                    readonly tableName: 'Clubes';
+                    readonly tableName: 'Clubs';
                     readonly columns: readonly ['id'];
                   };
                 },
                 {
                   readonly source: {
                     readonly namespaceId: 'public' & NamespaceId;
-                    readonly tableName: 'Contratos';
-                    readonly columns: readonly ['jogador_id'];
+                    readonly tableName: 'Contracts';
+                    readonly columns: readonly ['player_id'];
                   };
                   readonly target: {
                     readonly namespaceId: 'public' & NamespaceId;
-                    readonly tableName: 'Jogadores';
+                    readonly tableName: 'Players';
                     readonly columns: readonly ['id'];
                   };
                 },
               ];
             };
-            readonly DuelosPartida: {
+            readonly Lineups: {
               columns: {
-                readonly atacante_id: {
+                readonly club_id: {
                   readonly dataType: 'pg/int4';
                   readonly codecId: 'pg/int4@1';
                   readonly nullable: false;
                   readonly many: false;
                 };
-                readonly atributo_ataque: {
-                  readonly dataType: 'pg/text';
-                  readonly codecId: 'pg/text@1';
+                readonly created_at: {
+                  readonly dataType: 'pg/timestamptz';
+                  readonly codecId: 'pg/timestamptz-string@1';
                   readonly nullable: false;
+                  readonly default: { readonly kind: 'function'; readonly expression: 'now()' };
                   readonly many: false;
                 };
-                readonly atributo_defesa: {
-                  readonly dataType: 'pg/text';
-                  readonly codecId: 'pg/text@1';
-                  readonly nullable: false;
-                  readonly many: false;
-                };
-                readonly clube_atacante_id: {
+                readonly player_id: {
                   readonly dataType: 'pg/int4';
                   readonly codecId: 'pg/int4@1';
                   readonly nullable: false;
                   readonly many: false;
                 };
-                readonly condicao_atacante: {
+              };
+              uniques: readonly [];
+              indexes: readonly [
+                {
+                  readonly name: 'Lineups_club_id_idx_21e49689';
+                  readonly prefix: 'Lineups_club_id_idx';
+                  readonly columns: readonly ['club_id'];
+                  readonly unique: false;
+                },
+                {
+                  readonly name: 'Lineups_player_id_idx_9eca16c7';
+                  readonly prefix: 'Lineups_player_id_idx';
+                  readonly columns: readonly ['player_id'];
+                  readonly unique: false;
+                },
+              ];
+              foreignKeys: readonly [
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'Lineups';
+                    readonly columns: readonly ['club_id'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'Clubs';
+                    readonly columns: readonly ['id'];
+                  };
+                },
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'Lineups';
+                    readonly columns: readonly ['player_id'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'Players';
+                    readonly columns: readonly ['id'];
+                  };
+                },
+              ];
+            };
+            readonly MatchDuels: {
+              columns: {
+                readonly attack_attribute: {
                   readonly dataType: 'pg/text';
                   readonly codecId: 'pg/text@1';
                   readonly nullable: false;
                   readonly many: false;
                 };
-                readonly condicao_defensor: {
-                  readonly dataType: 'pg/text';
-                  readonly codecId: 'pg/text@1';
-                  readonly nullable: false;
-                  readonly many: false;
-                };
-                readonly defensor_id: {
+                readonly attack_value: {
                   readonly dataType: 'pg/int4';
                   readonly codecId: 'pg/int4@1';
                   readonly nullable: false;
                   readonly many: false;
                 };
-                readonly gol: {
+                readonly attacker_condition: {
+                  readonly dataType: 'pg/text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                  readonly many: false;
+                };
+                readonly attacker_id: {
+                  readonly dataType: 'pg/int4';
+                  readonly codecId: 'pg/int4@1';
+                  readonly nullable: false;
+                  readonly many: false;
+                };
+                readonly attacker_name: {
+                  readonly dataType: 'pg/text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                  readonly many: false;
+                };
+                readonly attacker_position: {
+                  readonly dataType: 'pg/text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                  readonly many: false;
+                };
+                readonly attacking_club_id: {
+                  readonly dataType: 'pg/int4';
+                  readonly codecId: 'pg/int4@1';
+                  readonly nullable: false;
+                  readonly many: false;
+                };
+                readonly defender_condition: {
+                  readonly dataType: 'pg/text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                  readonly many: false;
+                };
+                readonly defender_id: {
+                  readonly dataType: 'pg/int4';
+                  readonly codecId: 'pg/int4@1';
+                  readonly nullable: false;
+                  readonly many: false;
+                };
+                readonly defender_name: {
+                  readonly dataType: 'pg/text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                  readonly many: false;
+                };
+                readonly defender_position: {
+                  readonly dataType: 'pg/text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                  readonly many: false;
+                };
+                readonly defense_attribute: {
+                  readonly dataType: 'pg/text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                  readonly many: false;
+                };
+                readonly defense_value: {
+                  readonly dataType: 'pg/int4';
+                  readonly codecId: 'pg/int4@1';
+                  readonly nullable: false;
+                  readonly many: false;
+                };
+                readonly goal: {
                   readonly dataType: 'pg/bool';
                   readonly codecId: 'pg/bool@1';
                   readonly nullable: false;
@@ -943,49 +1043,13 @@ type ContractBase = Omit<
                   };
                   readonly many: false;
                 };
-                readonly nome_atacante: {
-                  readonly dataType: 'pg/text';
-                  readonly codecId: 'pg/text@1';
-                  readonly nullable: false;
-                  readonly many: false;
-                };
-                readonly nome_defensor: {
-                  readonly dataType: 'pg/text';
-                  readonly codecId: 'pg/text@1';
-                  readonly nullable: false;
-                  readonly many: false;
-                };
-                readonly ordem: {
+                readonly match_id: {
                   readonly dataType: 'pg/int4';
                   readonly codecId: 'pg/int4@1';
                   readonly nullable: false;
                   readonly many: false;
                 };
-                readonly partida_id: {
-                  readonly dataType: 'pg/int4';
-                  readonly codecId: 'pg/int4@1';
-                  readonly nullable: false;
-                  readonly many: false;
-                };
-                readonly posicao_atacante: {
-                  readonly dataType: 'pg/text';
-                  readonly codecId: 'pg/text@1';
-                  readonly nullable: false;
-                  readonly many: false;
-                };
-                readonly posicao_defensor: {
-                  readonly dataType: 'pg/text';
-                  readonly codecId: 'pg/text@1';
-                  readonly nullable: false;
-                  readonly many: false;
-                };
-                readonly valor_ataque: {
-                  readonly dataType: 'pg/int4';
-                  readonly codecId: 'pg/int4@1';
-                  readonly nullable: false;
-                  readonly many: false;
-                };
-                readonly valor_defesa: {
+                readonly order: {
                   readonly dataType: 'pg/int4';
                   readonly codecId: 'pg/int4@1';
                   readonly nullable: false;
@@ -996,27 +1060,27 @@ type ContractBase = Omit<
               uniques: readonly [];
               indexes: readonly [
                 {
-                  readonly name: 'DuelosPartida_atacante_id_idx_e87d907a';
-                  readonly prefix: 'DuelosPartida_atacante_id_idx';
-                  readonly columns: readonly ['atacante_id'];
+                  readonly name: 'MatchDuels_attacker_id_idx_3f3889f3';
+                  readonly prefix: 'MatchDuels_attacker_id_idx';
+                  readonly columns: readonly ['attacker_id'];
                   readonly unique: false;
                 },
                 {
-                  readonly name: 'DuelosPartida_clube_atacante_id_idx_0ce101b8';
-                  readonly prefix: 'DuelosPartida_clube_atacante_id_idx';
-                  readonly columns: readonly ['clube_atacante_id'];
+                  readonly name: 'MatchDuels_attacking_club_id_idx_6e153434';
+                  readonly prefix: 'MatchDuels_attacking_club_id_idx';
+                  readonly columns: readonly ['attacking_club_id'];
                   readonly unique: false;
                 },
                 {
-                  readonly name: 'DuelosPartida_defensor_id_idx_0073f601';
-                  readonly prefix: 'DuelosPartida_defensor_id_idx';
-                  readonly columns: readonly ['defensor_id'];
+                  readonly name: 'MatchDuels_defender_id_idx_403093c9';
+                  readonly prefix: 'MatchDuels_defender_id_idx';
+                  readonly columns: readonly ['defender_id'];
                   readonly unique: false;
                 },
                 {
-                  readonly name: 'DuelosPartida_partida_id_idx_bb37b8c5';
-                  readonly prefix: 'DuelosPartida_partida_id_idx';
-                  readonly columns: readonly ['partida_id'];
+                  readonly name: 'MatchDuels_match_id_idx_105a9a80';
+                  readonly prefix: 'MatchDuels_match_id_idx';
+                  readonly columns: readonly ['match_id'];
                   readonly unique: false;
                 },
               ];
@@ -1024,87 +1088,122 @@ type ContractBase = Omit<
                 {
                   readonly source: {
                     readonly namespaceId: 'public' & NamespaceId;
-                    readonly tableName: 'DuelosPartida';
-                    readonly columns: readonly ['partida_id'];
+                    readonly tableName: 'MatchDuels';
+                    readonly columns: readonly ['match_id'];
                   };
                   readonly target: {
                     readonly namespaceId: 'public' & NamespaceId;
-                    readonly tableName: 'Partidas';
+                    readonly tableName: 'Matches';
                     readonly columns: readonly ['id'];
                   };
                 },
                 {
                   readonly source: {
                     readonly namespaceId: 'public' & NamespaceId;
-                    readonly tableName: 'DuelosPartida';
-                    readonly columns: readonly ['clube_atacante_id'];
+                    readonly tableName: 'MatchDuels';
+                    readonly columns: readonly ['attacking_club_id'];
                   };
                   readonly target: {
                     readonly namespaceId: 'public' & NamespaceId;
-                    readonly tableName: 'Clubes';
+                    readonly tableName: 'Clubs';
                     readonly columns: readonly ['id'];
                   };
                 },
                 {
                   readonly source: {
                     readonly namespaceId: 'public' & NamespaceId;
-                    readonly tableName: 'DuelosPartida';
-                    readonly columns: readonly ['atacante_id'];
+                    readonly tableName: 'MatchDuels';
+                    readonly columns: readonly ['attacker_id'];
                   };
                   readonly target: {
                     readonly namespaceId: 'public' & NamespaceId;
-                    readonly tableName: 'Jogadores';
+                    readonly tableName: 'Players';
                     readonly columns: readonly ['id'];
                   };
                 },
                 {
                   readonly source: {
                     readonly namespaceId: 'public' & NamespaceId;
-                    readonly tableName: 'DuelosPartida';
-                    readonly columns: readonly ['defensor_id'];
+                    readonly tableName: 'MatchDuels';
+                    readonly columns: readonly ['defender_id'];
                   };
                   readonly target: {
                     readonly namespaceId: 'public' & NamespaceId;
-                    readonly tableName: 'Jogadores';
+                    readonly tableName: 'Players';
                     readonly columns: readonly ['id'];
                   };
                 },
               ];
             };
-            readonly Escalacoes: {
+            readonly Matches: {
               columns: {
-                readonly clube_id: {
+                readonly away_club_formation: {
+                  readonly dataType: 'pg/text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                  readonly many: false;
+                };
+                readonly away_club_goals: {
                   readonly dataType: 'pg/int4';
                   readonly codecId: 'pg/int4@1';
                   readonly nullable: false;
                   readonly many: false;
                 };
-                readonly criado_em: {
+                readonly away_club_id: {
+                  readonly dataType: 'pg/int4';
+                  readonly codecId: 'pg/int4@1';
+                  readonly nullable: false;
+                  readonly many: false;
+                };
+                readonly home_club_formation: {
+                  readonly dataType: 'pg/text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                  readonly many: false;
+                };
+                readonly home_club_goals: {
+                  readonly dataType: 'pg/int4';
+                  readonly codecId: 'pg/int4@1';
+                  readonly nullable: false;
+                  readonly many: false;
+                };
+                readonly home_club_id: {
+                  readonly dataType: 'pg/int4';
+                  readonly codecId: 'pg/int4@1';
+                  readonly nullable: false;
+                  readonly many: false;
+                };
+                readonly id: {
+                  readonly dataType: 'pg/int4';
+                  readonly codecId: 'pg/int4@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'function';
+                    readonly expression: 'autoincrement()';
+                  };
+                  readonly many: false;
+                };
+                readonly played_at: {
                   readonly dataType: 'pg/timestamptz';
                   readonly codecId: 'pg/timestamptz-string@1';
                   readonly nullable: false;
                   readonly default: { readonly kind: 'function'; readonly expression: 'now()' };
                   readonly many: false;
                 };
-                readonly jogador_id: {
-                  readonly dataType: 'pg/int4';
-                  readonly codecId: 'pg/int4@1';
-                  readonly nullable: false;
-                  readonly many: false;
-                };
               };
+              primaryKey: { readonly columns: readonly ['id'] };
               uniques: readonly [];
               indexes: readonly [
                 {
-                  readonly name: 'Escalacoes_clube_id_idx_6707a62a';
-                  readonly prefix: 'Escalacoes_clube_id_idx';
-                  readonly columns: readonly ['clube_id'];
+                  readonly name: 'Matches_away_club_id_idx_378d4357';
+                  readonly prefix: 'Matches_away_club_id_idx';
+                  readonly columns: readonly ['away_club_id'];
                   readonly unique: false;
                 },
                 {
-                  readonly name: 'Escalacoes_jogador_id_idx_b5f9d85d';
-                  readonly prefix: 'Escalacoes_jogador_id_idx';
-                  readonly columns: readonly ['jogador_id'];
+                  readonly name: 'Matches_home_club_id_idx_dfb624a1';
+                  readonly prefix: 'Matches_home_club_id_idx';
+                  readonly columns: readonly ['home_club_id'];
                   readonly unique: false;
                 },
               ];
@@ -1112,152 +1211,152 @@ type ContractBase = Omit<
                 {
                   readonly source: {
                     readonly namespaceId: 'public' & NamespaceId;
-                    readonly tableName: 'Escalacoes';
-                    readonly columns: readonly ['clube_id'];
+                    readonly tableName: 'Matches';
+                    readonly columns: readonly ['home_club_id'];
                   };
                   readonly target: {
                     readonly namespaceId: 'public' & NamespaceId;
-                    readonly tableName: 'Clubes';
+                    readonly tableName: 'Clubs';
                     readonly columns: readonly ['id'];
                   };
                 },
                 {
                   readonly source: {
                     readonly namespaceId: 'public' & NamespaceId;
-                    readonly tableName: 'Escalacoes';
-                    readonly columns: readonly ['jogador_id'];
+                    readonly tableName: 'Matches';
+                    readonly columns: readonly ['away_club_id'];
                   };
                   readonly target: {
                     readonly namespaceId: 'public' & NamespaceId;
-                    readonly tableName: 'Jogadores';
+                    readonly tableName: 'Clubs';
                     readonly columns: readonly ['id'];
                   };
                 },
               ];
             };
-            readonly Jogadores: {
+            readonly Players: {
               columns: {
-                readonly agilidade: {
+                readonly age: {
                   readonly dataType: 'pg/int4';
                   readonly codecId: 'pg/int4@1';
                   readonly nullable: false;
                   readonly many: false;
                 };
-                readonly atualizado_em: {
+                readonly agility: {
+                  readonly dataType: 'pg/int4';
+                  readonly codecId: 'pg/int4@1';
+                  readonly nullable: false;
+                  readonly many: false;
+                };
+                readonly base_value: {
+                  readonly dataType: 'pg/numeric';
+                  readonly codecId: 'pg/numeric@1';
+                  readonly nullable: false;
+                  readonly many: false;
+                };
+                readonly club_id: {
+                  readonly dataType: 'pg/int4';
+                  readonly codecId: 'pg/int4@1';
+                  readonly nullable: true;
+                  readonly many: false;
+                };
+                readonly condition: {
+                  readonly dataType: 'pg/text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                  readonly many: false;
+                };
+                readonly created_at: {
+                  readonly dataType: 'pg/timestamptz';
+                  readonly codecId: 'pg/timestamptz-string@1';
+                  readonly nullable: false;
+                  readonly default: { readonly kind: 'function'; readonly expression: 'now()' };
+                  readonly many: false;
+                };
+                readonly defending: {
+                  readonly dataType: 'pg/int4';
+                  readonly codecId: 'pg/int4@1';
+                  readonly nullable: false;
+                  readonly many: false;
+                };
+                readonly deleted_at: {
+                  readonly dataType: 'pg/timestamptz';
+                  readonly codecId: 'pg/timestamptz-string@1';
+                  readonly nullable: true;
+                  readonly many: false;
+                };
+                readonly dribbling: {
+                  readonly dataType: 'pg/int4';
+                  readonly codecId: 'pg/int4@1';
+                  readonly nullable: false;
+                  readonly many: false;
+                };
+                readonly id: {
+                  readonly dataType: 'pg/int4';
+                  readonly codecId: 'pg/int4@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'function';
+                    readonly expression: 'autoincrement()';
+                  };
+                  readonly many: false;
+                };
+                readonly name: {
+                  readonly dataType: 'pg/text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                  readonly many: false;
+                };
+                readonly pace: {
+                  readonly dataType: 'pg/int4';
+                  readonly codecId: 'pg/int4@1';
+                  readonly nullable: false;
+                  readonly many: false;
+                };
+                readonly passing: {
+                  readonly dataType: 'pg/int4';
+                  readonly codecId: 'pg/int4@1';
+                  readonly nullable: false;
+                  readonly many: false;
+                };
+                readonly physical: {
+                  readonly dataType: 'pg/int4';
+                  readonly codecId: 'pg/int4@1';
+                  readonly nullable: false;
+                  readonly many: false;
+                };
+                readonly position: {
+                  readonly dataType: 'pg/text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                  readonly many: false;
+                };
+                readonly potential: {
+                  readonly dataType: 'pg/int4';
+                  readonly codecId: 'pg/int4@1';
+                  readonly nullable: false;
+                  readonly many: false;
+                };
+                readonly shooting: {
+                  readonly dataType: 'pg/int4';
+                  readonly codecId: 'pg/int4@1';
+                  readonly nullable: false;
+                  readonly many: false;
+                };
+                readonly updated_at: {
                   readonly dataType: 'pg/timestamptz';
                   readonly codecId: 'pg/timestamptz-temporal@1';
                   readonly nullable: false;
                   readonly many: false;
                 };
-                readonly clube_id: {
-                  readonly dataType: 'pg/int4';
-                  readonly codecId: 'pg/int4@1';
-                  readonly nullable: true;
-                  readonly many: false;
-                };
-                readonly condicao: {
-                  readonly dataType: 'pg/text';
-                  readonly codecId: 'pg/text@1';
-                  readonly nullable: false;
-                  readonly many: false;
-                };
-                readonly criado_em: {
-                  readonly dataType: 'pg/timestamptz';
-                  readonly codecId: 'pg/timestamptz-string@1';
-                  readonly nullable: false;
-                  readonly default: { readonly kind: 'function'; readonly expression: 'now()' };
-                  readonly many: false;
-                };
-                readonly defesa: {
-                  readonly dataType: 'pg/int4';
-                  readonly codecId: 'pg/int4@1';
-                  readonly nullable: false;
-                  readonly many: false;
-                };
-                readonly drible: {
-                  readonly dataType: 'pg/int4';
-                  readonly codecId: 'pg/int4@1';
-                  readonly nullable: false;
-                  readonly many: false;
-                };
-                readonly excluido_em: {
-                  readonly dataType: 'pg/timestamptz';
-                  readonly codecId: 'pg/timestamptz-string@1';
-                  readonly nullable: true;
-                  readonly many: false;
-                };
-                readonly finalizacao: {
-                  readonly dataType: 'pg/int4';
-                  readonly codecId: 'pg/int4@1';
-                  readonly nullable: false;
-                  readonly many: false;
-                };
-                readonly fisico: {
-                  readonly dataType: 'pg/int4';
-                  readonly codecId: 'pg/int4@1';
-                  readonly nullable: false;
-                  readonly many: false;
-                };
-                readonly id: {
-                  readonly dataType: 'pg/int4';
-                  readonly codecId: 'pg/int4@1';
-                  readonly nullable: false;
-                  readonly default: {
-                    readonly kind: 'function';
-                    readonly expression: 'autoincrement()';
-                  };
-                  readonly many: false;
-                };
-                readonly idade: {
-                  readonly dataType: 'pg/int4';
-                  readonly codecId: 'pg/int4@1';
-                  readonly nullable: false;
-                  readonly many: false;
-                };
-                readonly nome: {
-                  readonly dataType: 'pg/text';
-                  readonly codecId: 'pg/text@1';
-                  readonly nullable: false;
-                  readonly many: false;
-                };
-                readonly passe: {
-                  readonly dataType: 'pg/int4';
-                  readonly codecId: 'pg/int4@1';
-                  readonly nullable: false;
-                  readonly many: false;
-                };
-                readonly posicao: {
-                  readonly dataType: 'pg/text';
-                  readonly codecId: 'pg/text@1';
-                  readonly nullable: false;
-                  readonly many: false;
-                };
-                readonly potencial: {
-                  readonly dataType: 'pg/int4';
-                  readonly codecId: 'pg/int4@1';
-                  readonly nullable: false;
-                  readonly many: false;
-                };
-                readonly valor_base: {
-                  readonly dataType: 'pg/numeric';
-                  readonly codecId: 'pg/numeric@1';
-                  readonly nullable: false;
-                  readonly many: false;
-                };
-                readonly velocidade: {
-                  readonly dataType: 'pg/int4';
-                  readonly codecId: 'pg/int4@1';
-                  readonly nullable: false;
-                  readonly many: false;
-                };
               };
               primaryKey: { readonly columns: readonly ['id'] };
               uniques: readonly [];
               indexes: readonly [
                 {
-                  readonly name: 'Jogadores_clube_id_idx_6707a62a';
-                  readonly prefix: 'Jogadores_clube_id_idx';
-                  readonly columns: readonly ['clube_id'];
+                  readonly name: 'Players_club_id_idx_21e49689';
+                  readonly prefix: 'Players_club_id_idx';
+                  readonly columns: readonly ['club_id'];
                   readonly unique: false;
                 },
               ];
@@ -1265,47 +1364,41 @@ type ContractBase = Omit<
                 {
                   readonly source: {
                     readonly namespaceId: 'public' & NamespaceId;
-                    readonly tableName: 'Jogadores';
-                    readonly columns: readonly ['clube_id'];
+                    readonly tableName: 'Players';
+                    readonly columns: readonly ['club_id'];
                   };
                   readonly target: {
                     readonly namespaceId: 'public' & NamespaceId;
-                    readonly tableName: 'Clubes';
+                    readonly tableName: 'Clubs';
                     readonly columns: readonly ['id'];
                   };
                 },
               ];
             };
-            readonly Partidas: {
+            readonly Transactions: {
               columns: {
-                readonly criado_em: {
+                readonly cash_change: {
+                  readonly dataType: 'pg/numeric';
+                  readonly codecId: 'pg/numeric@1';
+                  readonly nullable: false;
+                  readonly many: false;
+                };
+                readonly club_id: {
+                  readonly dataType: 'pg/int4';
+                  readonly codecId: 'pg/int4@1';
+                  readonly nullable: false;
+                  readonly many: false;
+                };
+                readonly created_at: {
                   readonly dataType: 'pg/timestamptz';
                   readonly codecId: 'pg/timestamptz-string@1';
                   readonly nullable: false;
                   readonly default: { readonly kind: 'function'; readonly expression: 'now()' };
                   readonly many: false;
                 };
-                readonly formacao_mandante: {
-                  readonly dataType: 'pg/text';
-                  readonly codecId: 'pg/text@1';
-                  readonly nullable: false;
-                  readonly many: false;
-                };
-                readonly formacao_visitante: {
-                  readonly dataType: 'pg/text';
-                  readonly codecId: 'pg/text@1';
-                  readonly nullable: false;
-                  readonly many: false;
-                };
-                readonly gols_mandante: {
-                  readonly dataType: 'pg/int4';
-                  readonly codecId: 'pg/int4@1';
-                  readonly nullable: false;
-                  readonly many: false;
-                };
-                readonly gols_visitante: {
-                  readonly dataType: 'pg/int4';
-                  readonly codecId: 'pg/int4@1';
+                readonly fee: {
+                  readonly dataType: 'pg/numeric';
+                  readonly codecId: 'pg/numeric@1';
                   readonly nullable: false;
                   readonly many: false;
                 };
@@ -1319,130 +1412,37 @@ type ContractBase = Omit<
                   };
                   readonly many: false;
                 };
-                readonly mandante_id: {
-                  readonly dataType: 'pg/int4';
-                  readonly codecId: 'pg/int4@1';
-                  readonly nullable: false;
-                  readonly many: false;
-                };
-                readonly visitante_id: {
-                  readonly dataType: 'pg/int4';
-                  readonly codecId: 'pg/int4@1';
-                  readonly nullable: false;
-                  readonly many: false;
-                };
-              };
-              primaryKey: { readonly columns: readonly ['id'] };
-              uniques: readonly [];
-              indexes: readonly [
-                {
-                  readonly name: 'Partidas_mandante_id_idx_eee6227e';
-                  readonly prefix: 'Partidas_mandante_id_idx';
-                  readonly columns: readonly ['mandante_id'];
-                  readonly unique: false;
-                },
-                {
-                  readonly name: 'Partidas_visitante_id_idx_d5152123';
-                  readonly prefix: 'Partidas_visitante_id_idx';
-                  readonly columns: readonly ['visitante_id'];
-                  readonly unique: false;
-                },
-              ];
-              foreignKeys: readonly [
-                {
-                  readonly source: {
-                    readonly namespaceId: 'public' & NamespaceId;
-                    readonly tableName: 'Partidas';
-                    readonly columns: readonly ['mandante_id'];
-                  };
-                  readonly target: {
-                    readonly namespaceId: 'public' & NamespaceId;
-                    readonly tableName: 'Clubes';
-                    readonly columns: readonly ['id'];
-                  };
-                },
-                {
-                  readonly source: {
-                    readonly namespaceId: 'public' & NamespaceId;
-                    readonly tableName: 'Partidas';
-                    readonly columns: readonly ['visitante_id'];
-                  };
-                  readonly target: {
-                    readonly namespaceId: 'public' & NamespaceId;
-                    readonly tableName: 'Clubes';
-                    readonly columns: readonly ['id'];
-                  };
-                },
-              ];
-            };
-            readonly Transacoes: {
-              columns: {
-                readonly clube_id: {
-                  readonly dataType: 'pg/int4';
-                  readonly codecId: 'pg/int4@1';
-                  readonly nullable: false;
-                  readonly many: false;
-                };
-                readonly criado_em: {
-                  readonly dataType: 'pg/timestamptz';
-                  readonly codecId: 'pg/timestamptz-string@1';
-                  readonly nullable: false;
-                  readonly default: { readonly kind: 'function'; readonly expression: 'now()' };
-                  readonly many: false;
-                };
-                readonly id: {
-                  readonly dataType: 'pg/int4';
-                  readonly codecId: 'pg/int4@1';
-                  readonly nullable: false;
-                  readonly default: {
-                    readonly kind: 'function';
-                    readonly expression: 'autoincrement()';
-                  };
-                  readonly many: false;
-                };
-                readonly jogador_id: {
-                  readonly dataType: 'pg/int4';
-                  readonly codecId: 'pg/int4@1';
-                  readonly nullable: false;
-                  readonly many: false;
-                };
-                readonly lucro: {
+                readonly penalty: {
                   readonly dataType: 'pg/numeric';
                   readonly codecId: 'pg/numeric@1';
                   readonly nullable: false;
                   readonly many: false;
                 };
-                readonly multa: {
-                  readonly dataType: 'pg/numeric';
-                  readonly codecId: 'pg/numeric@1';
+                readonly player_id: {
+                  readonly dataType: 'pg/int4';
+                  readonly codecId: 'pg/int4@1';
                   readonly nullable: false;
                   readonly many: false;
                 };
-                readonly nome_jogador: {
+                readonly player_name: {
                   readonly dataType: 'pg/text';
                   readonly codecId: 'pg/text@1';
                   readonly nullable: false;
                   readonly many: false;
                 };
-                readonly taxa: {
+                readonly profit: {
                   readonly dataType: 'pg/numeric';
                   readonly codecId: 'pg/numeric@1';
                   readonly nullable: false;
                   readonly many: false;
                 };
-                readonly tipo: {
+                readonly type: {
                   readonly dataType: 'pg/text';
                   readonly codecId: 'pg/text@1';
                   readonly nullable: false;
                   readonly many: false;
                 };
-                readonly valor: {
-                  readonly dataType: 'pg/numeric';
-                  readonly codecId: 'pg/numeric@1';
-                  readonly nullable: false;
-                  readonly many: false;
-                };
-                readonly variacao_caixa: {
+                readonly value: {
                   readonly dataType: 'pg/numeric';
                   readonly codecId: 'pg/numeric@1';
                   readonly nullable: false;
@@ -1453,15 +1453,15 @@ type ContractBase = Omit<
               uniques: readonly [];
               indexes: readonly [
                 {
-                  readonly name: 'Transacoes_clube_id_idx_6707a62a';
-                  readonly prefix: 'Transacoes_clube_id_idx';
-                  readonly columns: readonly ['clube_id'];
+                  readonly name: 'Transactions_club_id_idx_21e49689';
+                  readonly prefix: 'Transactions_club_id_idx';
+                  readonly columns: readonly ['club_id'];
                   readonly unique: false;
                 },
                 {
-                  readonly name: 'Transacoes_jogador_id_idx_b5f9d85d';
-                  readonly prefix: 'Transacoes_jogador_id_idx';
-                  readonly columns: readonly ['jogador_id'];
+                  readonly name: 'Transactions_player_id_idx_9eca16c7';
+                  readonly prefix: 'Transactions_player_id_idx';
+                  readonly columns: readonly ['player_id'];
                   readonly unique: false;
                 },
               ];
@@ -1469,24 +1469,24 @@ type ContractBase = Omit<
                 {
                   readonly source: {
                     readonly namespaceId: 'public' & NamespaceId;
-                    readonly tableName: 'Transacoes';
-                    readonly columns: readonly ['clube_id'];
+                    readonly tableName: 'Transactions';
+                    readonly columns: readonly ['club_id'];
                   };
                   readonly target: {
                     readonly namespaceId: 'public' & NamespaceId;
-                    readonly tableName: 'Clubes';
+                    readonly tableName: 'Clubs';
                     readonly columns: readonly ['id'];
                   };
                 },
                 {
                   readonly source: {
                     readonly namespaceId: 'public' & NamespaceId;
-                    readonly tableName: 'Transacoes';
-                    readonly columns: readonly ['jogador_id'];
+                    readonly tableName: 'Transactions';
+                    readonly columns: readonly ['player_id'];
                   };
                   readonly target: {
                     readonly namespaceId: 'public' & NamespaceId;
-                    readonly tableName: 'Jogadores';
+                    readonly tableName: 'Players';
                     readonly columns: readonly ['id'];
                   };
                 },
@@ -1494,27 +1494,27 @@ type ContractBase = Omit<
             };
           };
           readonly valueSet: {
-            readonly Atributo: {
+            readonly Attribute: {
               readonly kind: 'valueSet';
-              readonly values: readonly ['finalizacao', 'passe', 'drible', 'defesa'];
+              readonly values: readonly ['shooting', 'passing', 'dribbling', 'defending'];
             };
-            readonly Condicao: {
+            readonly Condition: {
               readonly kind: 'valueSet';
               readonly values: readonly ['APTO', 'MAL_CONDICIONADO', 'DOENTE'];
             };
-            readonly Formacao: {
-              readonly kind: 'valueSet';
-              readonly values: readonly ['3-1', '2-2', '2-1-1', '1-2-1'];
-            };
-            readonly Posicao: {
-              readonly kind: 'valueSet';
-              readonly values: readonly ['GOL', 'ZAG', 'LAT', 'MEI', 'ATA'];
-            };
-            readonly SituacaoContrato: {
+            readonly ContractStatus: {
               readonly kind: 'valueSet';
               readonly values: readonly ['ATIVO', 'ENCERRADO', 'RESCINDIDO'];
             };
-            readonly TipoTransacao: {
+            readonly Formation: {
+              readonly kind: 'valueSet';
+              readonly values: readonly ['3-1', '2-2', '2-1-1', '1-2-1'];
+            };
+            readonly Position: {
+              readonly kind: 'valueSet';
+              readonly values: readonly ['GOL', 'ZAG', 'LAT', 'MEI', 'ATA'];
+            };
+            readonly TransactionType: {
               readonly kind: 'valueSet';
               readonly values: readonly ['COMPRA', 'VENDA'];
             };
@@ -1529,41 +1529,42 @@ type ContractBase = Omit<
   readonly target: 'postgres';
   readonly targetFamily: 'sql';
   readonly roots: {
-    readonly Clubes: { readonly namespace: 'public' & NamespaceId; readonly model: 'Clubes' };
-    readonly Contratos: { readonly namespace: 'public' & NamespaceId; readonly model: 'Contratos' };
-    readonly DuelosPartida: {
+    readonly Clubs: { readonly namespace: 'public' & NamespaceId; readonly model: 'Clubs' };
+    readonly Contracts: { readonly namespace: 'public' & NamespaceId; readonly model: 'Contracts' };
+    readonly Lineups: { readonly namespace: 'public' & NamespaceId; readonly model: 'Lineups' };
+    readonly MatchDuels: {
       readonly namespace: 'public' & NamespaceId;
-      readonly model: 'DuelosPartida';
+      readonly model: 'MatchDuels';
     };
-    readonly Escalacoes: {
+    readonly Matches: { readonly namespace: 'public' & NamespaceId; readonly model: 'Matches' };
+    readonly Players: { readonly namespace: 'public' & NamespaceId; readonly model: 'Players' };
+    readonly Transactions: {
       readonly namespace: 'public' & NamespaceId;
-      readonly model: 'Escalacoes';
-    };
-    readonly Jogadores: { readonly namespace: 'public' & NamespaceId; readonly model: 'Jogadores' };
-    readonly Partidas: { readonly namespace: 'public' & NamespaceId; readonly model: 'Partidas' };
-    readonly Transacoes: {
-      readonly namespace: 'public' & NamespaceId;
-      readonly model: 'Transacoes';
+      readonly model: 'Transactions';
     };
   };
   readonly domain: {
     readonly namespaces: {
       readonly public: {
         readonly models: {
-          readonly Clubes: {
+          readonly Clubs: {
             readonly fields: {
-              readonly caixa: {
+              readonly acronym: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly cash: {
                 readonly nullable: false;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/numeric@1' };
               };
-              readonly criado_em: {
+              readonly created_at: {
                 readonly nullable: false;
                 readonly type: {
                   readonly kind: 'scalar';
                   readonly codecId: 'pg/timestamptz-string@1';
                 };
               };
-              readonly formacao: {
+              readonly formation: {
                 readonly nullable: true;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
               };
@@ -1571,56 +1572,56 @@ type ContractBase = Omit<
                 readonly nullable: false;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
               };
-              readonly nome: {
-                readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
-              };
-              readonly sigla: {
+              readonly name: {
                 readonly nullable: false;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
               };
             };
             readonly relations: {
-              readonly jogadores: {
+              readonly players: {
                 readonly to: {
                   readonly namespace: 'public' & NamespaceId;
-                  readonly model: 'Jogadores';
+                  readonly model: 'Players';
                 };
                 readonly cardinality: '1:N';
                 readonly on: {
                   readonly localFields: readonly ['id'];
-                  readonly targetFields: readonly ['clube_id'];
+                  readonly targetFields: readonly ['club_id'];
                 };
               };
             };
             readonly storage: {
-              readonly table: 'Clubes';
+              readonly table: 'Clubs';
               readonly namespaceId: 'public';
               readonly fields: {
-                readonly caixa: { readonly column: 'caixa' };
-                readonly criado_em: { readonly column: 'criado_em' };
-                readonly formacao: { readonly column: 'formacao' };
+                readonly acronym: { readonly column: 'acronym' };
+                readonly cash: { readonly column: 'cash' };
+                readonly created_at: { readonly column: 'created_at' };
+                readonly formation: { readonly column: 'formation' };
                 readonly id: { readonly column: 'id' };
-                readonly nome: { readonly column: 'nome' };
-                readonly sigla: { readonly column: 'sigla' };
+                readonly name: { readonly column: 'name' };
               };
             };
           };
-          readonly Contratos: {
+          readonly Contracts: {
             readonly fields: {
-              readonly clube_id: {
+              readonly club_id: {
                 readonly nullable: false;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
               };
-              readonly encerrado_em: {
-                readonly nullable: true;
+              readonly contract_status: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly created_at: {
+                readonly nullable: false;
                 readonly type: {
                   readonly kind: 'scalar';
                   readonly codecId: 'pg/timestamptz-string@1';
                 };
               };
-              readonly fidelidade_ate: {
-                readonly nullable: false;
+              readonly ended_at: {
+                readonly nullable: true;
                 readonly type: {
                   readonly kind: 'scalar';
                   readonly codecId: 'pg/timestamptz-string@1';
@@ -1630,98 +1631,172 @@ type ContractBase = Omit<
                 readonly nullable: false;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
               };
-              readonly iniciado_em: {
+              readonly loyalty_until: {
                 readonly nullable: false;
                 readonly type: {
                   readonly kind: 'scalar';
                   readonly codecId: 'pg/timestamptz-string@1';
                 };
               };
-              readonly jogador_id: {
+              readonly player_id: {
                 readonly nullable: false;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
               };
-              readonly situacao: {
-                readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
-              };
-              readonly valor_compra: {
+              readonly purchase_value: {
                 readonly nullable: false;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/numeric@1' };
               };
             };
             readonly relations: {
-              readonly clube: {
+              readonly club: {
                 readonly to: {
                   readonly namespace: 'public' & NamespaceId;
-                  readonly model: 'Clubes';
+                  readonly model: 'Clubs';
                 };
                 readonly cardinality: 'N:1';
                 readonly nullable: false;
                 readonly on: {
-                  readonly localFields: readonly ['clube_id'];
+                  readonly localFields: readonly ['club_id'];
                   readonly targetFields: readonly ['id'];
                 };
               };
-              readonly jogador: {
+              readonly player: {
                 readonly to: {
                   readonly namespace: 'public' & NamespaceId;
-                  readonly model: 'Jogadores';
+                  readonly model: 'Players';
                 };
                 readonly cardinality: 'N:1';
                 readonly nullable: false;
                 readonly on: {
-                  readonly localFields: readonly ['jogador_id'];
+                  readonly localFields: readonly ['player_id'];
                   readonly targetFields: readonly ['id'];
                 };
               };
             };
             readonly storage: {
-              readonly table: 'Contratos';
+              readonly table: 'Contracts';
               readonly namespaceId: 'public';
               readonly fields: {
-                readonly clube_id: { readonly column: 'clube_id' };
-                readonly encerrado_em: { readonly column: 'encerrado_em' };
-                readonly fidelidade_ate: { readonly column: 'fidelidade_ate' };
+                readonly club_id: { readonly column: 'club_id' };
+                readonly contract_status: { readonly column: 'contract_status' };
+                readonly created_at: { readonly column: 'created_at' };
+                readonly ended_at: { readonly column: 'ended_at' };
                 readonly id: { readonly column: 'id' };
-                readonly iniciado_em: { readonly column: 'iniciado_em' };
-                readonly jogador_id: { readonly column: 'jogador_id' };
-                readonly situacao: { readonly column: 'situacao' };
-                readonly valor_compra: { readonly column: 'valor_compra' };
+                readonly loyalty_until: { readonly column: 'loyalty_until' };
+                readonly player_id: { readonly column: 'player_id' };
+                readonly purchase_value: { readonly column: 'purchase_value' };
               };
             };
           };
-          readonly DuelosPartida: {
+          readonly Lineups: {
             readonly fields: {
-              readonly atacante_id: {
+              readonly club_id: {
                 readonly nullable: false;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
               };
-              readonly atributo_ataque: {
+              readonly created_at: {
                 readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/timestamptz-string@1';
+                };
               };
-              readonly atributo_defesa: {
-                readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
-              };
-              readonly clube_atacante_id: {
-                readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
-              };
-              readonly condicao_atacante: {
-                readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
-              };
-              readonly condicao_defensor: {
-                readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
-              };
-              readonly defensor_id: {
+              readonly player_id: {
                 readonly nullable: false;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
               };
-              readonly gol: {
+            };
+            readonly relations: {
+              readonly club: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Clubs';
+                };
+                readonly cardinality: 'N:1';
+                readonly nullable: false;
+                readonly on: {
+                  readonly localFields: readonly ['club_id'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
+              readonly player: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Players';
+                };
+                readonly cardinality: 'N:1';
+                readonly nullable: false;
+                readonly on: {
+                  readonly localFields: readonly ['player_id'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
+            };
+            readonly storage: {
+              readonly table: 'Lineups';
+              readonly namespaceId: 'public';
+              readonly fields: {
+                readonly club_id: { readonly column: 'club_id' };
+                readonly created_at: { readonly column: 'created_at' };
+                readonly player_id: { readonly column: 'player_id' };
+              };
+            };
+          };
+          readonly MatchDuels: {
+            readonly fields: {
+              readonly attack_attribute: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly attack_value: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
+              };
+              readonly attacker_condition: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly attacker_id: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
+              };
+              readonly attacker_name: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly attacker_position: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly attacking_club_id: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
+              };
+              readonly defender_condition: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly defender_id: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
+              };
+              readonly defender_name: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly defender_position: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly defense_attribute: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly defense_value: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
+              };
+              readonly goal: {
                 readonly nullable: false;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/bool@1' };
               };
@@ -1729,475 +1804,397 @@ type ContractBase = Omit<
                 readonly nullable: false;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
               };
-              readonly nome_atacante: {
-                readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
-              };
-              readonly nome_defensor: {
-                readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
-              };
-              readonly ordem: {
+              readonly match_id: {
                 readonly nullable: false;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
               };
-              readonly partida_id: {
-                readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
-              };
-              readonly posicao_atacante: {
-                readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
-              };
-              readonly posicao_defensor: {
-                readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
-              };
-              readonly valor_ataque: {
-                readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
-              };
-              readonly valor_defesa: {
+              readonly order: {
                 readonly nullable: false;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
               };
             };
             readonly relations: {
-              readonly atacante: {
+              readonly attacker: {
                 readonly to: {
                   readonly namespace: 'public' & NamespaceId;
-                  readonly model: 'Jogadores';
+                  readonly model: 'Players';
                 };
                 readonly cardinality: 'N:1';
                 readonly nullable: false;
                 readonly on: {
-                  readonly localFields: readonly ['atacante_id'];
+                  readonly localFields: readonly ['attacker_id'];
                   readonly targetFields: readonly ['id'];
                 };
               };
-              readonly clube_atacante: {
+              readonly attacking_club: {
                 readonly to: {
                   readonly namespace: 'public' & NamespaceId;
-                  readonly model: 'Clubes';
+                  readonly model: 'Clubs';
                 };
                 readonly cardinality: 'N:1';
                 readonly nullable: false;
                 readonly on: {
-                  readonly localFields: readonly ['clube_atacante_id'];
+                  readonly localFields: readonly ['attacking_club_id'];
                   readonly targetFields: readonly ['id'];
                 };
               };
-              readonly defensor: {
+              readonly defender: {
                 readonly to: {
                   readonly namespace: 'public' & NamespaceId;
-                  readonly model: 'Jogadores';
+                  readonly model: 'Players';
                 };
                 readonly cardinality: 'N:1';
                 readonly nullable: false;
                 readonly on: {
-                  readonly localFields: readonly ['defensor_id'];
+                  readonly localFields: readonly ['defender_id'];
                   readonly targetFields: readonly ['id'];
                 };
               };
-              readonly partida: {
+              readonly match: {
                 readonly to: {
                   readonly namespace: 'public' & NamespaceId;
-                  readonly model: 'Partidas';
+                  readonly model: 'Matches';
                 };
                 readonly cardinality: 'N:1';
                 readonly nullable: false;
                 readonly on: {
-                  readonly localFields: readonly ['partida_id'];
+                  readonly localFields: readonly ['match_id'];
                   readonly targetFields: readonly ['id'];
                 };
               };
             };
             readonly storage: {
-              readonly table: 'DuelosPartida';
+              readonly table: 'MatchDuels';
               readonly namespaceId: 'public';
               readonly fields: {
-                readonly atacante_id: { readonly column: 'atacante_id' };
-                readonly atributo_ataque: { readonly column: 'atributo_ataque' };
-                readonly atributo_defesa: { readonly column: 'atributo_defesa' };
-                readonly clube_atacante_id: { readonly column: 'clube_atacante_id' };
-                readonly condicao_atacante: { readonly column: 'condicao_atacante' };
-                readonly condicao_defensor: { readonly column: 'condicao_defensor' };
-                readonly defensor_id: { readonly column: 'defensor_id' };
-                readonly gol: { readonly column: 'gol' };
+                readonly attack_attribute: { readonly column: 'attack_attribute' };
+                readonly attack_value: { readonly column: 'attack_value' };
+                readonly attacker_condition: { readonly column: 'attacker_condition' };
+                readonly attacker_id: { readonly column: 'attacker_id' };
+                readonly attacker_name: { readonly column: 'attacker_name' };
+                readonly attacker_position: { readonly column: 'attacker_position' };
+                readonly attacking_club_id: { readonly column: 'attacking_club_id' };
+                readonly defender_condition: { readonly column: 'defender_condition' };
+                readonly defender_id: { readonly column: 'defender_id' };
+                readonly defender_name: { readonly column: 'defender_name' };
+                readonly defender_position: { readonly column: 'defender_position' };
+                readonly defense_attribute: { readonly column: 'defense_attribute' };
+                readonly defense_value: { readonly column: 'defense_value' };
+                readonly goal: { readonly column: 'goal' };
                 readonly id: { readonly column: 'id' };
-                readonly nome_atacante: { readonly column: 'nome_atacante' };
-                readonly nome_defensor: { readonly column: 'nome_defensor' };
-                readonly ordem: { readonly column: 'ordem' };
-                readonly partida_id: { readonly column: 'partida_id' };
-                readonly posicao_atacante: { readonly column: 'posicao_atacante' };
-                readonly posicao_defensor: { readonly column: 'posicao_defensor' };
-                readonly valor_ataque: { readonly column: 'valor_ataque' };
-                readonly valor_defesa: { readonly column: 'valor_defesa' };
+                readonly match_id: { readonly column: 'match_id' };
+                readonly order: { readonly column: 'order' };
               };
             };
           };
-          readonly Escalacoes: {
+          readonly Matches: {
             readonly fields: {
-              readonly clube_id: {
+              readonly away_club_formation: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly away_club_goals: {
                 readonly nullable: false;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
               };
-              readonly criado_em: {
+              readonly away_club_id: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
+              };
+              readonly home_club_formation: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly home_club_goals: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
+              };
+              readonly home_club_id: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
+              };
+              readonly id: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
+              };
+              readonly played_at: {
                 readonly nullable: false;
                 readonly type: {
                   readonly kind: 'scalar';
                   readonly codecId: 'pg/timestamptz-string@1';
                 };
               };
-              readonly jogador_id: {
-                readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
-              };
             };
             readonly relations: {
-              readonly clube: {
+              readonly away_club: {
                 readonly to: {
                   readonly namespace: 'public' & NamespaceId;
-                  readonly model: 'Clubes';
+                  readonly model: 'Clubs';
                 };
                 readonly cardinality: 'N:1';
                 readonly nullable: false;
                 readonly on: {
-                  readonly localFields: readonly ['clube_id'];
+                  readonly localFields: readonly ['away_club_id'];
                   readonly targetFields: readonly ['id'];
                 };
               };
-              readonly jogador: {
+              readonly home_club: {
                 readonly to: {
                   readonly namespace: 'public' & NamespaceId;
-                  readonly model: 'Jogadores';
+                  readonly model: 'Clubs';
                 };
                 readonly cardinality: 'N:1';
                 readonly nullable: false;
                 readonly on: {
-                  readonly localFields: readonly ['jogador_id'];
+                  readonly localFields: readonly ['home_club_id'];
                   readonly targetFields: readonly ['id'];
                 };
               };
             };
             readonly storage: {
-              readonly table: 'Escalacoes';
+              readonly table: 'Matches';
               readonly namespaceId: 'public';
               readonly fields: {
-                readonly clube_id: { readonly column: 'clube_id' };
-                readonly criado_em: { readonly column: 'criado_em' };
-                readonly jogador_id: { readonly column: 'jogador_id' };
+                readonly away_club_formation: { readonly column: 'away_club_formation' };
+                readonly away_club_goals: { readonly column: 'away_club_goals' };
+                readonly away_club_id: { readonly column: 'away_club_id' };
+                readonly home_club_formation: { readonly column: 'home_club_formation' };
+                readonly home_club_goals: { readonly column: 'home_club_goals' };
+                readonly home_club_id: { readonly column: 'home_club_id' };
+                readonly id: { readonly column: 'id' };
+                readonly played_at: { readonly column: 'played_at' };
               };
             };
           };
-          readonly Jogadores: {
+          readonly Players: {
             readonly fields: {
-              readonly agilidade: {
+              readonly age: {
                 readonly nullable: false;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
               };
-              readonly atualizado_em: {
+              readonly agility: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
+              };
+              readonly base_value: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/numeric@1' };
+              };
+              readonly club_id: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
+              };
+              readonly condition: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly created_at: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/timestamptz-string@1';
+                };
+              };
+              readonly defending: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
+              };
+              readonly deleted_at: {
+                readonly nullable: true;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/timestamptz-string@1';
+                };
+              };
+              readonly dribbling: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
+              };
+              readonly id: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
+              };
+              readonly name: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly pace: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
+              };
+              readonly passing: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
+              };
+              readonly physical: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
+              };
+              readonly position: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly potential: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
+              };
+              readonly shooting: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
+              };
+              readonly updated_at: {
                 readonly nullable: false;
                 readonly type: {
                   readonly kind: 'scalar';
                   readonly codecId: 'pg/timestamptz-temporal@1';
                 };
               };
-              readonly clube_id: {
-                readonly nullable: true;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
-              };
-              readonly condicao: {
-                readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
-              };
-              readonly criado_em: {
-                readonly nullable: false;
-                readonly type: {
-                  readonly kind: 'scalar';
-                  readonly codecId: 'pg/timestamptz-string@1';
-                };
-              };
-              readonly defesa: {
-                readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
-              };
-              readonly drible: {
-                readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
-              };
-              readonly excluido_em: {
-                readonly nullable: true;
-                readonly type: {
-                  readonly kind: 'scalar';
-                  readonly codecId: 'pg/timestamptz-string@1';
-                };
-              };
-              readonly finalizacao: {
-                readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
-              };
-              readonly fisico: {
-                readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
-              };
-              readonly id: {
-                readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
-              };
-              readonly idade: {
-                readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
-              };
-              readonly nome: {
-                readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
-              };
-              readonly passe: {
-                readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
-              };
-              readonly posicao: {
-                readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
-              };
-              readonly potencial: {
-                readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
-              };
-              readonly valor_base: {
-                readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/numeric@1' };
-              };
-              readonly velocidade: {
-                readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
-              };
             };
             readonly relations: {
-              readonly clube: {
+              readonly club: {
                 readonly to: {
                   readonly namespace: 'public' & NamespaceId;
-                  readonly model: 'Clubes';
+                  readonly model: 'Clubs';
                 };
                 readonly cardinality: 'N:1';
                 readonly nullable: true;
                 readonly on: {
-                  readonly localFields: readonly ['clube_id'];
+                  readonly localFields: readonly ['club_id'];
                   readonly targetFields: readonly ['id'];
                 };
               };
             };
             readonly storage: {
-              readonly table: 'Jogadores';
+              readonly table: 'Players';
               readonly namespaceId: 'public';
               readonly fields: {
-                readonly agilidade: { readonly column: 'agilidade' };
-                readonly atualizado_em: { readonly column: 'atualizado_em' };
-                readonly clube_id: { readonly column: 'clube_id' };
-                readonly condicao: { readonly column: 'condicao' };
-                readonly criado_em: { readonly column: 'criado_em' };
-                readonly defesa: { readonly column: 'defesa' };
-                readonly drible: { readonly column: 'drible' };
-                readonly excluido_em: { readonly column: 'excluido_em' };
-                readonly finalizacao: { readonly column: 'finalizacao' };
-                readonly fisico: { readonly column: 'fisico' };
+                readonly age: { readonly column: 'age' };
+                readonly agility: { readonly column: 'agility' };
+                readonly base_value: { readonly column: 'base_value' };
+                readonly club_id: { readonly column: 'club_id' };
+                readonly condition: { readonly column: 'condition' };
+                readonly created_at: { readonly column: 'created_at' };
+                readonly defending: { readonly column: 'defending' };
+                readonly deleted_at: { readonly column: 'deleted_at' };
+                readonly dribbling: { readonly column: 'dribbling' };
                 readonly id: { readonly column: 'id' };
-                readonly idade: { readonly column: 'idade' };
-                readonly nome: { readonly column: 'nome' };
-                readonly passe: { readonly column: 'passe' };
-                readonly posicao: { readonly column: 'posicao' };
-                readonly potencial: { readonly column: 'potencial' };
-                readonly valor_base: { readonly column: 'valor_base' };
-                readonly velocidade: { readonly column: 'velocidade' };
+                readonly name: { readonly column: 'name' };
+                readonly pace: { readonly column: 'pace' };
+                readonly passing: { readonly column: 'passing' };
+                readonly physical: { readonly column: 'physical' };
+                readonly position: { readonly column: 'position' };
+                readonly potential: { readonly column: 'potential' };
+                readonly shooting: { readonly column: 'shooting' };
+                readonly updated_at: { readonly column: 'updated_at' };
               };
             };
           };
-          readonly Partidas: {
+          readonly Transactions: {
             readonly fields: {
-              readonly criado_em: {
+              readonly cash_change: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/numeric@1' };
+              };
+              readonly club_id: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
+              };
+              readonly created_at: {
                 readonly nullable: false;
                 readonly type: {
                   readonly kind: 'scalar';
                   readonly codecId: 'pg/timestamptz-string@1';
                 };
               };
-              readonly formacao_mandante: {
+              readonly fee: {
                 readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
-              };
-              readonly formacao_visitante: {
-                readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
-              };
-              readonly gols_mandante: {
-                readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
-              };
-              readonly gols_visitante: {
-                readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/numeric@1' };
               };
               readonly id: {
                 readonly nullable: false;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
               };
-              readonly mandante_id: {
-                readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
-              };
-              readonly visitante_id: {
-                readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
-              };
-            };
-            readonly relations: {
-              readonly mandante: {
-                readonly to: {
-                  readonly namespace: 'public' & NamespaceId;
-                  readonly model: 'Clubes';
-                };
-                readonly cardinality: 'N:1';
-                readonly nullable: false;
-                readonly on: {
-                  readonly localFields: readonly ['mandante_id'];
-                  readonly targetFields: readonly ['id'];
-                };
-              };
-              readonly visitante: {
-                readonly to: {
-                  readonly namespace: 'public' & NamespaceId;
-                  readonly model: 'Clubes';
-                };
-                readonly cardinality: 'N:1';
-                readonly nullable: false;
-                readonly on: {
-                  readonly localFields: readonly ['visitante_id'];
-                  readonly targetFields: readonly ['id'];
-                };
-              };
-            };
-            readonly storage: {
-              readonly table: 'Partidas';
-              readonly namespaceId: 'public';
-              readonly fields: {
-                readonly criado_em: { readonly column: 'criado_em' };
-                readonly formacao_mandante: { readonly column: 'formacao_mandante' };
-                readonly formacao_visitante: { readonly column: 'formacao_visitante' };
-                readonly gols_mandante: { readonly column: 'gols_mandante' };
-                readonly gols_visitante: { readonly column: 'gols_visitante' };
-                readonly id: { readonly column: 'id' };
-                readonly mandante_id: { readonly column: 'mandante_id' };
-                readonly visitante_id: { readonly column: 'visitante_id' };
-              };
-            };
-          };
-          readonly Transacoes: {
-            readonly fields: {
-              readonly clube_id: {
-                readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
-              };
-              readonly criado_em: {
-                readonly nullable: false;
-                readonly type: {
-                  readonly kind: 'scalar';
-                  readonly codecId: 'pg/timestamptz-string@1';
-                };
-              };
-              readonly id: {
-                readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
-              };
-              readonly jogador_id: {
-                readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
-              };
-              readonly lucro: {
+              readonly penalty: {
                 readonly nullable: false;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/numeric@1' };
               };
-              readonly multa: {
+              readonly player_id: {
                 readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/numeric@1' };
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
               };
-              readonly nome_jogador: {
+              readonly player_name: {
                 readonly nullable: false;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
               };
-              readonly taxa: {
+              readonly profit: {
                 readonly nullable: false;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/numeric@1' };
               };
-              readonly tipo: {
+              readonly type: {
                 readonly nullable: false;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
               };
-              readonly valor: {
-                readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/numeric@1' };
-              };
-              readonly variacao_caixa: {
+              readonly value: {
                 readonly nullable: false;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/numeric@1' };
               };
             };
             readonly relations: {
-              readonly clube: {
+              readonly club: {
                 readonly to: {
                   readonly namespace: 'public' & NamespaceId;
-                  readonly model: 'Clubes';
+                  readonly model: 'Clubs';
                 };
                 readonly cardinality: 'N:1';
                 readonly nullable: false;
                 readonly on: {
-                  readonly localFields: readonly ['clube_id'];
+                  readonly localFields: readonly ['club_id'];
                   readonly targetFields: readonly ['id'];
                 };
               };
-              readonly jogador: {
+              readonly player: {
                 readonly to: {
                   readonly namespace: 'public' & NamespaceId;
-                  readonly model: 'Jogadores';
+                  readonly model: 'Players';
                 };
                 readonly cardinality: 'N:1';
                 readonly nullable: false;
                 readonly on: {
-                  readonly localFields: readonly ['jogador_id'];
+                  readonly localFields: readonly ['player_id'];
                   readonly targetFields: readonly ['id'];
                 };
               };
             };
             readonly storage: {
-              readonly table: 'Transacoes';
+              readonly table: 'Transactions';
               readonly namespaceId: 'public';
               readonly fields: {
-                readonly clube_id: { readonly column: 'clube_id' };
-                readonly criado_em: { readonly column: 'criado_em' };
+                readonly cash_change: { readonly column: 'cash_change' };
+                readonly club_id: { readonly column: 'club_id' };
+                readonly created_at: { readonly column: 'created_at' };
+                readonly fee: { readonly column: 'fee' };
                 readonly id: { readonly column: 'id' };
-                readonly jogador_id: { readonly column: 'jogador_id' };
-                readonly lucro: { readonly column: 'lucro' };
-                readonly multa: { readonly column: 'multa' };
-                readonly nome_jogador: { readonly column: 'nome_jogador' };
-                readonly taxa: { readonly column: 'taxa' };
-                readonly tipo: { readonly column: 'tipo' };
-                readonly valor: { readonly column: 'valor' };
-                readonly variacao_caixa: { readonly column: 'variacao_caixa' };
+                readonly penalty: { readonly column: 'penalty' };
+                readonly player_id: { readonly column: 'player_id' };
+                readonly player_name: { readonly column: 'player_name' };
+                readonly profit: { readonly column: 'profit' };
+                readonly type: { readonly column: 'type' };
+                readonly value: { readonly column: 'value' };
               };
             };
           };
         };
         readonly enum: {
-          readonly Atributo: {
+          readonly Attribute: {
             readonly codecId: 'pg/text@1';
             readonly members: readonly [
-              { readonly name: 'finalizacao'; readonly value: 'finalizacao' },
-              { readonly name: 'passe'; readonly value: 'passe' },
-              { readonly name: 'drible'; readonly value: 'drible' },
-              { readonly name: 'defesa'; readonly value: 'defesa' },
+              { readonly name: 'shooting'; readonly value: 'shooting' },
+              { readonly name: 'passing'; readonly value: 'passing' },
+              { readonly name: 'dribbling'; readonly value: 'dribbling' },
+              { readonly name: 'defending'; readonly value: 'defending' },
             ];
           };
-          readonly Condicao: {
+          readonly Condition: {
             readonly codecId: 'pg/text@1';
             readonly members: readonly [
               { readonly name: 'APTO'; readonly value: 'APTO' },
@@ -2205,16 +2202,24 @@ type ContractBase = Omit<
               { readonly name: 'DOENTE'; readonly value: 'DOENTE' },
             ];
           };
-          readonly Formacao: {
+          readonly ContractStatus: {
             readonly codecId: 'pg/text@1';
             readonly members: readonly [
-              { readonly name: 'FORMACAO_3_1'; readonly value: '3-1' },
-              { readonly name: 'FORMACAO_2_2'; readonly value: '2-2' },
-              { readonly name: 'FORMACAO_2_1_1'; readonly value: '2-1-1' },
-              { readonly name: 'FORMACAO_1_2_1'; readonly value: '1-2-1' },
+              { readonly name: 'ATIVO'; readonly value: 'ATIVO' },
+              { readonly name: 'ENCERRADO'; readonly value: 'ENCERRADO' },
+              { readonly name: 'RESCINDIDO'; readonly value: 'RESCINDIDO' },
             ];
           };
-          readonly Posicao: {
+          readonly Formation: {
+            readonly codecId: 'pg/text@1';
+            readonly members: readonly [
+              { readonly name: 'FORMATION_3_1'; readonly value: '3-1' },
+              { readonly name: 'FORMATION_2_2'; readonly value: '2-2' },
+              { readonly name: 'FORMATION_2_1_1'; readonly value: '2-1-1' },
+              { readonly name: 'FORMATION_1_2_1'; readonly value: '1-2-1' },
+            ];
+          };
+          readonly Position: {
             readonly codecId: 'pg/text@1';
             readonly members: readonly [
               { readonly name: 'GOL'; readonly value: 'GOL' },
@@ -2224,15 +2229,7 @@ type ContractBase = Omit<
               { readonly name: 'ATA'; readonly value: 'ATA' },
             ];
           };
-          readonly SituacaoContrato: {
-            readonly codecId: 'pg/text@1';
-            readonly members: readonly [
-              { readonly name: 'ATIVO'; readonly value: 'ATIVO' },
-              { readonly name: 'ENCERRADO'; readonly value: 'ENCERRADO' },
-              { readonly name: 'RESCINDIDO'; readonly value: 'RESCINDIDO' },
-            ];
-          };
-          readonly TipoTransacao: {
+          readonly TransactionType: {
             readonly codecId: 'pg/text@1';
             readonly members: readonly [
               { readonly name: 'COMPRA'; readonly value: 'COMPRA' },
@@ -2279,8 +2276,8 @@ type ContractBase = Omit<
           readonly onCreate: { readonly id: 'instantNow'; readonly kind: 'generator' };
           readonly onUpdate: { readonly id: 'instantNow'; readonly kind: 'generator' };
           readonly ref: {
-            readonly entry: 'Jogadores';
-            readonly field: 'atualizado_em';
+            readonly entry: 'Players';
+            readonly field: 'updated_at';
             readonly namespace: 'public';
           };
         },

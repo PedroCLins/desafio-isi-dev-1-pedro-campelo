@@ -10,54 +10,9 @@ import {
 import type { PlayerData } from "../types/types";
 import { PlayerRepository } from "../repositories";
 import { formatName } from "../utils/nameHandler";
+import BusinessRules from "../utils/businessRules";
 
 export class PlayerService {
-    // RN02
-    private physicalConditionDiscount(condition: ConditionEnumType) {
-        const discountMap: Record<ConditionEnumType, number> = {
-            "APTO": 0,
-            "MAL_CONDICIONADO": 0.15,
-            "DOENTE": 0.3,
-        };
-
-        return discountMap[condition] || 0;
-    }
-
-    // RN03
-    private agilityDiscount(agility: number, discount: number) {
-        if (agility >= 80) {
-            return discount * 0.5; // Discount gets halved for agility 80 or above
-        } else if (agility <= 30) {
-            return discount + 0.1; // 10% absolute increase in discount for agility 30 or below
-        }
-        return discount; // No change for agility between 31 and 79
-    }
-
-    // RN04
-    private ageDiscountAdjustment(age: number) {
-        if (age <= 21) {
-            return -0.1; // 10% absolute decrease in discount for age 21 or below (young promising players)
-        } else if (age >= 32) {
-            return 0.1; // 10% absolute increase in discount for age 32 or above (older players)
-        }
-        return 0; // No change for age between 22 and 31
-    }
-
-    // RN05
-    public calculateMarketValue(condition: ConditionEnumType, agility: number, age: number, baseValue: string) {
-        let discount = this.physicalConditionDiscount(condition);
-        if (condition !== "APTO") {
-            discount = this.agilityDiscount(agility, discount);
-        }
-        discount += this.ageDiscountAdjustment(age);
-        discount = Math.min(0.4, discount); // Ensure discount does not exceed 40%
-
-        let marketValue = parseFloat(baseValue) * (1 - discount);
-        marketValue = parseFloat(Math.max(1, marketValue).toFixed(2)); // Ensure market value does not go below 1, and round to 2 decimal places
-
-        return marketValue;
-    }
-
     // RN06
     private assertPotentialMinimum(potential: number, pace: number, shooting: number, passing: number, dribbling: number, defending: number, physical: number) {
         const highestStat = Math.max(pace, shooting, passing, dribbling, defending, physical);
@@ -109,28 +64,35 @@ export class PlayerService {
         return finalBaseValue;
     }
 
+
+
     private filterPlayers(players: PlayerData[], filter: ListPlayersFilterType): PlayerData[] {
         return players.filter((p) => {
-            if (filter.position && p.posicao !== filter.position) return false;
-            if (filter.condition && p.condicao !== filter.condition) return false;
-            if (filter.free && p.clube_id !== null) return false;
-            if (filter.club_id && p.clube_id !== filter.club_id) return false;
-            if (filter.min_age && p.idade < filter.min_age) return false;
-            if (filter.max_age && p.idade > filter.max_age) return false;
-            if (filter.min_value && this.calculateMarketValue(p.condicao, p.agilidade, p.idade, p.valor_base) < filter.min_value) return false;
-            if (filter.max_value && this.calculateMarketValue(p.condicao, p.agilidade, p.idade, p.valor_base) > filter.max_value) return false;
+            if (filter.position && p.position !== filter.position) return false;
+            if (filter.condition && p.condition !== filter.condition) return false;
+            if (filter.free && p.club_id !== null) return false;
+            if (filter.club_id && p.club_id !== filter.club_id) return false;
+            if (filter.min_age && p.age < filter.min_age) return false;
+            if (filter.max_age && p.age > filter.max_age) return false;
+            if (filter.min_value && BusinessRules.getNumericMarketValue(p.condition, p.agility, p.age, p.base_value) < filter.min_value) return false;
+            if (filter.max_value && BusinessRules.getNumericMarketValue(p.condition, p.agility, p.age, p.base_value) > filter.max_value) return false;
             return true;
         })
     }
 
     private sortPlayers(players: PlayerData[], sortCriteria: string[]): PlayerData[] {
+        const valueOrder = (a: PlayerData, b: PlayerData) => {
+            const valueA = BusinessRules.getNumericMarketValue(a.condition, a.agility, a.age, a.base_value);
+            const valueB = BusinessRules.getNumericMarketValue(b.condition, b.agility, b.age, b.base_value);
+            return valueA - valueB;
+        }
         const sortFunctions: Record<string, (a: PlayerData, b: PlayerData) => number> = {
-            'name': (a, b) => a.nome.toLowerCase().localeCompare(b.nome.toLowerCase()),
-            'age_asc': (a, b) => a.idade - b.idade,
-            'age_desc': (a, b) => b.idade - a.idade,
-            'value_asc': (a, b) => this.calculateMarketValue(a.condicao, a.agilidade, a.idade, a.valor_base) - this.calculateMarketValue(b.condicao, b.agilidade, b.idade, b.valor_base),
-            'value_desc': (a, b) => this.calculateMarketValue(b.condicao, b.agilidade, b.idade, b.valor_base) - this.calculateMarketValue(a.condicao, a.agilidade, a.idade, a.valor_base),
-            'position': (a, b) => positionValues.indexOf(a.posicao) - positionValues.indexOf(b.posicao),
+            'name': (a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()),
+            'age_asc': (a, b) => a.age - b.age,
+            'age_desc': (a, b) => b.age - a.age,
+            'value_asc': (a, b) => valueOrder(a, b),
+            'value_desc': (a, b) => valueOrder(b, a),
+            'position': (a, b) => positionValues.indexOf(a.position) - positionValues.indexOf(b.position),
         };
 
         return players.sort((a, b) => {
@@ -151,19 +113,19 @@ export class PlayerService {
     }
 
     async create(data: CreatePlayerType) {
-        if (!this.assertPotentialMinimum(data.potencial, data.velocidade, data.finalizacao, data.passe, data.drible, data.defesa, data.fisico)) {
+        if (!this.assertPotentialMinimum(data.potential, data.pace, data.shooting, data.passing, data.dribbling, data.defending, data.physical)) {
             // TODO: Handle error appropriately
             throw new Error("O potencial do jogador não pode ser menor que o maior atributo.");
         }
-        const overall = this.calculateOverall(data.posicao, data.velocidade, data.finalizacao, data.passe, data.drible, data.defesa, data.fisico);
-        const baseValue = this.calculateBaseValue(overall, data.idade, data.potencial);
+        const overall = this.calculateOverall(data.position, data.pace, data.shooting, data.passing, data.dribbling, data.defending, data.physical);
+        const baseValue = this.calculateBaseValue(overall, data.age, data.potential);
 
-        data.nome = formatName(data.nome);
+        data.name = formatName(data.name);
         const playerRepository = new PlayerRepository();
         const player = await playerRepository.create({
             ...data,
-            valor_base: baseValue,
-            condicao: 'APTO',
+            base_value: baseValue,
+            condition: 'APTO',
         });
 
         return player;
@@ -200,11 +162,11 @@ export class PlayerService {
     async update(id: number, data: UpdatePlayerType) {
         const playerRepository = new PlayerRepository();
         let player = await playerRepository.getById(id);
-        if (data.posicao !== player?.posicao && player?.clube_id !== null) {
+        if (player && data.position !== player?.position && player?.club_id !== null) {
             // TODO: Handle error appropriately
             throw new Error("Não é possível alterar a posição de um jogador que já está vinculado a um clube.");
         }
-        if (data.idade < player?.idade) {
+        if (player && data.age < player?.age) {
             // TODO: Handle error appropriately
             throw new Error("Não é possível reduzir a idade de um jogador.");
         }
@@ -216,11 +178,11 @@ export class PlayerService {
     async updateCondition(id: number, condition: ConditionEnumType) {
         const playerRepository = new PlayerRepository();
         let player = await playerRepository.getById(id);
-        if (player?.condicao === 'DOENTE' && condition === 'APTO') {
+        if (player?.condition === 'DOENTE' && condition === 'APTO') {
             // TODO: Handle error appropriately
             return player; // Do not allow changing from DOENTE to APTO
         }
-        player = await playerRepository.update(id, { condicao: condition });
+        player = await playerRepository.update(id, { condition });
         return player;
     }
 
@@ -228,7 +190,7 @@ export class PlayerService {
     async delete(id: number) {
         const playerRepository = new PlayerRepository();
         let player = await playerRepository.getById(id);
-        if (player?.clube_id !== null) {
+        if (player?.club_id !== null) {
             // TODO: Handle error appropriately
             throw new Error("Não é possível excluir um jogador que já está vinculado a um clube.");
         }
