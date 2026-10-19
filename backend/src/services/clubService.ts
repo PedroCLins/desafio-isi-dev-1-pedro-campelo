@@ -1,5 +1,5 @@
 import type { CreateClubType, SortClubOptionsType } from "../DTOs";
-import { ClubRepository } from "../repositories";
+import { ClubRepository, ContractRepository } from "../repositories";
 import type { ClubData, ClubDataWithPlayers, PlayerData } from "../types/types";
 import { formatName } from "../utils/nameHandler";
 import { PlayerService } from "./playerService";
@@ -37,6 +37,37 @@ export class ClubService {
         return sortedClubs;
     }
 
+    private getRemainingDays(loyaltyUntilDate: string): number {
+        return Math.ceil((new Date(loyaltyUntilDate).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24));
+    }
+    
+    private getPenaltyRate(remainingDays: number): number {
+        if (remainingDays === 0) return 0;
+        if (remainingDays <= 30) return 5;
+        if (remainingDays <= 180) return 10;
+        return 20;
+    }
+
+    private async getPlayersWithContracts(players: PlayerData[]) {
+        const contractRepository = new ContractRepository();
+        const playersWithContracts = players.map(async (player) => {
+            if (player.clube_id) {
+                const contract = await contractRepository.getById(player.clube_id, player.id);
+                const remainingDays = contract?.fidelidade_ate ? this.getRemainingDays(contract.fidelidade_ate) : 0;
+                return { 
+                    ...player, 
+                    contract: {
+                        purchase_value: contract?.valor_compra,
+                        loyalty_until: contract?.fidelidade_ate,
+                        remaining_days: remainingDays,
+                        penalty_rate: this.getPenaltyRate(remainingDays),
+                    } 
+                }
+            }
+        });
+        return playersWithContracts;
+    }
+
     // RN10
     async create(data: CreateClubType) {
         const clubRepository = new ClubRepository();
@@ -71,11 +102,12 @@ export class ClubService {
         const club = await clubRepository.getById(id);
         const squad_value = this.calculateSquadValue(club?.jogadores || []);
         const net_worth = this.calculateNetWorth(club?.caixa || "0", squad_value);
+        const playersWithContracts = await this.getPlayersWithContracts(club?.jogadores || []);
         return {
             ...club,
             squad_value,
             net_worth,
-            players: club?.jogadores || [],
+            players: playersWithContracts,
         }
     }
 }

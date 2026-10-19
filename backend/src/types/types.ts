@@ -6,3 +6,5 @@ export type CreatePlayerData = Shape<PlayerData, { '-': 'excluido_em' | 'criado_
 export type ClubData = Scalars<Models.public_Clubes>;
 export type CreateClubData = Shape<ClubData, { '+': 'nome' | 'sigla' }>;
 export type ClubDataWithPlayers = Shape<Models.public_Clubes, { '+': 'jogadores'}>;
+export type ContractData = Scalars<Models.public_Contratos>;
+export type CreateContractData = Shape<ContractData, { '-': 'id' | 'iniciado_em' | 'encerrado_em' }>;

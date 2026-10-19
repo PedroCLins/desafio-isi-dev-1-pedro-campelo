@@ -70,7 +70,7 @@ model Clubes {
   caixa     Decimal             @default(300.00)
   formacao  Formacao?
   criado_em TimestamptzString() @default(now())
-  jogadores Jogadores[]?
+  jogadores Jogadores[]
 }
 
 model Contratos {
