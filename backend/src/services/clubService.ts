@@ -1,6 +1,6 @@
 import type { CreateClubType, SortClubOptionsType } from "../DTOs";
 import { ClubRepository, ContractRepository } from "../repositories";
-import type { ClubData, ClubDataWithPlayers, PlayerData } from "../types/types";
+import type { BaseClubReturnType, ClubData, ClubDataWithPlayers, ClubsListReturnType, PlayerData } from "../types/types";
 import { formatName } from "../utils/nameHandler";
 import BusinessRules from "../utils/businessRules";
 
@@ -15,16 +15,17 @@ export class ClubService {
         return parseFloat(cash) + squadValue;
     }
     
-    private sortClubs(clubs: ClubDataWithPlayers[], sort: SortClubOptionsType): (ClubDataWithPlayers & { valor_patrimonio: number })[] {
-        const sortFunctions: Record<string, (a: ClubDataWithPlayers & { valor_patrimonio: number }, b: ClubDataWithPlayers & { valor_patrimonio: number }) => number> = {
+    private sortClubs(clubs: ClubDataWithPlayers[], sort: SortClubOptionsType): ClubsListReturnType {
+        const sortFunctions: Record<string, (a: BaseClubReturnType, b: BaseClubReturnType) => number> = {
             'name': (a, b) => a.name.localeCompare(b.name),
-            'net_worth_asc': (a, b) => a.valor_patrimonio - b.valor_patrimonio,
-            'net_worth_desc': (a, b) => b.valor_patrimonio - a.valor_patrimonio,
+            'net_worth_asc': (a, b) => a.net_worth - b.net_worth,
+            'net_worth_desc': (a, b) => b.net_worth - a.net_worth,
         };
         
         const sortedClubs =clubs.map(club => ({
             ...club,
-            valor_patrimonio: this.calculateNetWorth(club.cash, this.calculateSquadValue(club.players)),
+            squad_value: this.calculateSquadValue(club.players),
+            net_worth: this.calculateNetWorth(club.cash, this.calculateSquadValue(club.players)),
         })).sort((a, b) => {
             const result = sortFunctions[sort](a, b);
             if (result !== 0) return result;
@@ -68,7 +69,7 @@ export class ClubService {
     }
 
     // RN10
-    async create(data: CreateClubType) {
+    async create(data: CreateClubType): Promise<BaseClubReturnType> {
         const clubRepository = new ClubRepository();
 
         if (await clubRepository.getClubCount() >= 20) {
@@ -85,11 +86,15 @@ export class ClubService {
         }
 
         club = await clubRepository.create(data);
-        return club;
+        return {
+            ...club,
+            squad_value: 0,
+            net_worth: parseFloat(club.cash),
+        };
     }
 
     // RN11
-    async getAll(query: SortClubOptionsType) {
+    async getAll(query: SortClubOptionsType): Promise<ClubsListReturnType> {
         const clubRepository = new ClubRepository();
         const clubs = await clubRepository.getAll();
         const sortedClubs = this.sortClubs(clubs, query);

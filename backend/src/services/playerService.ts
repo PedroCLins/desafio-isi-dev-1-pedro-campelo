@@ -7,7 +7,7 @@ import {
     type PositionEnumType,
     positionValues
 } from "../DTOs";
-import type { PlayerData } from "../types/types";
+import type { PlayerData, PlayerReturnType, PlayersListReturnType } from "../types/types";
 import { PlayerRepository } from "../repositories";
 import { formatName } from "../utils/nameHandler";
 import BusinessRules from "../utils/businessRules";
@@ -112,7 +112,7 @@ export class PlayerService {
         return players.slice(startIndex, endIndex);
     }
 
-    async create(data: CreatePlayerType) {
+    async create(data: CreatePlayerType): Promise<PlayerReturnType> {
         if (!this.assertPotentialMinimum(data.potential, data.pace, data.shooting, data.passing, data.dribbling, data.defending, data.physical)) {
             // TODO: Handle error appropriately
             throw new Error("O potencial do jogador não pode ser menor que o maior atributo.");
@@ -128,17 +128,26 @@ export class PlayerService {
             condition: 'APTO',
         });
 
-        return player;
+        return {
+            ...player,
+            market_value: BusinessRules.getNumericMarketValue(player.condition, player.agility, player.age, player.base_value),
+            overall: overall,
+        };
     }
 
-    async getById(id: number) {
+    async getById(id: number): Promise<PlayerReturnType | null> {
         const playerRepository = new PlayerRepository();
         const player = await playerRepository.getById(id);
-        return player;
+        
+        return player ?{
+            ...player,
+            market_value: BusinessRules.getNumericMarketValue(player.condition, player.agility, player.age, player.base_value),
+            overall: this.calculateOverall(player.position, player.pace, player.shooting, player.passing, player.dribbling, player.defending, player.physical),
+        } : null;
     }
 
     // RN07
-    async getAll(query: ListPlayersQueryType): Promise<{ data: PlayerData[]; meta: { page: number; limit: number; total_items: number; total_pages: number } }> {
+    async getAll(query: ListPlayersQueryType): Promise<PlayersListReturnType> {
         const playerRepository = new PlayerRepository();
         query.search = formatName(query.search);
         let players = await playerRepository.getAll(query.search);
@@ -159,7 +168,7 @@ export class PlayerService {
     }
 
     // RN08
-    async update(id: number, data: UpdatePlayerType) {
+    async update(id: number, data: UpdatePlayerType): Promise<PlayerReturnType | null> {
         const playerRepository = new PlayerRepository();
         let player = await playerRepository.getById(id);
         if (player && data.position !== player?.position && player?.club_id !== null) {
@@ -172,22 +181,31 @@ export class PlayerService {
         }
         player = await playerRepository.update(id, data);
 
-        return player;
+        return player ? {
+            ...player,
+            market_value: BusinessRules.getNumericMarketValue(player.condition, player.agility, player.age, player.base_value),
+            overall: this.calculateOverall(player.position, player.pace, player.shooting, player.passing, player.dribbling, player.defending, player.physical),
+        } : null;
     }
 
-    async updateCondition(id: number, condition: ConditionEnumType) {
+    async updateCondition(id: number, condition: ConditionEnumType): Promise<PlayerReturnType | null> {
         const playerRepository = new PlayerRepository();
         let player = await playerRepository.getById(id);
         if (player?.condition === 'DOENTE' && condition === 'APTO') {
             // TODO: Handle error appropriately
-            return player; // Do not allow changing from DOENTE to APTO
+            throw new Error("Não é possível alterar a condição de um jogador de DOENTE para APTO.");
         }
         player = await playerRepository.update(id, { condition });
-        return player;
+
+        return player ? {
+            ...player,
+            market_value: BusinessRules.getNumericMarketValue(player.condition, player.agility, player.age, player.base_value),
+            overall: this.calculateOverall(player.position, player.pace, player.shooting, player.passing, player.dribbling, player.defending, player.physical),
+        } : null;
     }
 
     // RN09
-    async delete(id: number) {
+    async delete(id: number): Promise<void> {
         const playerRepository = new PlayerRepository();
         let player = await playerRepository.getById(id);
         if (player?.club_id !== null) {
@@ -195,6 +213,5 @@ export class PlayerService {
             throw new Error("Não é possível excluir um jogador que já está vinculado a um clube.");
         }
         player = await playerRepository.delete(id);
-        return player;
     }
 }
