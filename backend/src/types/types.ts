@@ -59,4 +59,14 @@ export type SellPlayerReturnType = TransactionReturnType & {
     penalty_rate: number;
     contract_status: 'RESCINDIDO' | 'ENCERRADO';
     club_cash: number;
+};
+export type ClubTransactionsReturnType = {
+    data: TransactionReturnType[];
+    summary: {
+        total_spent: number;
+        total_received: number;
+        total_fees: number;
+        total_penalties: number;
+        total_profit: number;
+    }
 }
