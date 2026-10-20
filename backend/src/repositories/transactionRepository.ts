@@ -13,8 +13,8 @@ export class TransactionRepository {
         return transaction;
     }
 
-    async getAll(): Promise<TransactionReturnType[]> {
-        const transactions = await db.orm.public.Transactions.all();
+    async getAll(club_id: number): Promise<TransactionReturnType[]> {
+        const transactions = await db.orm.public.Transactions.all({ club_id });
         return transactions;
     }
 }

@@ -27,8 +27,8 @@ export class MarketService {
             throw new Error("O jogador já pertence a outro clube.");
         }
         
-        const transactions = await this.transactionRepository.getAll();
-        const formerTransactions = transactions.filter(t => t.player_id === player_id && t.club_id === club_id && t.type === 'VENDA');
+        const transactions = await this.transactionRepository.getAll(club_id);
+        const formerTransactions = transactions.filter(t => t.player_id === player_id && t.type === 'VENDA');
         if (formerTransactions.length > 0) {
             throw new Error("O jogador já foi vendido para este clube anteriormente.");
         }
