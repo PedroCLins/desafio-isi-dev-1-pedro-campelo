@@ -14,7 +14,7 @@ export class TransactionRepository {
     }
 
     async getAll(club_id: number): Promise<TransactionReturnType[]> {
-        const transactions = await db.orm.public.Transactions.all({ club_id });
+        const transactions = await db.orm.public.Transactions.where({ club_id }).all();
         return transactions;
     }
 }
