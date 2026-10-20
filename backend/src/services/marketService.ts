@@ -1,6 +1,6 @@
-import type { CreateContractType } from "../DTOs";
+import type { CreateContractType, FilterTransactionsType } from "../DTOs";
 import { ClubRepository, ContractRepository, PlayerRepository, TransactionRepository } from "../repositories";
-import type { BuyPlayerReturnType, ClubDataWithPlayers, PlayerData, SellPlayerReturnType } from "../types/types";
+import type { BuyPlayerReturnType, ClubDataWithPlayers, ClubTransactionsReturnType, PlayerData, SellPlayerReturnType } from "../types/types";
 import BusinessRules from "../utils/businessRules";
 
 export class MarketService {
@@ -160,6 +160,40 @@ export class MarketService {
             penalty_rate: penaltyRate,
             contract_status: status,
             club_cash: clubCash
+        };
+    }
+
+    // RN17
+    async getClubTransactions(club_id: number, query: FilterTransactionsType): Promise<ClubTransactionsReturnType> {
+        const transactions = await this.transactionRepository.getAll(club_id);
+        const filteredTransactions = transactions.filter(t => {
+            if (query.type && query.type !== 'TODOS' && t.type !== query.type) {
+                return false;
+            }
+            if (query.player_id && t.player_id !== query.player_id) {
+                return false;
+            }
+            return true;
+        });
+
+        const sortedTransactions = filteredTransactions.sort((a, b) => {
+            const dateA = new Date(a.created_at);
+            const dateB = new Date(b.created_at);
+            const dateOrder = dateB.getTime() - dateA.getTime();
+            return dateOrder !== 0 ? dateOrder : b.id - a.id;
+        });
+
+        const summary = {
+            total_spent: filteredTransactions.filter(t => t.type === 'COMPRA').reduce((sum, t) => sum + parseFloat(t.value + t.fee), 0) || 0.00,
+            total_received: filteredTransactions.filter(t => t.type === 'VENDA').reduce((sum, t) => sum + parseFloat(t.cash_change), 0) || 0.00,
+            total_fees: filteredTransactions.reduce((sum, t) => sum + parseFloat(t.fee), 0) || 0.00,
+            total_penalties: filteredTransactions.filter(t => t.type === 'VENDA').reduce((sum, t) => sum + parseFloat(t.penalty), 0) || 0.00,
+            total_profit: filteredTransactions.filter(t => t.profit && t.type === 'VENDA').reduce((sum, t) => sum + parseFloat(t.profit!), 0) || 0.00,
+        };
+
+        return {
+            data: filteredTransactions,
+            summary
         };
     }
 }

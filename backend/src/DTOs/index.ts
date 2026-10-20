@@ -37,5 +37,7 @@ export {
 } from "./clubDTO";
 export {
     contractDTO,
-    type CreateContractType
-} from "./contractDTO";
+    filterTransactionsDTO,
+    type CreateContractType,
+    type FilterTransactionsType
+} from "./marketDTO";
