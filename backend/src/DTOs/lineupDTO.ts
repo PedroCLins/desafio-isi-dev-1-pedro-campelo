@@ -6,3 +6,5 @@ export const lineupDTO = z.object({
     jogadores: z.array(z.number())
                 .length(5, { message: "O time deve ter exatamente 5 jogadores." }),
 })
+
+export type UpdateLineupType = z.infer<typeof lineupDTO>;
