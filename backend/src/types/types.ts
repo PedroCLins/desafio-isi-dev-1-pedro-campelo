@@ -21,6 +21,7 @@ export type PlayersListReturnType = {
 // Club Types
 export type ClubData = Shape<Models.public_Clubs, { '-': 'created_at' | 'formation' }>;
 export type CreateClubData = Shape<ClubData, { '+': 'name' | 'acronym' }>;
+export type UpdateClubData = Partial<Shape<Models.public_Clubs, { '+': 'cash' | 'formation' }>>;
 export type ClubDataWithPlayers = Shape<Models.public_Clubs, { '+': 'players', '-': 'created_at' | 'formation' }>;
 export type BaseClubReturnType = ClubData & {
     squad_value: number;
@@ -30,7 +31,7 @@ export type ClubReturnType = BaseClubReturnType & {
     players: (PlayerData & {
         contract: {
             purchase_value: number;
-            loyalty_until: string | null;
+            loyalty_until: string;
             remaining_days: number;
             penalty_rate: number;
         };
@@ -38,5 +39,24 @@ export type ClubReturnType = BaseClubReturnType & {
 };
 export type ClubsListReturnType = BaseClubReturnType[];
 
+// Market Types
 export type ContractData = Scalars<Models.public_Contracts>;
 export type CreateContractData = Shape<ContractData, { '-': 'id' | 'created_at' | 'ended_at' }>;
+export type UpdateContractData = Shape<ContractData, { '+': 'status' | 'ended_at' }>;
+export type TransactionReturnType = Scalars<Models.public_Transactions>;
+export type CreateTransactionData = Shape<TransactionReturnType, { '-': 'id' | 'created_at' }>;
+export type BuyPlayerReturnType = TransactionReturnType & {
+    contract: {
+        purchase_value: number;
+        loyalty_until: string;
+        status: 'ATIVO';
+    };
+    club_cash: number;
+};
+export type SellPlayerReturnType = TransactionReturnType & {
+    purchase_value: number;
+    remaining_days: number;
+    penalty_rate: number;
+    contract_status: 'RESCINDIDO' | 'ENCERRADO';
+    club_cash: number;
+}

@@ -1,4 +1,4 @@
-import type { ClubData, ClubDataWithPlayers, CreateClubData } from '../types/types';
+import type { ClubData, ClubDataWithPlayers, CreateClubData, UpdateClubData } from '../types/types';
 import { db } from '../prisma/db';
 
 export class ClubRepository {
@@ -9,7 +9,7 @@ export class ClubRepository {
 
     async getById(id: number): Promise<ClubDataWithPlayers | null> {
         const club = await db.orm.public.Clubs.include("players").first({ id });
-        return club;
+        return club
     }
 
     async getByName(name: string): Promise<ClubData | null> {
@@ -25,5 +25,10 @@ export class ClubRepository {
     async getClubCount(): Promise<number> {
         const count = (await db.orm.public.Clubs.all()).length;
         return count;
+    }
+
+    async update(id: number, data: UpdateClubData): Promise<ClubData | null> {
+        const club = await db.orm.public.Clubs.where({ id }).include("players").update(data);
+        return club;
     }
 }

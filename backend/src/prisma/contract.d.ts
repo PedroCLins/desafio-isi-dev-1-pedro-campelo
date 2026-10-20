@@ -18,7 +18,7 @@ import type {
 } from '@prisma/orm-postgres/contract/types';
 
 export type StorageHash =
-  StorageHashBase<'d22edfe2a738192f33db38aef378578e091e826b096fc8c89d8350bca156192b'>;
+  StorageHashBase<'06d79e40b54987bbde67e2ceb3f60a8f5175b7d1425abef246d20300911137fa'>;
 export type ExecutionHash =
   ExecutionHashBase<'751bf01521ef207d7eca5caa1d88d770ea4cbca83936b150dd1deda299ce9245'>;
 export type ProfileHash =
@@ -244,13 +244,13 @@ export type FieldOutputTypes = {
     };
     readonly Contracts: {
       readonly club_id: CodecTypes['pg/int4@1']['output'];
-      readonly contract_status: 'ATIVO' | 'ENCERRADO' | 'RESCINDIDO';
       readonly created_at: CodecTypes['pg/timestamptz-string@1']['output'];
       readonly ended_at: CodecTypes['pg/timestamptz-string@1']['output'] | null;
       readonly id: CodecTypes['pg/int4@1']['output'];
       readonly loyalty_until: CodecTypes['pg/timestamptz-string@1']['output'];
       readonly player_id: CodecTypes['pg/int4@1']['output'];
       readonly purchase_value: CodecTypes['pg/numeric@1']['output'];
+      readonly status: 'ATIVO' | 'ENCERRADO' | 'RESCINDIDO';
     };
     readonly Lineups: {
       readonly club_id: CodecTypes['pg/int4@1']['output'];
@@ -315,7 +315,7 @@ export type FieldOutputTypes = {
       readonly penalty: CodecTypes['pg/numeric@1']['output'];
       readonly player_id: CodecTypes['pg/int4@1']['output'];
       readonly player_name: CodecTypes['pg/text@1']['output'];
-      readonly profit: CodecTypes['pg/numeric@1']['output'];
+      readonly profit: CodecTypes['pg/numeric@1']['output'] | null;
       readonly type: 'COMPRA' | 'VENDA';
       readonly value: CodecTypes['pg/numeric@1']['output'];
     };
@@ -333,13 +333,13 @@ export type FieldInputTypes = {
     };
     readonly Contracts: {
       readonly club_id: CodecTypes['pg/int4@1']['input'];
-      readonly contract_status: 'ATIVO' | 'ENCERRADO' | 'RESCINDIDO';
       readonly created_at: CodecTypes['pg/timestamptz-string@1']['input'];
       readonly ended_at: CodecTypes['pg/timestamptz-string@1']['input'] | null;
       readonly id: CodecTypes['pg/int4@1']['input'];
       readonly loyalty_until: CodecTypes['pg/timestamptz-string@1']['input'];
       readonly player_id: CodecTypes['pg/int4@1']['input'];
       readonly purchase_value: CodecTypes['pg/numeric@1']['input'];
+      readonly status: 'ATIVO' | 'ENCERRADO' | 'RESCINDIDO';
     };
     readonly Lineups: {
       readonly club_id: CodecTypes['pg/int4@1']['input'];
@@ -404,7 +404,7 @@ export type FieldInputTypes = {
       readonly penalty: CodecTypes['pg/numeric@1']['input'];
       readonly player_id: CodecTypes['pg/int4@1']['input'];
       readonly player_name: CodecTypes['pg/text@1']['input'];
-      readonly profit: CodecTypes['pg/numeric@1']['input'];
+      readonly profit: CodecTypes['pg/numeric@1']['input'] | null;
       readonly type: 'COMPRA' | 'VENDA';
       readonly value: CodecTypes['pg/numeric@1']['input'];
     };
@@ -422,13 +422,13 @@ export type StorageColumnTypes = {
     };
     readonly Contracts: {
       readonly club_id: CodecTypes['pg/int4@1']['output'];
-      readonly contract_status: 'ATIVO' | 'ENCERRADO' | 'RESCINDIDO';
       readonly created_at: CodecTypes['pg/timestamptz-string@1']['output'];
       readonly ended_at: CodecTypes['pg/timestamptz-string@1']['output'] | null;
       readonly id: CodecTypes['pg/int4@1']['output'];
       readonly loyalty_until: CodecTypes['pg/timestamptz-string@1']['output'];
       readonly player_id: CodecTypes['pg/int4@1']['output'];
       readonly purchase_value: CodecTypes['pg/numeric@1']['output'];
+      readonly status: 'ATIVO' | 'ENCERRADO' | 'RESCINDIDO';
     };
     readonly Lineups: {
       readonly club_id: CodecTypes['pg/int4@1']['output'];
@@ -493,7 +493,7 @@ export type StorageColumnTypes = {
       readonly penalty: CodecTypes['pg/numeric@1']['output'];
       readonly player_id: CodecTypes['pg/int4@1']['output'];
       readonly player_name: CodecTypes['pg/text@1']['output'];
-      readonly profit: CodecTypes['pg/numeric@1']['output'];
+      readonly profit: CodecTypes['pg/numeric@1']['output'] | null;
       readonly type: 'COMPRA' | 'VENDA';
       readonly value: CodecTypes['pg/numeric@1']['output'];
     };
@@ -511,13 +511,13 @@ export type StorageColumnInputTypes = {
     };
     readonly Contracts: {
       readonly club_id: CodecTypes['pg/int4@1']['input'];
-      readonly contract_status: 'ATIVO' | 'ENCERRADO' | 'RESCINDIDO';
       readonly created_at: CodecTypes['pg/timestamptz-string@1']['input'];
       readonly ended_at: CodecTypes['pg/timestamptz-string@1']['input'] | null;
       readonly id: CodecTypes['pg/int4@1']['input'];
       readonly loyalty_until: CodecTypes['pg/timestamptz-string@1']['input'];
       readonly player_id: CodecTypes['pg/int4@1']['input'];
       readonly purchase_value: CodecTypes['pg/numeric@1']['input'];
+      readonly status: 'ATIVO' | 'ENCERRADO' | 'RESCINDIDO';
     };
     readonly Lineups: {
       readonly club_id: CodecTypes['pg/int4@1']['input'];
@@ -582,7 +582,7 @@ export type StorageColumnInputTypes = {
       readonly penalty: CodecTypes['pg/numeric@1']['input'];
       readonly player_id: CodecTypes['pg/int4@1']['input'];
       readonly player_name: CodecTypes['pg/text@1']['input'];
-      readonly profit: CodecTypes['pg/numeric@1']['input'];
+      readonly profit: CodecTypes['pg/numeric@1']['input'] | null;
       readonly type: 'COMPRA' | 'VENDA';
       readonly value: CodecTypes['pg/numeric@1']['input'];
     };
@@ -602,13 +602,13 @@ export namespace Models {
   };
   export type public_Contracts = {
     club_id: CodecTypes['pg/int4@1']['output'];
-    contract_status: 'ATIVO' | 'ENCERRADO' | 'RESCINDIDO';
     created_at: CodecTypes['pg/timestamptz-string@1']['output'];
     ended_at: CodecTypes['pg/timestamptz-string@1']['output'] | null;
     id: CodecTypes['pg/int4@1']['output'];
     loyalty_until: CodecTypes['pg/timestamptz-string@1']['output'];
     player_id: CodecTypes['pg/int4@1']['output'];
     purchase_value: CodecTypes['pg/numeric@1']['output'];
+    status: 'ATIVO' | 'ENCERRADO' | 'RESCINDIDO';
     club: public_Clubs;
     player: public_Players;
     readonly [RelationKeys]?: 'club' | 'player';
@@ -689,7 +689,7 @@ export namespace Models {
     penalty: CodecTypes['pg/numeric@1']['output'];
     player_id: CodecTypes['pg/int4@1']['output'];
     player_name: CodecTypes['pg/text@1']['output'];
-    profit: CodecTypes['pg/numeric@1']['output'];
+    profit: CodecTypes['pg/numeric@1']['output'] | null;
     type: 'COMPRA' | 'VENDA';
     value: CodecTypes['pg/numeric@1']['output'];
     club: public_Clubs;
@@ -792,12 +792,6 @@ type ContractBase = Omit<
                   readonly nullable: false;
                   readonly many: false;
                 };
-                readonly contract_status: {
-                  readonly dataType: 'pg/text';
-                  readonly codecId: 'pg/text@1';
-                  readonly nullable: false;
-                  readonly many: false;
-                };
                 readonly created_at: {
                   readonly dataType: 'pg/timestamptz';
                   readonly codecId: 'pg/timestamptz-string@1';
@@ -836,6 +830,12 @@ type ContractBase = Omit<
                 readonly purchase_value: {
                   readonly dataType: 'pg/numeric';
                   readonly codecId: 'pg/numeric@1';
+                  readonly nullable: false;
+                  readonly many: false;
+                };
+                readonly status: {
+                  readonly dataType: 'pg/text';
+                  readonly codecId: 'pg/text@1';
                   readonly nullable: false;
                   readonly many: false;
                 };
@@ -1433,7 +1433,7 @@ type ContractBase = Omit<
                 readonly profit: {
                   readonly dataType: 'pg/numeric';
                   readonly codecId: 'pg/numeric@1';
-                  readonly nullable: false;
+                  readonly nullable: true;
                   readonly many: false;
                 };
                 readonly type: {
@@ -1609,10 +1609,6 @@ type ContractBase = Omit<
                 readonly nullable: false;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
               };
-              readonly contract_status: {
-                readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
-              };
               readonly created_at: {
                 readonly nullable: false;
                 readonly type: {
@@ -1646,6 +1642,10 @@ type ContractBase = Omit<
                 readonly nullable: false;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/numeric@1' };
               };
+              readonly status: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
             };
             readonly relations: {
               readonly club: {
@@ -1678,13 +1678,13 @@ type ContractBase = Omit<
               readonly namespaceId: 'public';
               readonly fields: {
                 readonly club_id: { readonly column: 'club_id' };
-                readonly contract_status: { readonly column: 'contract_status' };
                 readonly created_at: { readonly column: 'created_at' };
                 readonly ended_at: { readonly column: 'ended_at' };
                 readonly id: { readonly column: 'id' };
                 readonly loyalty_until: { readonly column: 'loyalty_until' };
                 readonly player_id: { readonly column: 'player_id' };
                 readonly purchase_value: { readonly column: 'purchase_value' };
+                readonly status: { readonly column: 'status' };
               };
             };
           };
@@ -2127,7 +2127,7 @@ type ContractBase = Omit<
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
               };
               readonly profit: {
-                readonly nullable: false;
+                readonly nullable: true;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/numeric@1' };
               };
               readonly type: {

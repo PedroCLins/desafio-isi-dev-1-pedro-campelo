@@ -1,5 +1,5 @@
 import { db } from '../prisma/db';
-import type { ContractData, CreateContractData } from '../types/types';
+import type { ContractData, CreateContractData, UpdateContractData } from '../types/types';
 
 export class ContractRepository {
     async create(data: CreateContractData): Promise<ContractData> {
@@ -19,5 +19,10 @@ export class ContractRepository {
     async getAll(): Promise<ContractData[]> {
         const contracts = await db.orm.public.Contracts.all();
         return contracts;
+    }
+
+    async update(club_id: number, player_id: number, data: UpdateContractData): Promise<ContractData | null> {
+        const contract = await db.orm.public.Contracts.where({ club_id, player_id, ended_at: null }).update(data);
+        return contract;
     }
 }

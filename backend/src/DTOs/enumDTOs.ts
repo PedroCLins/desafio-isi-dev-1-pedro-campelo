@@ -1,12 +1,12 @@
 import * as z from "zod";
 import { db } from "../prisma/db";
 
-export const positionValues = db.enums.public.Posicao.values;
-export const conditionValues = db.enums.public.Condicao.values;
-export const formationValues = db.enums.public.Formacao.values;
-export const contractStatusValues = db.enums.public.SituacaoContrato.values;
-export const transactionTypeValues = db.enums.public.TipoTransacao.values;
-export const attributeValues = db.enums.public.Atributo.values;
+export const positionValues = db.enums.public.Position.values;
+export const conditionValues = db.enums.public.Condition.values;
+export const formationValues = db.enums.public.Formation.values;
+export const contractStatusValues = db.enums.public.ContractStatus.values;
+export const transactionTypeValues = db.enums.public.TransactionType.values;
+export const attributeValues = db.enums.public.Attribute.values;
 
 export const positionEnum = z.enum(positionValues);
 export const conditionEnum = z.enum(conditionValues);

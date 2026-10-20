@@ -52,4 +52,21 @@ export default new class BusinessRules {
         const numericMarketValue = parseFloat(this.getMarketValue(condition, agility, age, baseValue));
         return numericMarketValue;
     }
+
+    // RN15
+    public getRemainingDays(loyaltyUntilDate: string): number {
+        return Math.ceil((new Date(loyaltyUntilDate).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24));
+    }
+    
+    public getPenaltyRate(remainingDays: number): number {
+        if (remainingDays === 0) return 0;
+        if (remainingDays <= 30) return 5;
+        if (remainingDays <= 180) return 10;
+        return 20;
+    }
+
+    public getPenalty(marketValue: number, penaltyRate: number): number {
+        const penalty = Math.min((marketValue * (penaltyRate / 100)), 10);
+        return parseFloat(penalty.toFixed(2));
+    }
 }

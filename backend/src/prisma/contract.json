@@ -255,19 +255,6 @@
                   "kind": "scalar"
                 }
               },
-              "contract_status": {
-                "nullable": false,
-                "type": {
-                  "codecId": "pg/text@1",
-                  "kind": "scalar"
-                },
-                "valueSet": {
-                  "entityKind": "enum",
-                  "entityName": "ContractStatus",
-                  "namespaceId": "public",
-                  "plane": "domain"
-                }
-              },
               "created_at": {
                 "nullable": false,
                 "type": {
@@ -308,6 +295,19 @@
                 "type": {
                   "codecId": "pg/numeric@1",
                   "kind": "scalar"
+                }
+              },
+              "status": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                },
+                "valueSet": {
+                  "entityKind": "enum",
+                  "entityName": "ContractStatus",
+                  "namespaceId": "public",
+                  "plane": "domain"
                 }
               }
             },
@@ -350,9 +350,6 @@
                 "club_id": {
                   "column": "club_id"
                 },
-                "contract_status": {
-                  "column": "contract_status"
-                },
                 "created_at": {
                   "column": "created_at"
                 },
@@ -370,6 +367,9 @@
                 },
                 "purchase_value": {
                   "column": "purchase_value"
+                },
+                "status": {
+                  "column": "status"
                 }
               },
               "namespaceId": "public",
@@ -1147,7 +1147,7 @@
                 }
               },
               "profit": {
-                "nullable": false,
+                "nullable": true,
                 "type": {
                   "codecId": "pg/numeric@1",
                   "kind": "scalar"
@@ -1338,9 +1338,9 @@
             "Contracts": {
               "checks": [
                 {
-                  "expression": "\"contract_status\" IN ('ATIVO', 'ENCERRADO', 'RESCINDIDO')",
-                  "name": "Contracts_contract_status_check_7f956546",
-                  "prefix": "Contracts_contract_status_check"
+                  "expression": "\"status\" IN ('ATIVO', 'ENCERRADO', 'RESCINDIDO')",
+                  "name": "Contracts_status_check_aadb1f71",
+                  "prefix": "Contracts_status_check"
                 }
               ],
               "columns": {
@@ -1348,17 +1348,6 @@
                   "codecId": "pg/int4@1",
                   "dataType": "pg/int4",
                   "nullable": false
-                },
-                "contract_status": {
-                  "codecId": "pg/text@1",
-                  "dataType": "pg/text",
-                  "nullable": false,
-                  "valueSet": {
-                    "entityKind": "valueSet",
-                    "entityName": "ContractStatus",
-                    "namespaceId": "public",
-                    "plane": "storage"
-                  }
                 },
                 "created_at": {
                   "codecId": "pg/timestamptz-string@1",
@@ -1397,6 +1386,17 @@
                   "codecId": "pg/numeric@1",
                   "dataType": "pg/numeric",
                   "nullable": false
+                },
+                "status": {
+                  "codecId": "pg/text@1",
+                  "dataType": "pg/text",
+                  "nullable": false,
+                  "valueSet": {
+                    "entityKind": "valueSet",
+                    "entityName": "ContractStatus",
+                    "namespaceId": "public",
+                    "plane": "storage"
+                  }
                 }
               },
               "foreignKeys": [
@@ -2155,7 +2155,7 @@
                 "profit": {
                   "codecId": "pg/numeric@1",
                   "dataType": "pg/numeric",
-                  "nullable": false
+                  "nullable": true
                 },
                 "type": {
                   "codecId": "pg/text@1",
@@ -2292,7 +2292,7 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "d22edfe2a738192f33db38aef378578e091e826b096fc8c89d8350bca156192b"
+    "storageHash": "06d79e40b54987bbde67e2ceb3f60a8f5175b7d1425abef246d20300911137fa"
   },
   "execution": {
     "executionHash": "751bf01521ef207d7eca5caa1d88d770ea4cbca83936b150dd1deda299ce9245",

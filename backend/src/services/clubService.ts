@@ -22,7 +22,7 @@ export class ClubService {
             'net_worth_desc': (a, b) => b.net_worth - a.net_worth,
         };
         
-        const sortedClubs =clubs.map(club => ({
+        const sortedClubs = clubs.map(club => ({
             ...club,
             squad_value: this.calculateSquadValue(club.players),
             net_worth: this.calculateNetWorth(club.cash, this.calculateSquadValue(club.players)),
@@ -37,30 +37,19 @@ export class ClubService {
         return sortedClubs;
     }
 
-    private getRemainingDays(loyaltyUntilDate: string): number {
-        return Math.ceil((new Date(loyaltyUntilDate).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24));
-    }
-    
-    private getPenaltyRate(remainingDays: number): number {
-        if (remainingDays === 0) return 0;
-        if (remainingDays <= 30) return 5;
-        if (remainingDays <= 180) return 10;
-        return 20;
-    }
-
     private async getPlayersWithContracts(players: PlayerData[]) {
         const contractRepository = new ContractRepository();
         const playersWithContracts = players.map(async (player) => {
             if (player.club_id) {
                 const contract = await contractRepository.getById(player.club_id, player.id);
-                const remainingDays = contract?.loyalty_until ? this.getRemainingDays(contract.loyalty_until) : 0;
+                const remainingDays = contract?.loyalty_until ? BusinessRules.getRemainingDays(contract.loyalty_until) : 0;
                 return { 
                     ...player, 
                     contract: {
                         purchase_value: contract?.purchase_value,
                         loyalty_until: contract?.loyalty_until,
                         remaining_days: remainingDays,
-                        penalty_rate: this.getPenaltyRate(remainingDays),
+                        penalty_rate: BusinessRules.getPenaltyRate(remainingDays),
                     } 
                 }
             }

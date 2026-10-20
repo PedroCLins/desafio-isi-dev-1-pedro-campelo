@@ -81,7 +81,7 @@ model Contracts {
   player          Players              @relation(fields: [player_id], references: [id])
 
   purchase_value  Decimal
-  contract_status ContractStatus
+  status          ContractStatus
   loyalty_until   TimestamptzString()
   created_at      TimestamptzString()  @default(now())
   ended_at        TimestamptzString()?
@@ -99,7 +99,7 @@ model Transactions {
   value       Decimal
   fee         Decimal
   penalty     Decimal
-  profit      Decimal
+  profit      Decimal?
   cash_change Decimal
   created_at  TimestamptzString() @default(now())
 }
