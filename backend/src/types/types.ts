@@ -1,4 +1,4 @@
-import type { FormationEnumType } from "../DTOs";
+import type { AttributeEnumType, ConditionEnumType, FormationEnumType, PositionEnumType } from "../DTOs";
 import type { Models } from "../prisma/contract";
 import type { Scalars, Shape } from "@prisma/orm-postgres/components";
 
@@ -80,4 +80,48 @@ export type LineupReturnType = {
     players: PlayerReturnType[];
 }
 export type LineupData = Scalars<Models.public_Lineups>;
-export type CreateLineupData = Shape<Models.public_Lineups, { '-': 'created_at' }>;
+export type CreateLineupData = Shape<LineupData, { '-': 'created_at' }>;
+export type MatchData = Scalars<Models.public_Matches>;
+export type CreateMatchData = Shape<MatchData, { '-': 'id' | 'played_at' }>;
+type MatchClubData = {
+    club_id: number;
+    club_name: string;
+    formation: FormationEnumType;
+    goals: number;
+}
+export type MatchDuelPlayerData = {
+    player_id: number;
+    player_name: string;
+    position: PositionEnumType;
+    condition: ConditionEnumType;
+    attribute: AttributeEnumType;
+    value: number;
+}
+export type MatchDuelReturnType = {
+    order: number;
+    attacking_club_id: number;
+    attacker: MatchDuelPlayerData;
+    defender: MatchDuelPlayerData;
+    goal: boolean;
+}
+export type MatchReturnType = {
+    id: number;
+    played_at: string;
+    home: MatchClubData;
+    away: MatchClubData;
+    result: 'MANDANTE' | 'VISITANTE' | 'EMPATE';
+    duels: MatchDuelReturnType[];
+}
+export type StandingsReturnType = {
+    position: number;
+    club_id: number;
+    club_name: string;
+    played: number;
+    wins: number;
+    draws: number;
+    losses: number;
+    goals_for: number;
+    goals_against: number;
+    goal_difference: number;
+    points: number;
+}[];

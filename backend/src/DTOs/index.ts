@@ -43,5 +43,7 @@ export {
 } from "./marketDTO";
 export {
     lineupDTO,
-    type UpdateLineupType
-} from "./lineupDTO";
+    matchDTO,
+    type UpdateLineupType,
+    type CreateMatchType,
+} from "./leagueDTO";
