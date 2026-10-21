@@ -315,7 +315,48 @@ export class LeagueService {
         };
     }
 
+    // RN21
     async getStandings(): Promise<StandingsReturnType> {
+        const clubs = await this.clubRepository.getAll();
 
+        const standings: StandingsReturnType = [];
+        for (const club of clubs) {
+            const matches = await this.getMatches(club.id);
+            const played = matches.length;
+            const wins = matches.filter(m => (m.home.club_id === club.id && m.result === 'MANDANTE') || (m.away.club_id === club.id && m.result === 'VISITANTE')).length;
+            const draws = matches.filter(m => m.result === 'EMPATE').length;
+            const losses = played - wins - draws;
+            const goals_for = matches.reduce((sum, m) => sum + (m.home.club_id === club.id ? m.home.goals : m.away.goals), 0);
+            const goals_against = matches.reduce((sum, m) => sum + (m.home.club_id === club.id ? m.away.goals : m.home.goals), 0);
+            const goal_difference = goals_for - goals_against;
+            const points = wins * 3 + draws;
+            standings.push({
+                position: 0,
+                club_id: club.id,
+                club_name: club.name,
+                played,
+                wins,
+                draws,
+                losses,
+                goals_for,
+                goals_against,
+                goal_difference,
+                points,
+            });
+        }
+
+        const sortedStandings = standings.sort((a, b) => {
+            if (b.points !== a.points) return b.points - a.points;
+            if (b.goal_difference !== a.goal_difference) return b.goal_difference - a.goal_difference;
+            if (b.goals_for !== a.goals_for) return b.goals_for - a.goals_for;
+            return a.club_name.localeCompare(b.club_name);
+        });
+        
+        // Assign positions based on sorted order
+        for (let i = 0; i < sortedStandings.length; i++) {
+            sortedStandings[i].position = i + 1;
+        }
+        
+        return sortedStandings;
     }
 }
