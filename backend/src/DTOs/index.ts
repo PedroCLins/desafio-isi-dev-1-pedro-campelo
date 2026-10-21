@@ -41,3 +41,7 @@ export {
     type CreateContractType,
     type FilterTransactionsType
 } from "./marketDTO";
+export {
+    lineupDTO,
+    type UpdateLineupType
+} from "./lineupDTO";

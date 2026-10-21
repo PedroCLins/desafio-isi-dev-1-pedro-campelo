@@ -13,6 +13,12 @@ import { formatName } from "../utils/nameHandler";
 import BusinessRules from "../utils/businessRules";
 
 export class PlayerService {
+    private playerRepository: PlayerRepository;
+
+    constructor() {
+        this.playerRepository = new PlayerRepository();
+    }
+
     // RN06
     private assertPotentialMinimum(potential: number, pace: number, shooting: number, passing: number, dribbling: number, defending: number, physical: number) {
         const highestStat = Math.max(pace, shooting, passing, dribbling, defending, physical);
@@ -121,8 +127,7 @@ export class PlayerService {
         const baseValue = this.calculateBaseValue(overall, data.age, data.potential);
 
         data.name = formatName(data.name);
-        const playerRepository = new PlayerRepository();
-        const player = await playerRepository.create({
+        const player = await this.playerRepository.create({
             ...data,
             base_value: baseValue,
             condition: 'APTO',
@@ -136,10 +141,9 @@ export class PlayerService {
     }
 
     async getById(id: number): Promise<PlayerReturnType | null> {
-        const playerRepository = new PlayerRepository();
-        const player = await playerRepository.getById(id);
+        const player = await this.playerRepository.getById(id);
         
-        return player ?{
+        return player ? {
             ...player,
             market_value: BusinessRules.getNumericMarketValue(player.condition, player.agility, player.age, player.base_value),
             overall: this.calculateOverall(player.position, player.pace, player.shooting, player.passing, player.dribbling, player.defending, player.physical),
@@ -148,9 +152,8 @@ export class PlayerService {
 
     // RN07
     async getAll(query: ListPlayersQueryType): Promise<PlayersListReturnType> {
-        const playerRepository = new PlayerRepository();
         query.search = formatName(query.search);
-        let players = await playerRepository.getAll(query.search);
+        let players = await this.playerRepository.getAll(query.search);
 
         players = this.filterPlayers(players, query);
         players = this.sortPlayers(players, query.sort);
@@ -169,8 +172,7 @@ export class PlayerService {
 
     // RN08
     async update(id: number, data: UpdatePlayerType): Promise<PlayerReturnType | null> {
-        const playerRepository = new PlayerRepository();
-        let player = await playerRepository.getById(id);
+        let player = await this.playerRepository.getById(id);
         if (player && data.position !== player?.position && player?.club_id !== null) {
             // TODO: Handle error appropriately
             throw new Error("Não é possível alterar a posição de um jogador que já está vinculado a um clube.");
@@ -179,7 +181,7 @@ export class PlayerService {
             // TODO: Handle error appropriately
             throw new Error("Não é possível reduzir a idade de um jogador.");
         }
-        player = await playerRepository.update(id, data);
+        player = await this.playerRepository.update(id, data);
 
         return player ? {
             ...player,
@@ -189,13 +191,12 @@ export class PlayerService {
     }
 
     async updateCondition(id: number, condition: ConditionEnumType): Promise<PlayerReturnType | null> {
-        const playerRepository = new PlayerRepository();
-        let player = await playerRepository.getById(id);
+        let player = await this.playerRepository.getById(id);
         if (player?.condition === 'DOENTE' && condition === 'APTO') {
             // TODO: Handle error appropriately
             throw new Error("Não é possível alterar a condição de um jogador de DOENTE para APTO.");
         }
-        player = await playerRepository.update(id, { condition });
+        player = await this.playerRepository.update(id, { condition });
 
         return player ? {
             ...player,
@@ -206,12 +207,11 @@ export class PlayerService {
 
     // RN09
     async delete(id: number): Promise<void> {
-        const playerRepository = new PlayerRepository();
-        let player = await playerRepository.getById(id);
+        let player = await this.playerRepository.getById(id);
         if (player?.club_id !== null) {
             // TODO: Handle error appropriately
             throw new Error("Não é possível excluir um jogador que já está vinculado a um clube.");
         }
-        player = await playerRepository.delete(id);
+        player = await this.playerRepository.delete(id);
     }
 }

@@ -1,32 +1,25 @@
 import { db } from '../prisma/db';
-import type { FieldInputTypes, FieldOutputTypes } from '../prisma/contract';
+import type { LineupData, CreateLineupData } from '../types/types';
 
-type LineupInput = FieldInputTypes['public']['Escalacoes'];
-type LineupOutput = FieldOutputTypes['public']['Escalacoes'];
 
 export class LineupRepository {
-    async create(data: LineupInput): Promise<LineupOutput> {
-        const lineup = await db.orm.public.Escalacoes.create(data);
-        return lineup;
-    }
-
-    async getById(clube_id: number, jogador_id: number): Promise<LineupOutput | null> {
-        const lineup = await db.orm.public.Escalacoes.first({ clube_id, jogador_id });
-        return lineup;
-    }
-
-    async getAll(): Promise<LineupOutput[]> {
-        const lineups = await db.orm.public.Escalacoes.all();
+    async createAll(data: CreateLineupData[]): Promise<LineupData[]> {
+        const lineups = await db.orm.public.Lineups.createAll(data);
         return lineups;
     }
 
-    async update(clube_id: number, jogador_id: number, data: Partial<LineupInput>): Promise<LineupOutput | null> {
-        const lineup = await db.orm.public.Escalacoes.where({ clube_id, jogador_id }).update(data);
+    async getById(club_id: number, player_id: number): Promise<LineupData | null> {
+        const lineup = await db.orm.public.Lineups.first({ club_id, player_id });
         return lineup;
     }
 
-    async delete(clube_id: number, jogador_id: number): Promise<LineupOutput | null> {
-        const lineup = await db.orm.public.Escalacoes.where({ clube_id, jogador_id }).delete();
+    async getAll(club_id: number): Promise<LineupData[]> {
+        const lineups = await db.orm.public.Lineups.where({ club_id }).all();
+        return lineups;
+    }
+
+    async delete(club_id: number): Promise<LineupData | null> {
+        const lineup = await db.orm.public.Lineups.where({ club_id }).delete();
         return lineup;
     }
 }

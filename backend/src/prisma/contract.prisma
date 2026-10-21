@@ -107,9 +107,11 @@ model Transactions {
 model Lineups {
   club_id    Int
   club       Clubs               @relation(fields: [club_id], references: [id])
-  player_id  Int
+  player_id  Int                 @unique
   player     Players             @relation(fields: [player_id], references: [id])
   created_at TimestamptzString() @default(now())
+
+  @@id([club_id, player_id])
 }
 
 model Matches {

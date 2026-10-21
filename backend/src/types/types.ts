@@ -1,3 +1,4 @@
+import type { FormationEnumType } from "../DTOs";
 import type { Models } from "../prisma/contract";
 import type { Scalars, Shape } from "@prisma/orm-postgres/components";
 
@@ -70,3 +71,13 @@ export type ClubTransactionsReturnType = {
         total_profit: number;
     }
 }
+
+// League Types
+export type LineupReturnType = {
+    club_id: number;
+    formation: FormationEnumType | null;
+    complete: boolean;
+    players: PlayerReturnType[];
+}
+export type LineupData = Scalars<Models.public_Lineups>;
+export type CreateLineupData = Shape<Models.public_Lineups, { '-': 'created_at' }>;

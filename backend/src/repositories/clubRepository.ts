@@ -1,5 +1,6 @@
 import type { ClubData, ClubDataWithPlayers, CreateClubData, UpdateClubData } from '../types/types';
 import { db } from '../prisma/db';
+import type { FormationEnumType } from '../DTOs';
 
 export class ClubRepository {
     async create(data: CreateClubData): Promise<ClubData> {
@@ -15,6 +16,11 @@ export class ClubRepository {
     async getByName(name: string): Promise<ClubData | null> {
         const club = await db.orm.public.Clubs.first({ name });
         return club;
+    }
+
+    async getFormation(id: number): Promise<FormationEnumType | null> {
+        const club = await db.orm.public.Clubs.first({ id });
+        return club?.formation || null;
     }
 
     async getAll(): Promise<ClubDataWithPlayers[]> {
