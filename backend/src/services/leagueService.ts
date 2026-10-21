@@ -1,18 +1,20 @@
 import { positionValues, type AttributeEnumType, type FormationEnumType, type UpdateLineupType } from "../DTOs";
-import type { LineupReturnType, MatchDuelPlayerData, MatchDuelReturnType, MatchReturnType, PlayerReturnType, StandingsReturnType } from "../types/types";
-import { ClubRepository, LineupRepository, MatchRepository } from "../repositories";
+import type { LineupReturnType, ListMatchesReturnType, MatchDuelPlayerData, MatchDuelReturnType, MatchReturnType, PlayerReturnType, StandingsReturnType } from "../types/types";
+import { ClubRepository, LineupRepository, MatchDuelRepository, MatchRepository } from "../repositories";
 import { PlayerService } from "./playerService";
 
 export class LeagueService {
     private clubRepository: ClubRepository;
     private lineupRepository: LineupRepository;
     private matchRepository: MatchRepository;
+    private matchDuelRepository: MatchDuelRepository;
     private playerService: PlayerService;
     
     constructor() {
         this.clubRepository = new ClubRepository();
         this.lineupRepository = new LineupRepository();
         this.matchRepository = new MatchRepository();
+        this.matchDuelRepository = new MatchDuelRepository();
         this.playerService = new PlayerService();
     }
 
@@ -175,6 +177,7 @@ export class LeagueService {
         const awayGoals = duels.filter(duel => duel.attacking_club_id === awayClub.id && duel.goal).length;
         const result = homeGoals > awayGoals ? 'MANDANTE' : (homeGoals < awayGoals ? 'VISITANTE' : 'EMPATE');
 
+        // Create Match and Duels in the database
         const match = await this.matchRepository.create({
             home_club_id: homeClub.id,
             away_club_id: awayClub.id,
@@ -183,6 +186,25 @@ export class LeagueService {
             home_club_formation: homeLineup.formation!,
             away_club_formation: awayLineup.formation!,
         });
+
+        await this.matchDuelRepository.createAll(duels.map(d => ({
+            match_id: match.id,
+            order: d.order,
+            attacking_club_id: d.attacking_club_id,
+            attacker_id: d.attacker.player_id,
+            attacker_name: d.attacker.player_name,
+            attacker_position: d.attacker.position,
+            attacker_condition: d.attacker.condition,
+            attack_attribute: d.attacker.attribute,
+            attack_value: d.attacker.value,
+            defender_id: d.defender.player_id,
+            defender_name: d.defender.player_name,
+            defender_position: d.defender.position,
+            defender_condition: d.defender.condition,
+            defense_attribute: d.defender.attribute,
+            defense_value: d.defender.value,
+            goal: d.goal,
+        })))
 
         return {
             id: match.id,
@@ -202,6 +224,95 @@ export class LeagueService {
             result,
             duels,
         }
+    }
+
+    async getMatches(club_id?: number): Promise<ListMatchesReturnType> {
+        const matches = await this.matchRepository.getAll();
+        const clubIdToNameMap: Record<number, string> = {};
+        for (const match of matches) {
+            if (!clubIdToNameMap[match.home_club_id]) {
+                const homeClub = await this.clubRepository.getById(match.home_club_id);
+                clubIdToNameMap[match.home_club_id] = homeClub?.name!;
+            }
+            if (!clubIdToNameMap[match.away_club_id]) {
+                const awayClub = await this.clubRepository.getById(match.away_club_id);
+                clubIdToNameMap[match.away_club_id] = awayClub?.name!;
+            }
+        }
+
+        return matches.filter(m => club_id === undefined || m.home_club_id === club_id || m.away_club_id === club_id)
+        .sort((a, b) => {
+            const dateOrder = new Date(b.played_at).getTime() - new Date(a.played_at).getTime();
+            return dateOrder !== 0 ? dateOrder : b.id - a.id;
+        })
+        .map(m => ({
+            id: m.id,
+            played_at: m.played_at,
+            home: {
+                club_id: m.home_club_id,
+                club_name: clubIdToNameMap[m.home_club_id],
+                formation: m.home_club_formation,
+                goals: m.home_club_goals,
+            },
+            away: {
+                club_id: m.away_club_id,
+                club_name: clubIdToNameMap[m.away_club_id],
+                formation: m.away_club_formation,
+                goals: m.away_club_goals,
+            },
+            result: m.home_club_goals > m.away_club_goals ? 'MANDANTE' : (m.home_club_goals < m.away_club_goals ? 'VISITANTE' : 'EMPATE'),
+        }))
+    }
+
+    async getMatchById(match_id: number): Promise<MatchReturnType> {
+        const match = await this.matchRepository.getById(match_id);
+        if (!match) {
+            throw new Error('Match not found');
+        }
+
+        const homeClub = await this.clubRepository.getById(match.home_club_id);
+        const awayClub = await this.clubRepository.getById(match.away_club_id);
+        const duels = await this.matchDuelRepository.getAllByMatchId(match.id);
+        const formattedDuels = duels.map(d => ({
+            order: d.order,
+            attacking_club_id: d.attacking_club_id,
+            attacker: {
+                player_id: d.attacker_id,
+                player_name: d.attacker_name,
+                position: d.attacker_position,
+                condition: d.attacker_condition,
+                attribute: d.attack_attribute,
+                value: d.attack_value,
+            },
+            defender: {
+                player_id: d.defender_id,
+                player_name: d.defender_name,
+                position: d.defender_position,
+                condition: d.defender_condition,
+                attribute: d.defense_attribute,
+                value: d.defense_value,
+            },
+            goal: d.goal,
+        }));
+
+        return {
+            id: match.id,
+            played_at: match.played_at,
+            home: {
+                club_id: match.home_club_id,
+                club_name: homeClub?.name!,
+                formation: match.home_club_formation,
+                goals: match.home_club_goals,
+            },
+            away: {
+                club_id: match.away_club_id,
+                club_name: awayClub?.name!,
+                formation: match.away_club_formation,
+                goals: match.away_club_goals,
+            },
+            result: match.home_club_goals > match.away_club_goals ? 'MANDANTE' : (match.home_club_goals < match.away_club_goals ? 'VISITANTE' : 'EMPATE'),
+            duels: formattedDuels,
+        };
     }
 
     async getStandings(): Promise<StandingsReturnType> {

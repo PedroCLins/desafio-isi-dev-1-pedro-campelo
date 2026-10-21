@@ -83,6 +83,8 @@ export type LineupData = Scalars<Models.public_Lineups>;
 export type CreateLineupData = Shape<LineupData, { '-': 'created_at' }>;
 export type MatchData = Scalars<Models.public_Matches>;
 export type CreateMatchData = Shape<MatchData, { '-': 'id' | 'played_at' }>;
+export type MatchDuelData = Scalars<Models.public_MatchDuels>;
+export type CreateMatchDuelData = Shape<MatchDuelData, { '-': 'id' }>;
 type MatchClubData = {
     club_id: number;
     club_name: string;
@@ -104,14 +106,17 @@ export type MatchDuelReturnType = {
     defender: MatchDuelPlayerData;
     goal: boolean;
 }
-export type MatchReturnType = {
+type BaseMatchReturnType = {
     id: number;
     played_at: string;
     home: MatchClubData;
     away: MatchClubData;
     result: 'MANDANTE' | 'VISITANTE' | 'EMPATE';
+}
+export type MatchReturnType = BaseMatchReturnType & {
     duels: MatchDuelReturnType[];
 }
+export type ListMatchesReturnType = BaseMatchReturnType[];
 export type StandingsReturnType = {
     position: number;
     club_id: number;
