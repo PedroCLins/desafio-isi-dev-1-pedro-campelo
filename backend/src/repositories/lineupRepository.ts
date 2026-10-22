@@ -18,8 +18,8 @@ export class LineupRepository {
         return lineups;
     }
 
-    async delete(club_id: number): Promise<LineupData | null> {
-        const lineup = await db.orm.public.Lineups.where({ club_id }).delete();
-        return lineup;
+    async delete(club_id: number, player_id?: number): Promise<LineupData[] | null> {
+        const lineups = await db.orm.public.Lineups.where({ club_id, player_id }).deleteAll();
+        return lineups;
     }
 }

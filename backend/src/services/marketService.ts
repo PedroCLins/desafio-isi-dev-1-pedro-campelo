@@ -1,17 +1,20 @@
 import type { CreateContractType, FilterTransactionsType } from "../DTOs";
-import { ClubRepository, ContractRepository, PlayerRepository, TransactionRepository } from "../repositories";
+import { ClubRepository, ContractRepository, LineupRepository, PlayerRepository, TransactionRepository } from "../repositories";
 import type { BuyPlayerReturnType, ClubDataWithPlayers, ClubTransactionsReturnType, PlayerData, SellPlayerReturnType } from "../types/types";
 import BusinessRules from "../utils/businessRules";
+import { ConflictError, CustomError, InternalServerError, NotFoundError } from "../utils/errorHandler";
 
 export class MarketService {
     private clubRepository: ClubRepository;
     private playerRepository: PlayerRepository;
+    private lineupRepository: LineupRepository;
     private contractRepository: ContractRepository;
     private transactionRepository: TransactionRepository;
 
     constructor() {
         this.clubRepository = new ClubRepository();
         this.playerRepository = new PlayerRepository();
+        this.lineupRepository = new LineupRepository();
         this.contractRepository = new ContractRepository();
         this.transactionRepository = new TransactionRepository();
     }
@@ -19,18 +22,14 @@ export class MarketService {
     // RN12
     private async ensurePlayerCanBeBought(player_id: number, club_id: number): Promise<PlayerData> {
         const player = await this.playerRepository.getById(player_id);
-        if (!player) {
-            throw new Error("Jogador não encontrado.");
-        } else if (player.club_id === club_id) {
-            throw new Error("O jogador já pertence a este clube.");
-        } else if (player.club_id !== null) {
-            throw new Error("O jogador já pertence a outro clube.");
-        }
+        if (!player) throw new NotFoundError("Player not found.");
+        if (player.club_id === club_id) throw new ConflictError("Player already belongs to this club.");
+        else if (player.club_id !== null) throw new ConflictError("Player already belongs to another club.");
         
         const transactions = await this.transactionRepository.getAll(club_id);
-        const formerTransactions = transactions.filter(t => t.player_id === player_id && t.type === 'VENDA');
-        if (formerTransactions.length > 0) {
-            throw new Error("O jogador já foi vendido para este clube anteriormente.");
+        if (transactions.length > 0) {
+            const formerTransactions = transactions.filter(t => t.player_id === player_id && t.type === 'VENDA');
+            if (formerTransactions.length > 0) throw new ConflictError("Player has been sold by this club before and cannot be bought again.");
         }
 
         return player;
@@ -46,11 +45,8 @@ export class MarketService {
     // RN14
     private async ensureClubPlayerLimit(club_id: number): Promise<ClubDataWithPlayers> {
         const club = await this.clubRepository.getById(club_id);
-        if (!club) {
-            throw new Error("Clube não encontrado.");
-        } else if (club && club.players.length >= 12) {
-            throw new Error("O clube já possui o número máximo de jogadores.");
-        }
+        if (!club) throw new NotFoundError("Club not found.");
+        else if (club.players.length >= 12) throw new ConflictError("Club has reached the maximum number of players (12).");
 
         return club;
     }
@@ -104,18 +100,12 @@ export class MarketService {
 
     async sellPlayer(player_id: number): Promise<SellPlayerReturnType> {
         const player = await this.playerRepository.getById(player_id);
-        if (!player) {
-            throw new Error("Jogador não encontrado.");
-        } else if (!player.club_id) {
-            throw new Error("O jogador não está vinculado a nenhum clube.");
-        }
+        if (!player) throw new NotFoundError("Player not found.");
+        if (!player.club_id) throw new ConflictError("Player is not linked to any club.");
 
         const contract = await this.contractRepository.getById(player.club_id, player_id);
-        if (!contract) {
-            throw new Error("Contrato do jogador não encontrado.");
-        } else if (contract.status !== 'ATIVO') {
-            throw new Error("O contrato do jogador não está ativo.");
-        }
+        if (!contract) throw new NotFoundError("Player contract not found.");
+        if (contract.status !== 'ATIVO') throw new ConflictError("The player's contract is not active.");
 
         const currentMarketValue = BusinessRules.getNumericMarketValue(player.condition, player.agility, player.age, player.base_value);
         const purchaseValue = parseFloat(contract.purchase_value);
@@ -130,13 +120,15 @@ export class MarketService {
         const commission = profit > 0 ? Math.min(profit * 0.1, 10).toFixed(2) : (0).toFixed(2);
         const cashChange = currentMarketValue - penalty - parseFloat(commission);
 
-        await this.contractRepository.update(player.club_id, player_id, { status, ended_at: sellingDate });
-
         const club = await this.clubRepository.getById(player.club_id);
-        if (!club) {
-            throw new Error("Clube não encontrado.");
-        }
+        if (!club) throw new NotFoundError("Club not found.");
+        
         const clubCash = this.getNewClubCash(parseFloat(club.cash), currentMarketValue - penalty);
+        
+        await this.clubRepository.update(player.club_id, { cash: clubCash.toString() });
+        await this.playerRepository.update(player_id, { club_id: null });
+        await this.contractRepository.update(player.club_id, player_id, { status, ended_at: sellingDate });
+        await this.lineupRepository.delete(player.club_id, player.id)
 
         const transaction = await this.transactionRepository.create({
             club_id: player.club_id,
@@ -149,10 +141,7 @@ export class MarketService {
             profit: profit.toString(),
             type: 'VENDA',
         });
-
-        await this.clubRepository.update(player.club_id, { cash: clubCash.toString() });
-        await this.playerRepository.update(player_id, { club_id: null });
-
+        
         return {
             ...transaction,
             purchase_value: purchaseValue,
@@ -166,6 +155,8 @@ export class MarketService {
     // RN17
     async getClubTransactions(club_id: number, query: FilterTransactionsType): Promise<ClubTransactionsReturnType> {
         const transactions = await this.transactionRepository.getAll(club_id);
+        if (!transactions || transactions.length === 0) throw new NotFoundError("No transactions found for this club.");
+        
         const filteredTransactions = transactions.filter(t => {
             if (query.type && query.type !== 'TODOS' && t.type !== query.type) {
                 return false;
@@ -184,15 +175,15 @@ export class MarketService {
         });
 
         const summary = {
-            total_spent: filteredTransactions.filter(t => t.type === 'COMPRA').reduce((sum, t) => sum + parseFloat(t.value + t.fee), 0) || 0.00,
-            total_received: filteredTransactions.filter(t => t.type === 'VENDA').reduce((sum, t) => sum + parseFloat(t.cash_change), 0) || 0.00,
-            total_fees: filteredTransactions.reduce((sum, t) => sum + parseFloat(t.fee), 0) || 0.00,
-            total_penalties: filteredTransactions.filter(t => t.type === 'VENDA').reduce((sum, t) => sum + parseFloat(t.penalty), 0) || 0.00,
-            total_profit: filteredTransactions.filter(t => t.profit && t.type === 'VENDA').reduce((sum, t) => sum + parseFloat(t.profit!), 0) || 0.00,
+            total_spent: sortedTransactions.filter(t => t.type === 'COMPRA').reduce((sum, t) => sum + parseFloat(t.value + t.fee), 0) || 0.00,
+            total_received: sortedTransactions.filter(t => t.type === 'VENDA').reduce((sum, t) => sum + parseFloat(t.cash_change), 0) || 0.00,
+            total_fees: sortedTransactions.reduce((sum, t) => sum + parseFloat(t.fee), 0) || 0.00,
+            total_penalties: sortedTransactions.filter(t => t.type === 'VENDA').reduce((sum, t) => sum + parseFloat(t.penalty), 0) || 0.00,
+            total_profit: sortedTransactions.filter(t => t.profit && t.type === 'VENDA').reduce((sum, t) => sum + parseFloat(t.profit!), 0) || 0.00,
         };
 
         return {
-            data: filteredTransactions,
+            data: sortedTransactions,
             summary
         };
     }

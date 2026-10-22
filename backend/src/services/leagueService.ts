@@ -2,6 +2,7 @@ import { positionValues, type AttributeEnumType, type FormationEnumType, type Up
 import type { LineupReturnType, ListMatchesReturnType, MatchDuelPlayerData, MatchDuelReturnType, MatchReturnType, PlayerReturnType, StandingsReturnType } from "../types/types";
 import { ClubRepository, LineupRepository, MatchDuelRepository, MatchRepository } from "../repositories";
 import { PlayerService } from "./playerService";
+import { ConflictError, NotFoundError } from "../utils/errorHandler";
 
 export class LeagueService {
     private clubRepository: ClubRepository;
@@ -20,13 +21,11 @@ export class LeagueService {
 
     private async ensureClubLineupIsValid(club_id: number, query: UpdateLineupType): Promise<void> {
         const club = await this.clubRepository.getById(club_id);
-        if (!club) {
-            throw new Error("Clube não encontrado.");
-        }
-
+        if (!club) throw new NotFoundError("Club not found.");
+        
         const validPlayers = club.players.filter(p => query.player_ids.includes(p.id) && p.condition !== 'DOENTE');
         if (validPlayers.length !== query.player_ids.length) {
-            throw new Error("Um ou mais jogadores selecionados não pertencem ao clube ou estão doentes.");
+            throw new ConflictError("Um ou mais jogadores selecionados não pertencem ao clube ou estão doentes.");
         }
 
         const lineupPositions = validPlayers.map(p => p.position);
@@ -43,7 +42,7 @@ export class LeagueService {
         };
 
         if (!formationPositions[query.formation](goalkeeperCount, defenseCount, midfieldCount, attackCount)) {
-            throw new Error("A formação selecionada não corresponde às posições dos jogadores escolhidos.");
+            throw new ConflictError("A formação selecionada não corresponde às posições dos jogadores escolhidos.");
         }
     }
 
@@ -123,12 +122,14 @@ export class LeagueService {
 
     async getClubLineup(club_id: number): Promise<LineupReturnType> {
         const club = await this.clubRepository.getById(club_id);
-        if (!club) {
-            throw new Error("Clube não encontrado.");
-        }
+        if (!club) throw new NotFoundError("Club not found.");
+        
         const formation = await this.clubRepository.getFormation(club_id);
+        if (!formation) throw new NotFoundError("Club formation not found.");
 
         const lineups = await this.lineupRepository.getAll(club_id);
+        if (!lineups || lineups.length === 0) throw new NotFoundError("Club lineup not found.");
+
         const players = await Promise.all(
             lineups.map(async (lineup) => {
                 const player = await this.playerService.getById(lineup.player_id);
@@ -146,23 +147,17 @@ export class LeagueService {
 
     // RN20
     async createMatch(home_club_id: number, away_club_id: number): Promise<MatchReturnType> {
-        if (home_club_id === away_club_id) {
-            throw new Error("Um clube não pode jogar contra si mesmo.");
-        }
-
+        if (home_club_id === away_club_id) throw new ConflictError("A club cannot play against itself.");
+        
         const homeClub = await this.clubRepository.getById(home_club_id);
         const awayClub = await this.clubRepository.getById(away_club_id);
 
-        if (!homeClub || !awayClub) {
-            throw new Error("Um ou ambos os clubes não foram encontrados.");
-        }
+        if (!homeClub || !awayClub) throw new NotFoundError("One or both clubs not found.");
 
         const homeLineup = await this.getClubLineup(home_club_id);
         const awayLineup = await this.getClubLineup(away_club_id);
 
-        if (!homeLineup.complete || !awayLineup.complete) {
-            throw new Error("Um ou ambos os clubes não têm escalação completa.");
-        }
+        if (!homeLineup.complete || !awayLineup.complete) throw new ConflictError("One or both clubs do not have a complete lineup.");
 
         const homePlayers = this.sortPlayersByPosition(homeLineup.players);
         const awayPlayers = this.sortPlayersByPosition(awayLineup.players);
@@ -228,6 +223,8 @@ export class LeagueService {
 
     async getMatches(club_id?: number): Promise<ListMatchesReturnType> {
         const matches = await this.matchRepository.getAll();
+        if (!matches || matches.length === 0) throw new NotFoundError("No matches found.");
+
         const clubIdToNameMap: Record<number, string> = {};
         for (const match of matches) {
             if (!clubIdToNameMap[match.home_club_id]) {
@@ -266,13 +263,15 @@ export class LeagueService {
 
     async getMatchById(match_id: number): Promise<MatchReturnType> {
         const match = await this.matchRepository.getById(match_id);
-        if (!match) {
-            throw new Error('Match not found');
-        }
-
+        if (!match) throw new NotFoundError('Match not found');
+        
         const homeClub = await this.clubRepository.getById(match.home_club_id);
         const awayClub = await this.clubRepository.getById(match.away_club_id);
+        if (!homeClub || !awayClub) throw new NotFoundError('One or both clubs not found');
+
         const duels = await this.matchDuelRepository.getAllByMatchId(match.id);
+        if (!duels || duels.length === 0) throw new NotFoundError('No duels found for this match');
+
         const formattedDuels = duels.map(d => ({
             order: d.order,
             attacking_club_id: d.attacking_club_id,
@@ -318,7 +317,8 @@ export class LeagueService {
     // RN21
     async getStandings(): Promise<StandingsReturnType> {
         const clubs = await this.clubRepository.getAll();
-
+        if (!clubs || clubs.length === 0) throw new NotFoundError("No clubs found.");
+        
         const standings: StandingsReturnType = [];
         for (const club of clubs) {
             const matches = await this.getMatches(club.id);

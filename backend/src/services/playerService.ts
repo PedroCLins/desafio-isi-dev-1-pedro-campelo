@@ -8,16 +8,18 @@ import {
     positionValues
 } from "../DTOs";
 import type { PlayerData, PlayerReturnType, PlayersListReturnType } from "../types/types";
-import { PlayerRepository } from "../repositories";
+import { LineupRepository, PlayerRepository } from "../repositories";
 import { formatName } from "../utils/nameHandler";
 import BusinessRules from "../utils/businessRules";
-import { BadRequestError, ConflictError, CustomError, InternalServerError, NotFoundError } from "../utils/errorHandler";
+import { BadRequestError, ConflictError, NotFoundError } from "../utils/errorHandler";
 
 export class PlayerService {
     private playerRepository: PlayerRepository;
+    private lineupRepository: LineupRepository;
 
     constructor() {
         this.playerRepository = new PlayerRepository();
+        this.lineupRepository = new LineupRepository();
     }
 
     // RN06
@@ -119,132 +121,100 @@ export class PlayerService {
         return players.slice(startIndex, endIndex);
     }
 
-    async create(data: CreatePlayerType): Promise<PlayerReturnType | CustomError> {
-        try {
-            if (!this.assertPotentialMinimum(data.potential, data.pace, data.shooting, data.passing, data.dribbling, data.defending, data.physical)) {
-                throw new BadRequestError("Player potential cannot be less than the highest attribute.");
-            }
-            const overall = this.calculateOverall(data.position, data.pace, data.shooting, data.passing, data.dribbling, data.defending, data.physical);
-            const baseValue = this.calculateBaseValue(overall, data.age, data.potential);
-    
-            data.name = formatName(data.name);
-            const player = await this.playerRepository.create({
-                ...data,
-                base_value: baseValue,
-                condition: 'APTO',
-            });
-    
-            return {
-                ...player,
-                market_value: BusinessRules.getNumericMarketValue(player.condition, player.agility, player.age, player.base_value),
-                overall: overall,
-            };
-
-        } catch (error) {
-            if (error instanceof BadRequestError) return error;
-            return new InternalServerError("An unexpected error occurred while creating the player.");
+    async create(data: CreatePlayerType): Promise<PlayerReturnType> {
+        if (!this.assertPotentialMinimum(data.potential, data.pace, data.shooting, data.passing, data.dribbling, data.defending, data.physical)) {
+            throw new BadRequestError("Player potential cannot be less than the highest attribute.");
         }
+        const overall = this.calculateOverall(data.position, data.pace, data.shooting, data.passing, data.dribbling, data.defending, data.physical);
+        const baseValue = this.calculateBaseValue(overall, data.age, data.potential);
+
+        data.name = formatName(data.name);
+        const player = await this.playerRepository.create({
+            ...data,
+            base_value: baseValue,
+            condition: 'APTO',
+        });
+
+        return {
+            ...player,
+            market_value: BusinessRules.getNumericMarketValue(player.condition, player.agility, player.age, player.base_value),
+            overall: overall,
+        };
     }
 
-    async getById(id: number): Promise<PlayerReturnType | CustomError> {
-        try {
-            const player = await this.playerRepository.getById(id);
-            if (!player) throw new NotFoundError("Player not found.");
-            
-            return {
-                ...player,
-                market_value: BusinessRules.getNumericMarketValue(player.condition, player.agility, player.age, player.base_value),
-                overall: this.calculateOverall(player.position, player.pace, player.shooting, player.passing, player.dribbling, player.defending, player.physical),
-            };
-
-        } catch (error) {
-            if (error instanceof NotFoundError) return error;
-            return new InternalServerError("An unexpected error occurred while fetching the player.");
-        }
+    async getById(id: number): Promise<PlayerReturnType> {
+        const player = await this.playerRepository.getById(id);
+        if (!player) throw new NotFoundError("Player not found.");
+        
+        return {
+            ...player,
+            market_value: BusinessRules.getNumericMarketValue(player.condition, player.agility, player.age, player.base_value),
+            overall: this.calculateOverall(player.position, player.pace, player.shooting, player.passing, player.dribbling, player.defending, player.physical),
+        };
     }
 
     // RN07
-    async getAll(query: ListPlayersQueryType): Promise<PlayersListReturnType | CustomError> {
-        try {
-            query.search = formatName(query.search);
-            let players = await this.playerRepository.getAll(query.search);
-            if (players.length === 0) throw new NotFoundError("No players found.");
-    
-            players = this.filterPlayers(players, query);
-            players = this.sortPlayers(players, query.sort);
-    
-            const meta = {
-                page: query.page,
-                limit: query.limit,
-                total_items: players.length,
-                total_pages: Math.ceil(players.length / query.limit),
-            };
-    
-            players = this.paginatePlayers(players, query.page, query.limit);
-    
-            return { data: players, meta };
+    async getAll(query: ListPlayersQueryType): Promise<PlayersListReturnType> {
+        query.search = formatName(query.search);
+        let players = await this.playerRepository.getAll(query.search);
+        if (players.length === 0) throw new NotFoundError("No players found.");
 
-        } catch (error) {
-            if (error instanceof NotFoundError) return error;
-            return new InternalServerError("An unexpected error occurred while fetching the players.");
-        }
+        players = this.filterPlayers(players, query);
+        players = this.sortPlayers(players, query.sort);
+
+        const meta = {
+            page: query.page,
+            limit: query.limit,
+            total_items: players.length,
+            total_pages: Math.ceil(players.length / query.limit),
+        };
+
+        players = this.paginatePlayers(players, query.page, query.limit);
+
+        return { data: players, meta };
     }
 
     // RN08
-    async update(id: number, data: UpdatePlayerType): Promise<PlayerReturnType | CustomError> {
-        try {
-            let player = await this.playerRepository.getById(id);
-            if (!player) throw new NotFoundError("Player not found.");
-            if (player && data.position !== player?.position && player?.club_id !== null) throw new ConflictError("Can't change the position of a player who is already bound to a club.");
-            if (player && data.age < player?.age) throw new ConflictError("Can't decrease the age of a player.");
-            
+    async update(id: number, data: UpdatePlayerType): Promise<PlayerReturnType> {
+        let player = await this.playerRepository.getById(id);
+        if (!player) throw new NotFoundError("Player not found.");
+        if (player && data.position !== player?.position && player?.club_id !== null) throw new ConflictError("Can't change the position of a player who is already bound to a club.");
+        if (player && data.age < player?.age) throw new ConflictError("Can't decrease the age of a player.");
+        
 
-            player = (await this.playerRepository.update(id, data))!; // Non-null assertion because we already checked if the player exists
+        player = (await this.playerRepository.update(id, data))!; // Non-null assertion because we already checked if the player exists
 
-            return {
-                ...player,
-                market_value: BusinessRules.getNumericMarketValue(player.condition, player.agility, player.age, player.base_value),
-                overall: this.calculateOverall(player.position, player.pace, player.shooting, player.passing, player.dribbling, player.defending, player.physical),
-            }
-
-        } catch (error) {
-            if (error instanceof NotFoundError || error instanceof ConflictError) return error;
-            return new InternalServerError("An unexpected error occurred while updating the player.");
+        return {
+            ...player,
+            market_value: BusinessRules.getNumericMarketValue(player.condition, player.agility, player.age, player.base_value),
+            overall: this.calculateOverall(player.position, player.pace, player.shooting, player.passing, player.dribbling, player.defending, player.physical),
         }
     }
 
-    async updateCondition(id: number, condition: ConditionEnumType): Promise<PlayerReturnType | CustomError> {
-        try {
-            let player = await this.playerRepository.getById(id);
-            if (!player) throw new NotFoundError("Player not found.");
-            if (player?.condition === 'DOENTE' && condition === 'APTO') throw new ConflictError("Can't change the condition of a player from DOENTE to APTO.");
-            
-            player = (await this.playerRepository.update(id, { condition }))!;
-
-            return {
-                ...player,
-                market_value: BusinessRules.getNumericMarketValue(player.condition, player.agility, player.age, player.base_value),
-                overall: this.calculateOverall(player.position, player.pace, player.shooting, player.passing, player.dribbling, player.defending, player.physical),
-            };
-
-        } catch (error) {
-            if (error instanceof NotFoundError || error instanceof ConflictError) return error;
-            return new InternalServerError("An unexpected error occurred while updating the player's condition.");
+    async updateCondition(id: number, condition: ConditionEnumType): Promise<PlayerReturnType> {
+        let player = await this.playerRepository.getById(id);
+        if (!player) throw new NotFoundError("Player not found.");
+        if (player?.condition === 'DOENTE' && condition === 'APTO') throw new ConflictError("Can't change the condition of a player from DOENTE to APTO.");
+        
+        // Removes player from lineup if condition is set to DOENTE and player is bound to a club
+        player = (await this.playerRepository.update(id, { condition }))!;
+        if (player.condition === 'DOENTE' && player.club_id) {
+            await this.lineupRepository.delete(player.club_id, player.id)
         }
+
+        return {
+            ...player,
+            market_value: BusinessRules.getNumericMarketValue(player.condition, player.agility, player.age, player.base_value),
+            overall: this.calculateOverall(player.position, player.pace, player.shooting, player.passing, player.dribbling, player.defending, player.physical),
+        };
     }
 
     // RN09
-    async delete(id: number): Promise<void | CustomError> {
-        try {
-            let player = await this.playerRepository.getById(id);
-            if (!player) throw new NotFoundError("Player not found.");
-            if (player?.club_id !== null) throw new ConflictError("Cannot delete a player who is already bound to a club.");
-            
-            player = await this.playerRepository.delete(id);
-
-        } catch (error) {
-            if (error instanceof NotFoundError || error instanceof ConflictError) return error;
-            return new InternalServerError("An unexpected error occurred while deleting the player.");
-        }
+    async delete(id: number): Promise<void> {
+        let player = await this.playerRepository.getById(id);
+        if (!player) throw new NotFoundError("Player not found.");
+        if (player?.club_id !== null) throw new ConflictError("Cannot delete a player who is already bound to a club.");
+        
+        player = await this.playerRepository.delete(id);
     }
 }

@@ -28,15 +28,16 @@ export type BaseClubReturnType = ClubData & {
     squad_value: number;
     net_worth: number;
 };
+export type PlayerDataWithContract = PlayerReturnType & {
+    contract: {
+        purchase_value: number;
+        loyalty_until: string;
+        remaining_days: number;
+        penalty_rate: number;
+    };
+};
 export type ClubReturnType = BaseClubReturnType & {
-    players: (PlayerData & {
-        contract: {
-            purchase_value: number;
-            loyalty_until: string;
-            remaining_days: number;
-            penalty_rate: number;
-        };
-    })[];
+    players: PlayerDataWithContract[];
 };
 export type ClubsListReturnType = BaseClubReturnType[];
 
