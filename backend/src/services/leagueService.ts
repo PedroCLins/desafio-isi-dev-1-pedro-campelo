@@ -25,7 +25,7 @@ export class LeagueService {
         
         const validPlayers = club.players.filter(p => query.player_ids.includes(p.id) && p.condition !== 'DOENTE');
         if (validPlayers.length !== query.player_ids.length) {
-            throw new ConflictError("Um ou mais jogadores selecionados não pertencem ao clube ou estão doentes.");
+            throw new ConflictError("One or more players are either not in the club or are Sick.");
         }
 
         const lineupPositions = validPlayers.map(p => p.position);
@@ -42,7 +42,7 @@ export class LeagueService {
         };
 
         if (!formationPositions[query.formation](goalkeeperCount, defenseCount, midfieldCount, attackCount)) {
-            throw new ConflictError("A formação selecionada não corresponde às posições dos jogadores escolhidos.");
+            throw new ConflictError("The selected players do not match the chosen formation. Please ensure the lineup has the correct number of players for each position.");
         }
     }
 
@@ -157,7 +157,9 @@ export class LeagueService {
         const homeLineup = await this.getClubLineup(home_club_id);
         const awayLineup = await this.getClubLineup(away_club_id);
 
-        if (!homeLineup.complete || !awayLineup.complete) throw new ConflictError("One or both clubs do not have a complete lineup.");
+
+        if (!homeLineup.complete) throw new ConflictError("Home club do not have a complete lineup.");
+        if (!awayLineup.complete) throw new ConflictError("Away club do not have a complete lineup.");
 
         const homePlayers = this.sortPlayersByPosition(homeLineup.players);
         const awayPlayers = this.sortPlayersByPosition(awayLineup.players);

@@ -2,14 +2,15 @@ FROM node:22-alpine
 
 WORKDIR /app
 
-COPY package*.json ./
-RUN pnpm install
+RUN corepack enable
 
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+RUN pnpm install --frozen-lockfile
 COPY . .
-RUN npx prisma contract emit
-RUN npx prisma db update
+
+RUN pnpm prisma contract emit
 RUN pnpm build
 
-EXPOSE 5000
+EXPOSE 3001
 
-CMD ["pnpm", "run", "dev"]
+CMD ["sh", "-c", "pnpm prisma db update && pnpm run dev"]

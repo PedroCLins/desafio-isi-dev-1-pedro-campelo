@@ -10,7 +10,7 @@ export type PlayerReturnType = PlayerData & {
     overall: number;
 };
 export type PlayersListReturnType = {
-    data: PlayerData[];
+    data: PlayerReturnType[];
     meta: {
         page: number;
         limit: number;

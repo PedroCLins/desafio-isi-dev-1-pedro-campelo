@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import Image from "next/image";
+import { apiClient } from "@/lib/api";
 import {
   Clock3,
   ListOrdered,
@@ -44,7 +45,6 @@ type SidebarNavigationProps = {
   activeItem?: SidebarItem;
   counts?: SidebarCounts;
   clubs?: SidebarClub[];
-  clubsApiUrl?: string;
   onActiveItemChange?: (item: SidebarItem) => void;
 };
 
@@ -132,7 +132,6 @@ export function SidebarNavigation({
   activeItem: activeItemProp,
   counts = { players: 0, clubs: 0, matches: 0 },
   clubs: clubsProp,
-  clubsApiUrl = "http://localhost:3000/clubs?sort=name",
   onActiveItemChange,
 }: SidebarNavigationProps) {
   const [internalActiveItem, setInternalActiveItem] =
@@ -148,12 +147,7 @@ export function SidebarNavigation({
 
     const loadClubs = async () => {
       try {
-        const response = await fetch(clubsApiUrl);
-        if (!response.ok) {
-          return;
-        }
-
-        const data: SidebarClub[] = await response.json();
+        const data = await apiClient.clubs.list({ sort: "name" });
         setFetchedClubs(data);
       } catch {
         setFetchedClubs([]);
@@ -161,7 +155,7 @@ export function SidebarNavigation({
     };
 
     void loadClubs();
-  }, [clubsApiUrl, clubsProp]);
+  }, [clubsProp]);
 
   const selectItem = (item: SidebarItem) => {
     setInternalActiveItem(item);

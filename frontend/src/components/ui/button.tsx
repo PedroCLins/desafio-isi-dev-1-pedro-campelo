@@ -13,7 +13,7 @@ const buttonVariants = cva(
         secondary:
           "bg-secondary text-secondary-foreground",
         ghost:
-          "text-foreground shadow-none",
+          "text-foreground shadow-none hover:bg-muted hover:text-foreground",
         link: "text-primary shadow-none",
       },
       size: {

@@ -1,6 +1,6 @@
-import { and } from '@prisma/orm-postgres/orm-client';
 import { db } from '../prisma/db';
 import type { CreatePlayerData, PlayerData } from '../utils/types';
+import { normalizeName } from '../utils/nameHandler';
 
 export class PlayerRepository {
     async create(data: CreatePlayerData): Promise<PlayerData> {
@@ -15,13 +15,11 @@ export class PlayerRepository {
     }
 
     async getAll(name: string): Promise<PlayerData[]> {
-        const players = await db.orm.public.Players
-            .where((p) => and( 
-                p.name.ilike(`%${name}%`),
-                p.deleted_at.isNull(),
-            ))
-            .all();
-        return players;
+        const players = (await db.orm.public.Players.all())
+            .filter((player) => player.deleted_at === null);
+        const normalizedQuery = normalizeName(name);
+        if (normalizedQuery === "") return players;
+        return players.filter((player) => normalizeName(player.name).includes(normalizedQuery));
     }
 
     async update(id: number, data: Partial<PlayerData>): Promise<PlayerData | null> {

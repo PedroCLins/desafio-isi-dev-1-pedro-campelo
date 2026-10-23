@@ -38,27 +38,28 @@ export const createPlayerDTO = basePlayerDTO.extend({
 })
 
 const listPlayersFilterDTO = z.object({
+        search: z.string({ message: "O nome da busca é obrigatório." })
+                .min(0, { message: "O nome da busca deve ter no mínimo 0 caracteres." })
+                .max(100, { message: "O nome da busca deve ter no máximo 100 caracteres." })
+                .optional(),
         position: positionEnum.optional(),
         condition: conditionEnum.optional(),
-        free: z.boolean().optional(),
-        club_id: z.number().optional(),
-        min_age: z.number().optional(),
-        max_age: z.number().optional(),
-        min_value: z.number().optional(),
-        max_value: z.number().optional(),
+        free: z.preprocess((value) => value === "true" ? true : value === "false" ? false : value, z.boolean()).optional(),
+        club_id: z.coerce.number().optional(),
+        min_age: z.coerce.number().min(16, { message: "A idade mínima do jogador deve ser no mínimo 16." }).optional(),
+        max_age: z.coerce.number().max(45, { message: "A idade máxima do jogador deve ser no máximo 45." }).optional(),
+        min_value: z.coerce.number().min(1, { message: "O valor de mercado mínimo do jogador deve ser no mínimo 1." }).optional(),
+        max_value: z.coerce.number().optional(),
 })
 
 export const listPlayersQueryDTO = listPlayersFilterDTO.extend({
-        search: z.string({ message: "O nome da busca é obrigatório." })
-                .min(2, { message: "O nome da busca deve ter no mínimo 2 caracteres." })
-                .max(100, { message: "O nome da busca deve ter no máximo 100 caracteres." }),
         sort: z.array(z.enum(['name', 'age_asc', 'age_desc', 'value_asc', 'value_desc', 'position'], { error: "O tipo de ordenação é inválido." }))
                 .max(2, { message: "O máximo de critérios de ordenação é 2." })
                 .default(['name']),
-        page: z.number({ message: "O número da página é obrigatório." })
+        page: z.coerce.number({ message: "O número da página é obrigatório." })
                 .min(1, { message: "O número da página deve ser no mínimo 1." })
                 .default(1),
-        limit: z.number({ message: "O número de itens por página é obrigatório." })
+        limit: z.coerce.number({ message: "O número de itens por página é obrigatório." })
                 .min(1, { message: "O número de itens por página deve ser no mínimo 1." })
                 .max(50, { message: "O número de itens por página deve ser no máximo 50." })
                 .default(10),

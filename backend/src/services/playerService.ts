@@ -155,9 +155,8 @@ export class PlayerService {
 
     // RN07
     async getAll(query: ListPlayersQueryType): Promise<PlayersListReturnType> {
-        query.search = formatName(query.search);
-        let players = await this.playerRepository.getAll(query.search);
-        if (players.length === 0) throw new NotFoundError("No players found.");
+        const name = query.search ? formatName(query.search) : "";
+        let players = await this.playerRepository.getAll(name);
 
         players = this.filterPlayers(players, query);
         players = this.sortPlayers(players, query.sort);
@@ -171,7 +170,27 @@ export class PlayerService {
 
         players = this.paginatePlayers(players, query.page, query.limit);
 
-        return { data: players, meta };
+        return {
+            data: players.map((player) => ({
+                ...player,
+                market_value: BusinessRules.getNumericMarketValue(
+                    player.condition,
+                    player.agility,
+                    player.age,
+                    player.base_value,
+                ),
+                overall: this.calculateOverall(
+                    player.position,
+                    player.pace,
+                    player.shooting,
+                    player.passing,
+                    player.dribbling,
+                    player.defending,
+                    player.physical,
+                ),
+            })),
+            meta,
+        };
     }
 
     // RN08
