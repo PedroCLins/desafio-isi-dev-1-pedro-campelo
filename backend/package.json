@@ -24,6 +24,7 @@
     "start": "node dist/server.mjs"
   },
   "dependencies": {
+    "@fastify/cors": "^11.3.1",
     "@prisma/composer": "0.28.0",
     "@prisma/composer-prisma-cloud": "0.28.0",
     "@prisma/orm-postgres": "8.0.0-rc.16",
