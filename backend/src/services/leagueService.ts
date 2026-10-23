@@ -1,5 +1,5 @@
 import { positionValues, type AttributeEnumType, type FormationEnumType, type UpdateLineupType } from "../DTOs";
-import type { LineupReturnType, ListMatchesReturnType, MatchDuelPlayerData, MatchDuelReturnType, MatchReturnType, PlayerReturnType, StandingsReturnType } from "../types/types";
+import type { LineupReturnType, ListMatchesReturnType, MatchDuelPlayerData, MatchDuelReturnType, MatchReturnType, PlayerReturnType, StandingsReturnType } from "../utils/types";
 import { ClubRepository, LineupRepository, MatchDuelRepository, MatchRepository } from "../repositories";
 import { PlayerService } from "./playerService";
 import { ConflictError, NotFoundError } from "../utils/errorHandler";
@@ -96,17 +96,17 @@ export class LeagueService {
     }
 
     // RN19
-    async updateClubLineup(club_id: number, query: UpdateLineupType): Promise<LineupReturnType> {
-        await this.ensureClubLineupIsValid(club_id, query);
-        await this.clubRepository.update(club_id, { formation: query.formation });
+    async updateClubLineup(club_id: number, data: UpdateLineupType): Promise<LineupReturnType> {
+        await this.ensureClubLineupIsValid(club_id, data);
+        await this.clubRepository.update(club_id, { formation: data.formation });
 
         // Delete existing lineup and create new one
         await this.lineupRepository.delete(club_id);
-        const lineupData = query.player_ids.map(player_id => ({ club_id, player_id }));
+        const lineupData = data.player_ids.map(player_id => ({ club_id, player_id }));
         await this.lineupRepository.createAll(lineupData);
 
         const players = await Promise.all(
-            query.player_ids.map(async (player_id) => {
+            data.player_ids.map(async (player_id) => {
                 const player = await this.playerService.getById(player_id);
                 return player!;
             })
@@ -114,8 +114,8 @@ export class LeagueService {
 
         return {
             club_id,
-            formation: query.formation,
-            complete: query.player_ids.length === 5 ? true : false,
+            formation: data.formation,
+            complete: data.player_ids.length === 5 ? true : false,
             players,
         };
     }
@@ -318,7 +318,7 @@ export class LeagueService {
     async getStandings(): Promise<StandingsReturnType> {
         const clubs = await this.clubRepository.getAll();
         if (!clubs || clubs.length === 0) throw new NotFoundError("No clubs found.");
-        
+
         const standings: StandingsReturnType = [];
         for (const club of clubs) {
             const matches = await this.getMatches(club.id);

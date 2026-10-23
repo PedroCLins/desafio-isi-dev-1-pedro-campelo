@@ -7,7 +7,7 @@ import {
     type PositionEnumType,
     positionValues
 } from "../DTOs";
-import type { PlayerData, PlayerReturnType, PlayersListReturnType } from "../types/types";
+import type { PlayerData, PlayerReturnType, PlayersListReturnType } from "../utils/types";
 import { LineupRepository, PlayerRepository } from "../repositories";
 import { formatName } from "../utils/nameHandler";
 import BusinessRules from "../utils/businessRules";

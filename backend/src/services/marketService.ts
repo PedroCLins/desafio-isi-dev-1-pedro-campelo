@@ -1,8 +1,8 @@
 import type { CreateContractType, FilterTransactionsType } from "../DTOs";
 import { ClubRepository, ContractRepository, LineupRepository, PlayerRepository, TransactionRepository } from "../repositories";
-import type { BuyPlayerReturnType, ClubDataWithPlayers, ClubTransactionsReturnType, PlayerData, SellPlayerReturnType } from "../types/types";
+import type { BuyPlayerReturnType, ClubDataWithPlayers, ClubTransactionsReturnType, PlayerData, SellPlayerReturnType } from "../utils/types";
 import BusinessRules from "../utils/businessRules";
-import { ConflictError, CustomError, InternalServerError, NotFoundError } from "../utils/errorHandler";
+import { ConflictError, NotFoundError } from "../utils/errorHandler";
 
 export class MarketService {
     private clubRepository: ClubRepository;
@@ -156,7 +156,7 @@ export class MarketService {
     async getClubTransactions(club_id: number, query: FilterTransactionsType): Promise<ClubTransactionsReturnType> {
         const transactions = await this.transactionRepository.getAll(club_id);
         if (!transactions || transactions.length === 0) throw new NotFoundError("No transactions found for this club.");
-        
+
         const filteredTransactions = transactions.filter(t => {
             if (query.type && query.type !== 'TODOS' && t.type !== query.type) {
                 return false;

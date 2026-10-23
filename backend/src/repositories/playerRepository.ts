@@ -1,6 +1,6 @@
 import { and } from '@prisma/orm-postgres/orm-client';
 import { db } from '../prisma/db';
-import type { CreatePlayerData, PlayerData } from '../types/types';
+import type { CreatePlayerData, PlayerData } from '../utils/types';
 
 export class PlayerRepository {
     async create(data: CreatePlayerData): Promise<PlayerData> {

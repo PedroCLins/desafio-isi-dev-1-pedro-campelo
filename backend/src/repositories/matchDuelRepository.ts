@@ -1,5 +1,5 @@
 import { db } from '../prisma/db';
-import type { CreateMatchDuelData, MatchDuelData } from '../types/types';
+import type { CreateMatchDuelData, MatchDuelData } from '../utils/types';
 
 
 export class MatchDuelRepository {

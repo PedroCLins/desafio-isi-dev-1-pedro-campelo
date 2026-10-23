@@ -1,6 +1,6 @@
 import type { CreateClubType, SortClubOptionsType } from "../DTOs";
 import { ClubRepository, ContractRepository } from "../repositories";
-import type { BaseClubReturnType, ClubDataWithPlayers, ClubReturnType, ClubsListReturnType, PlayerData, PlayerDataWithContract } from "../types/types";
+import type { BaseClubReturnType, ClubDataWithPlayers, ClubReturnType, ClubsListReturnType, PlayerData, PlayerDataWithContract } from "../utils/types";
 import { formatName } from "../utils/nameHandler";
 import BusinessRules from "../utils/businessRules";
 import { ConflictError, NotFoundError } from "../utils/errorHandler";

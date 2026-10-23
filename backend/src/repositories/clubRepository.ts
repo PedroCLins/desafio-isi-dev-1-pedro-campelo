@@ -1,4 +1,4 @@
-import type { ClubData, ClubDataWithPlayers, CreateClubData, UpdateClubData } from '../types/types';
+import type { ClubData, ClubDataWithPlayers, CreateClubData, UpdateClubData } from '../utils/types';
 import { db } from '../prisma/db';
 import type { FormationEnumType } from '../DTOs';
 

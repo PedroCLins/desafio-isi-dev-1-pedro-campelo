@@ -30,20 +30,20 @@ export {
     type ListPlayersQueryType
 } from "./playerDTO";
 export {
-    clubDTO,
+    createClubDTO,
     sortClubOptionsDTO,
     type CreateClubType,
     type SortClubOptionsType
 } from "./clubDTO";
 export {
-    contractDTO,
+    createContractDTO,
     filterTransactionsDTO,
     type CreateContractType,
     type FilterTransactionsType
 } from "./marketDTO";
 export {
-    lineupDTO,
-    matchDTO,
+    updateLineupDTO,
+    createMatchDTO,
     type UpdateLineupType,
     type CreateMatchType,
 } from "./leagueDTO";

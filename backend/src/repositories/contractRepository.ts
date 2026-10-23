@@ -1,5 +1,5 @@
 import { db } from '../prisma/db';
-import type { ContractData, CreateContractData, UpdateContractData } from '../types/types';
+import type { ContractData, CreateContractData, UpdateContractData } from '../utils/types';
 
 export class ContractRepository {
     async create(data: CreateContractData): Promise<ContractData> {

@@ -1,5 +1,5 @@
 import { db } from '../prisma/db';
-import type { CreateTransactionData, TransactionReturnType } from '../types/types';
+import type { CreateTransactionData, TransactionReturnType } from '../utils/types';
 
 
 export class TransactionRepository {

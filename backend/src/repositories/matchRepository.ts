@@ -1,5 +1,5 @@
 import { db } from '../prisma/db';
-import type { CreateMatchData, MatchData } from '../types/types';
+import type { CreateMatchData, MatchData } from '../utils/types';
 
 
 export class MatchRepository {

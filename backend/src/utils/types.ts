@@ -131,3 +131,8 @@ export type StandingsReturnType = {
     goal_difference: number;
     points: number;
 }[];
+
+// Request Parameter Types
+export type IdParams = {
+    id: number;
+}

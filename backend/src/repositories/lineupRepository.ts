@@ -1,5 +1,5 @@
 import { db } from '../prisma/db';
-import type { LineupData, CreateLineupData } from '../types/types';
+import type { LineupData, CreateLineupData } from '../utils/types';
 
 
 export class LineupRepository {
