@@ -6,6 +6,7 @@ import { CircleAlert, History, Info, RefreshCw, Share2, TriangleAlert } from "lu
 
 import { BaseModal, type ModalAction } from "@/components/modal";
 import { Badge } from "@/components/ui/badge";
+import { toast } from "@/components/ui/toast";
 import { apiClient } from "@/lib/api";
 import type { Club, PlayerWithValue, Position, SellPlayerResponse } from "@/lib/types";
 
@@ -99,9 +100,12 @@ export function SellPlayerModal({
     try {
       const result = await apiClient.market.sell(player.id);
       onSold?.(result);
+      toast.add({ title: "Venda concluída", description: `${player.name} foi vendido com sucesso.`, type: "success" });
       setSuccess(result);
     } catch (requestError) {
-      setError(getApiError(requestError));
+      const details = getApiError(requestError);
+      toast.add({ title: details.title, description: details.message, type: "error" });
+      setError(details);
     } finally {
       setSubmitting(false);
     }

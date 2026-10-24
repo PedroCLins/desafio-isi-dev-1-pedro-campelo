@@ -1,10 +1,12 @@
 "use client";
 
 import * as React from "react";
+import axios from "axios";
 import { AlertTriangle, CircleCheck, LockKeyhole } from "lucide-react";
 
 import { BaseModal, type ModalAction } from "@/components/modal";
 import { Button } from "@/components/ui/button";
+import { toast } from "@/components/ui/toast";
 import { apiClient } from "@/lib/api";
 import type { Condition, Player } from "@/lib/types";
 
@@ -65,8 +67,20 @@ export function AlterPlayerConditionModal({
     setSubmitting(true);
     try {
       const updatedPlayer = await apiClient.players.updateCondition(player.id, condition);
+      toast.add({
+        title: "Condição atualizada",
+        description: `A condição de ${updatedPlayer.name} foi atualizada com sucesso.`,
+        type: "success",
+      });
       onSaved?.(updatedPlayer);
       onClose();
+    } catch (error) {
+      const message = axios.isAxiosError(error) ? error.response?.data?.error : undefined;
+      toast.add({
+        title: "Falha ao atualizar condição",
+        description: typeof message === "string" ? message : "Não foi possível atualizar a condição. Tente novamente.",
+        type: "error",
+      });
     } finally {
       setSubmitting(false);
     }

@@ -139,6 +139,8 @@
   --color-avatar-teal-foreground: var(--avatar-teal-foreground);
   --color-avatar-zinc: var(--avatar-zinc);
   --color-avatar-zinc-foreground: var(--avatar-zinc-foreground);
+  --color-pitch-label: oklch(0 0 0 / 30);
+  --color-pitch-foreground: #fff;
   --radius-sm: calc(var(--radius) * 0.6);
   --radius-md: calc(var(--radius) * 0.8);
   --radius-lg: var(--radius);

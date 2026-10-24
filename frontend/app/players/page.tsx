@@ -14,22 +14,11 @@ import {
   type PlayersTableSort,
   type PlayersTableTab,
 } from "@/components/playersTable";
-import { SidebarBrand, SidebarInfoFooter, SidebarNavigation } from "@/components/sidebar";
-import { Topbar } from "@/components/topbar";
 import { Button } from "@/components/ui/button";
-import {
-  Sidebar,
-  SidebarInset,
-  SidebarProvider,
-  useSidebar,
-} from "@/components/ui/sidebar";
+import { toast } from "@/components/ui/toast";
+import axios from "axios";
 import { apiClient } from "@/lib/api";
 import type { Club, PlayerWithValue } from "@/lib/types";
-
-function PlayersTopbar() {
-  const { toggleSidebar } = useSidebar();
-  return <Topbar onToggleSidebar={toggleSidebar} page="Jogadores" section="Mercado" />;
-}
 
 export default function PlayersPage() {
   const [clubs, setClubs] = React.useState<Club[]>([]);
@@ -108,18 +97,7 @@ export default function PlayersPage() {
   };
 
   return (
-    <SidebarProvider>
-      <Sidebar collapsible="icon">
-        <SidebarBrand />
-        <SidebarNavigation
-          activeItem="players"
-          clubs={clubs.map(({ id, name, acronym }) => ({ id, name, acronym }))}
-          counts={{ clubs: clubs.length, matches: 0, players: counts.all }}
-        />
-        <SidebarInfoFooter clubCount={clubs.length} playerCount={counts.all} />
-      </Sidebar>
-      <SidebarInset className="min-w-0 bg-background">
-        <PlayersTopbar />
+    <>
         <main className="flex min-h-0 flex-1 flex-col gap-5 overflow-auto p-6">
           <header className="flex items-center justify-between gap-4">
             <div className="flex items-center gap-3">
@@ -168,7 +146,6 @@ export default function PlayersPage() {
             maiúsculas, minúsculas e acentos.
           </p>
         </main>
-      </SidebarInset>
 
       <PlayerDetailsSidebar
         onBuy={setBuyPlayer}
@@ -212,12 +189,23 @@ export default function PlayersPage() {
       <CreatePlayerModal
         onClose={() => setCreateOpen(false)}
         onSubmit={async (payload) => {
-          await apiClient.players.create(payload);
-          setCreateOpen(false);
-          await loadPlayers();
+          try {
+            await apiClient.players.create(payload);
+            toast.add({ title: "Jogador criado", description: `${payload.name} foi criado com sucesso.`, type: "success" });
+            setCreateOpen(false);
+            await loadPlayers();
+          } catch (error) {
+            const message = axios.isAxiosError(error) ? error.response?.data?.error : undefined;
+            toast.add({
+              title: "Falha ao criar jogador",
+              description: typeof message === "string" ? message : "Não foi possível criar o jogador. Tente novamente.",
+              type: "error",
+            });
+            throw error;
+          }
         }}
         open={createOpen}
       />
-    </SidebarProvider>
+    </>
   );
 }

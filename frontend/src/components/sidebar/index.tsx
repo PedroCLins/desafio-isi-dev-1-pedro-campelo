@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import Image from "next/image";
+import { usePathname, useRouter } from "next/navigation";
 import { apiClient } from "@/lib/api";
 import {
   Clock3,
@@ -26,8 +27,9 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import { ClubShield } from "@/components/clubShield";
 
-type SidebarItem = "players" | "clubs" | "matches" | "standings" | `club:${number}`;
+export type SidebarItem = "players" | "clubs" | "matches" | "standings" | `club:${number}`;
 
 export type SidebarClub = {
   id: number;
@@ -59,6 +61,7 @@ export type SidebarFooterProps = {
   firstClubScore?: number;
   secondClubName?: string;
   secondClubScore?: number;
+  hasMatch?: boolean;
 };
 
 export function SidebarBrand({ logoSrc = "/Marca.svg" }: SidebarHeaderProps) {
@@ -88,6 +91,7 @@ export function SidebarInfoFooter({
   firstClubScore = 2,
   secondClubName = "Águias FC",
   secondClubScore = 1,
+  hasMatch = true,
 }: SidebarFooterProps) {
   return (
     <SidebarFooter className="mt-auto p-2">
@@ -114,7 +118,9 @@ export function SidebarInfoFooter({
               Última partida
             </p>
             <p className="truncate text-[12px] leading-4 font-normal text-muted-foreground">
-              {firstClubName} {firstClubScore} × {secondClubScore} {secondClubName}
+              {hasMatch
+                ? `${firstClubName} ${firstClubScore} × ${secondClubScore} ${secondClubName}`
+                : "Nenhuma partida encontrada"}
             </p>
           </div>
         </div>
@@ -134,11 +140,14 @@ export function SidebarNavigation({
   clubs: clubsProp,
   onActiveItemChange,
 }: SidebarNavigationProps) {
-  const [internalActiveItem, setInternalActiveItem] =
-    React.useState<SidebarItem>("matches");
+  const pathname = usePathname();
+  const router = useRouter();
+  const [internalActiveItem, setInternalActiveItem] = React.useState<SidebarItem>("matches");
   const [fetchedClubs, setFetchedClubs] = React.useState<SidebarClub[]>([]);
   const clubs = clubsProp ?? fetchedClubs;
-  const activeItem = activeItemProp ?? internalActiveItem;
+  const activeItem = activeItemProp ?? (
+    pathname.startsWith("/clubes") ? "clubs" : pathname.startsWith("/players") ? "players" : internalActiveItem
+  );
 
   React.useEffect(() => {
     if (clubsProp) {
@@ -160,6 +169,9 @@ export function SidebarNavigation({
   const selectItem = (item: SidebarItem) => {
     setInternalActiveItem(item);
     onActiveItemChange?.(item);
+    if (item === "players") router.push("/players");
+    if (item === "clubs") router.push("/clubes");
+    if (item.startsWith("club:")) router.push(`/clubes/${item.slice("club:".length)}`);
   };
 
   const isClubSectionEnabled =
@@ -252,9 +264,14 @@ export function SidebarNavigation({
                   disabled={!isClubSectionEnabled}
                   tooltip={club.name}
                 >
-                  <span className="flex size-4 shrink-0 items-center justify-center rounded-[4px] border border-border bg-muted text-[10px] font-medium text-muted-foreground">
-                    {club.acronym.charAt(0)}
-                  </span>
+                  <ClubShield
+                    acronym={club.acronym.charAt(0)}
+                    className={`size-4 rounded-[4px] text-[10px] ${
+                      activeItem === `club:${club.id}`
+                        ? "border-primary bg-primary text-primary-foreground"
+                        : ""
+                    }`}
+                  />
                   <span>{club.name}</span>
                 </SidebarMenuButton>
               </SidebarMenuItem>

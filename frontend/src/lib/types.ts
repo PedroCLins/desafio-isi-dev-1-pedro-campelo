@@ -72,6 +72,16 @@ export type Club = {
   squad_value: number;
   net_worth: number;
 };
+export type ClubDetails = Club & {
+  players: Array<PlayerWithValue & {
+    contract: {
+      purchase_value: number;
+      loyalty_until: string;
+      remaining_days: number;
+      penalty_rate: number;
+    };
+  }>;
+};
 export type CreateClubInput = { name: string; acronym: string };
 export type ClubSort = "name" | "net_worth_asc" | "net_worth_desc";
 

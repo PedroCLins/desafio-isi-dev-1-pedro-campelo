@@ -14,6 +14,7 @@ import {
 
 import { BaseModal, type ModalAction } from "@/components/modal";
 import { Input } from "@/components/ui/input";
+import { toast } from "@/components/ui/toast";
 import {
   Select,
   SelectContent,
@@ -127,7 +128,9 @@ export function BuyPlayerModal({
   const submit = async () => {
     setError(null);
     if (!club || !date || !time) {
-      setError({ title: "Compra recusada", message: "Selecione um clube e informe o fim da fidelidade." });
+      const details = { title: "Compra recusada", message: "Selecione um clube e informe o fim da fidelidade." };
+      toast.add({ title: details.title, description: details.message, type: "error" });
+      setError(details);
       return;
     }
     if (!canAfford) {
@@ -135,6 +138,7 @@ export function BuyPlayerModal({
         title: "Compra recusada",
         message: `O custo da compra (${money(totalCost)}) passa do limite de 50% do caixa (${money(selectedClubCash * 0.5)}).`,
       });
+      toast.add({ title: "Compra recusada", description: `O custo da compra (${money(totalCost)}) passa do limite de 50% do caixa (${money(selectedClubCash * 0.5)}).`, type: "error" });
       return;
     }
 
@@ -145,9 +149,12 @@ export function BuyPlayerModal({
         loyalty_until: `${date}T${time}:00-03:00`,
       });
       onBought?.(result);
+      toast.add({ title: "Compra concluída", description: `${player.name} foi comprado com sucesso.`, type: "success" });
       setSuccess(result);
     } catch (requestError) {
-      setError(getApiError(requestError));
+      const details = getApiError(requestError);
+      toast.add({ title: details.title, description: details.message, type: "error" });
+      setError(details);
     } finally {
       setSubmitting(false);
     }

@@ -30,7 +30,7 @@ export class LeagueService {
 
         const lineupPositions = validPlayers.map(p => p.position);
         const goalkeeperCount = lineupPositions.reduce((count, pos) => count + (pos === 'GOL' ? 1 : 0), 0);
-        const defenseCount = lineupPositions.reduce((count, pos) => count + (pos in ['ZAG', 'LAT'] ? 1 : 0), 0);
+        const defenseCount = lineupPositions.reduce((count, pos) => count + (pos === 'ZAG' || pos === 'LAT' ? 1 : 0), 0);
         const midfieldCount = lineupPositions.reduce((count, pos) => count + (pos === 'MEI' ? 1 : 0), 0);
         const attackCount = lineupPositions.reduce((count, pos) => count + (pos === 'ATA' ? 1 : 0), 0);
 

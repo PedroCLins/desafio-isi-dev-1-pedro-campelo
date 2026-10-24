@@ -7,9 +7,13 @@ export const createClubDTO = z.object({
                 .length(3, { message: "A sigla do clube deve ter exatamente 3 caracteres." }),
 })
 
-export const sortClubOptionsDTO = 
-        z.enum(['name', 'net_worth_asc', 'net_worth_desc'], { error: "O tipo de ordenação é inválido." })
-        .default('name');
+const clubSortDTO = z.enum(['name', 'net_worth_asc', 'net_worth_desc'], {
+        error: "O tipo de ordenação é inválido.",
+});
+
+export const sortClubOptionsDTO = z.object({
+        sort: clubSortDTO.default('name'),
+});
 
 
 export type CreateClubType = z.infer<typeof createClubDTO>;

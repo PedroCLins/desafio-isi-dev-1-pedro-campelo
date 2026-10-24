@@ -86,6 +86,13 @@ function initials(name: string) {
     .toUpperCase();
 }
 
+const avatarColors = ["violet", "pink", "cyan", "teal", "zinc"] as const;
+
+function avatarClass(playerId: number) {
+  const color = avatarColors[playerId % avatarColors.length];
+  return `bg-avatar-${color} text-avatar-${color}-foreground`;
+}
+
 function TabLabel({ label, count }: { label: string; count: number }) {
   return (
     <>
@@ -181,7 +188,7 @@ export function PlayersTable({
                       onClick={() => onDetails?.(player)}
                       type="button"
                     >
-                      <span className="flex size-7 shrink-0 items-center justify-center rounded-full bg-muted text-[10px] font-medium text-muted-foreground">
+                      <span className={`flex size-7 shrink-0 items-center justify-center rounded-full text-[10px] font-medium ${avatarClass(player.id)}`}>
                         {initials(player.name)}
                       </span>
                       <span className="min-w-0">

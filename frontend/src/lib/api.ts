@@ -3,6 +3,7 @@ import type { AxiosRequestConfig } from "axios";
 import type {
   BuyPlayerResponse,
   Club,
+  ClubDetails,
   ClubSort,
   ClubTransactionsResponse,
   ContractInput,
@@ -51,7 +52,7 @@ export const apiClient = {
   clubs: {
     list: (params?: { sort?: ClubSort }) =>
       request<Club[]>({ method: "GET", url: "/clubs", params }),
-    get: (id: number) => request<Club>({ method: "GET", url: `/clubs/${id}` }),
+    get: (id: number) => request<ClubDetails>({ method: "GET", url: `/clubs/${id}` }),
     create: (payload: CreateClubInput) =>
       request<Club>({ method: "POST", url: "/clubs", data: payload }),
   },

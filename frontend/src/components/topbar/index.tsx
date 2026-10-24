@@ -16,6 +16,9 @@ import { Button } from "@/components/ui/button";
 type TopbarProps = {
   section?: string;
   page?: string;
+  currentPage?: string;
+  pageHref?: string;
+  sectionHref?: string;
   onToggleSidebar?: () => void;
   onRefresh?: () => void;
 };
@@ -23,6 +26,9 @@ type TopbarProps = {
 export function Topbar({
   section = "Mercado",
   page = "Jogadores",
+  currentPage,
+  pageHref,
+  sectionHref = "/players",
   onToggleSidebar,
   onRefresh,
 }: TopbarProps) {
@@ -49,12 +55,20 @@ export function Topbar({
       <Breadcrumb className="min-w-0 flex-1 pl-1">
         <BreadcrumbList>
           <BreadcrumbItem>
-            <BreadcrumbLink href="#">{section}</BreadcrumbLink>
+            <BreadcrumbLink href={sectionHref}>{section}</BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
-            <BreadcrumbPage>{page}</BreadcrumbPage>
+            {pageHref ? <BreadcrumbLink href={pageHref}>{page}</BreadcrumbLink> : <BreadcrumbPage>{page}</BreadcrumbPage>}
           </BreadcrumbItem>
+          {currentPage && (
+            <>
+              <BreadcrumbSeparator />
+              <BreadcrumbItem>
+                <BreadcrumbPage>{currentPage}</BreadcrumbPage>
+              </BreadcrumbItem>
+            </>
+          )}
         </BreadcrumbList>
       </Breadcrumb>
       <div className="flex h-8 items-center gap-1">
